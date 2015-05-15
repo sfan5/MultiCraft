@@ -1,0 +1,40 @@
+if not multicraft.get_modpath("check") then os.exit() end
+if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+-- This file registers aliases for the /give /giveme commands.
+
+multicraft.register_alias("mesecons:removestone", "mesecons_random:removestone")
+multicraft.register_alias("mesecons:power_plant", "mesecons_powerplant:power_plant")
+multicraft.register_alias("mesecons:powerplant", "mesecons_powerplant:power_plant")
+multicraft.register_alias("mesecons:meselamp", "mesecons_lamp:lamp_off")
+multicraft.register_alias("mesecons:mesecon", "mesecons:wire_00000000_off")
+multicraft.register_alias("mesecons:object_detector", "mesecons_detector:object_detector_off")
+multicraft.register_alias("mesecons:wireless_inverter", "mesecons_wireless:wireless_inverter_on")
+multicraft.register_alias("mesecons:wireless_receiver", "mesecons_wireless:wireless_receiver_off")
+multicraft.register_alias("mesecons:wireless_transmitter", "mesecons_wireless:wireless_transmitter_off")
+multicraft.register_alias("mesecons:switch", "mesecons_switch:mesecon_switch_off")
+multicraft.register_alias("mesecons:button", "mesecons_button:button_off")
+multicraft.register_alias("mesecons:piston", "mesecons_pistons:piston_normal_off")
+multicraft.register_alias("mesecons:blinky_plant", "mesecons_blinkyplant:blinky_plant_off")
+multicraft.register_alias("mesecons:mesecon_torch", "mesecons_torch:mesecon_torch_on")
+multicraft.register_alias("mesecons:torch", "mesecons_torch:mesecon_torch_on")
+multicraft.register_alias("mesecons:hydro_turbine", "mesecons_hydroturbine:hydro_turbine_off")
+multicraft.register_alias("mesecons:pressure_plate_stone", "mesecons_pressureplates:pressure_plate_stone_off")
+multicraft.register_alias("mesecons:pressure_plate_wood", "mesecons_pressureplates:pressure_plate_wood_off")
+multicraft.register_alias("mesecons:mesecon_socket", "mesecons_temperest:mesecon_socket_off")
+multicraft.register_alias("mesecons:mesecon_inverter", "mesecons_temperest:mesecon_inverter_on")
+multicraft.register_alias("mesecons:movestone", "mesecons_movestones:movestone")
+multicraft.register_alias("mesecons:sticky_movestone", "mesecons_movestones:sticky_movestone")
+multicraft.register_alias("mesecons:noteblock", "mesecons_noteblock:noteblock")
+multicraft.register_alias("mesecons:microcontroller", "mesecons_microcontroller:microcontroller0000")
+multicraft.register_alias("mesecons:delayer", "mesecons_delayer:delayer_off_1")
+multicraft.register_alias("mesecons:solarpanel", "mesecons_solarpanel:solar_panel_off")
+
+
+--Backwards compatibility
+multicraft.register_alias("mesecons:mesecon_off", "mesecons:wire_00000000_off")
+multicraft.register_alias("mesecons_pistons:piston_sticky", "mesecons_pistons:piston_sticky_on")
+multicraft.register_alias("mesecons_pistons:piston_normal", "mesecons_pistons:piston_normal_on")
+multicraft.register_alias("mesecons_pistons:piston_up_normal", "mesecons_pistons:piston_up_normal_on")
+multicraft.register_alias("mesecons_pistons:piston_down_normal", "mesecons_pistons:piston_down_normal_on")
+multicraft.register_alias("mesecons_pistons:piston_up_sticky", "mesecons_pistons:piston_up_sticky_on")
+multicraft.register_alias("mesecons_pistons:piston_down_sticky", "mesecons_pistons:piston_down_sticky_on")
