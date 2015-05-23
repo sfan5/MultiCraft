@@ -1,0 +1,28 @@
+From 1e15639e52adbbd10be14faf6377af96a667cf8e Mon Sep 17 00:00:00 2001
+From: OttoLidenbrock <unknown>
+Date: Sun, 17 May 2015 01:42:55 +1000
+Subject: [PATCH] Swap air and hunger bar y-positions
+
+---
+ mods/hud/builtin.lua | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mods/hud/builtin.lua b/mods/hud/builtin.lua
+index abc965c..89700e8 100644
+--- a/mods/hud/builtin.lua
++++ b/mods/hud/builtin.lua
+@@ -9,9 +9,9 @@ HUD_SB_SIZE = {x = 24, y = 24}
+ HUD_HEALTH_POS = {x = 0.5,y = 1}
+ HUD_HEALTH_OFFSET = {x = -262, y = -87}
+ HUD_AIR_POS = {x = 0.5, y = 1}
+-HUD_AIR_OFFSET = {x = 15, y = -87}
++HUD_AIR_OFFSET = {x = 15, y = -110}
+ HUD_HUNGER_POS = {x = 0.5, y = 1}
+-HUD_HUNGER_OFFSET = {x = 15, y = -110}
++HUD_HUNGER_OFFSET = {x = 15, y = -87}
+ HUD_ARMOR_POS = {x = 0.5, y = 1}
+ HUD_ARMOR_OFFSET = {x = -262, y = -110}
+ 
+-- 
+2.1.0
+
