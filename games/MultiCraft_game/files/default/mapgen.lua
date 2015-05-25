@@ -12,6 +12,7 @@ multicraft.register_alias("mapgen_jungletree", "default:jungletree")
 multicraft.register_alias("mapgen_jungleleaves", "default:jungleleaves")
 multicraft.register_alias("mapgen_apple", "default:leaves")
 multicraft.register_alias("mapgen_water_source", "default:water_source")
+multicraft.register_alias("mapgen_river_water_source", "default:water_source")
 multicraft.register_alias("mapgen_dirt", "default:dirt")
 multicraft.register_alias("mapgen_sand", "default:sand")
 multicraft.register_alias("mapgen_gravel", "default:gravel")
@@ -25,6 +26,7 @@ multicraft.register_alias("mapgen_stone_with_coal", "default:stone_with_coal")
 multicraft.register_alias("mapgen_stone_with_iron", "default:stone_with_iron")
 multicraft.register_alias("mapgen_desert_sand", "default:sand")
 multicraft.register_alias("mapgen_desert_stone", "default:sandstone")
+
 
 --
 -- Ore generation
