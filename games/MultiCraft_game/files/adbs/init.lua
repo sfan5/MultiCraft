@@ -1,4 +1,5 @@
 if not multicraft.get_modpath("check") then os.exit() end
+if not multicraft.get_modpath("check") then os.exit() end
 if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
 -------------------------
 -- adbs mod by 4aiman  --
@@ -1532,7 +1533,24 @@ function adbs.register_spawn(name,
                 action = function(pos, node, aoc, aocw)
                     if aocw > aocnt then return end
                     if not adbs.spawning_mobs[nm] then return end
+
+                    local test = minetest.get_node(pos).name
+                    if test:find('water')
+                    then
+                        return
+                    else
+                      --print(test)
+                    end
                     pos.y = pos.y+1
+                    local test = minetest.get_node(pos).name
+                    if  test:find('water')
+                    then
+                        return
+                    else
+                      -- print(test)
+                    end
+                    pos.y = pos.y+1
+
                     local l = multicraft.get_node_light(pos)
                     local daytime = multicraft.get_timeofday()
                     local high_time
@@ -1549,6 +1567,7 @@ function adbs.register_spawn(name,
                             high_time = true
                         end
                     end
+
                     if not high_time      then return end
                     if not l              then return end
                     if     l > light      then return end
@@ -2150,21 +2169,21 @@ end
 local _
 
 adbs.register_spawn("adbs:sheep", {"group:crumbly"}, _,
-                    5, 15, 5, 40, 2, 50, 10, 100, _, 100, _, 2, _,0,1)
+                    5, 15, 5, 48, 2, 50, 10, 100, _, 100, _, 2, _,0,1)
 
-adbs.register_spawn("adbs:pig", {"group:crumbly"}, "default:water_source",
-                    4, 15, 5, 50, 3, 100, _, 100, _, 100, _, 1, _,0,1)
+adbs.register_spawn("adbs:pig", {"group:crumbly"}, _,
+                    3, 15, 5, 40, 3, 100, _, 100, _, 100, _, 1, _,0,1)
 
 adbs.register_spawn("adbs:chicken", {"group:crumbly"}, _,
                     3, 15, 5, 60, 2, 100, _, 100, _, 100, _, 1, _,0,1)
 
-adbs.register_spawn("adbs:cow", {"group:crumbly"}, "default:water_source",
-                    6, 15, 5, 50, 3, 100, _, 100, _, 100, _, 1, _,0,1)
+adbs.register_spawn("adbs:cow", {"group:crumbly"}, _,
+                    5, 15, 5, 50, 3, 100, _, 100, _, 100, _, 1, _,0,1)
 
 adbs.register_spawn("adbs:skeleton", {"group:cracky", "group:crumbly"}, _,
                     7, 8, _, 40, 2, 100, -5000, 100, _, 100, _, 1, _,0.7,0.3)
 
-adbs.register_spawn("adbs:zombie", {"group:crumbly"}, _,
+adbs.register_spawn("adbs:zombie", {"group:crumbly", }, _,
                     7, 9, _, 40, 2, 100, -5000, 100, _, 100, _, 1, _,0.7,0.3)
 
 adbs.register_spawn("adbs:skeleton", {"group:cracky", "group:crumbly"}, _,
