@@ -459,6 +459,75 @@ multicraft.register_on_generated(function(minp, maxp, seed)
 
     -- Generate nyan cats
     --generate_nyancats(seed, minp, maxp)
+        local perlin1 = multicraft.get_perlin(329, 3, 0.6, 100)
+        -- Assume X and Z lengths are equal
+        local pr = PseudoRandom(seed+1)
+        local divlen = pr:next(4,20)
+        local divs = (maxp.x-minp.x)/divlen+1;
+        for divx=0,divs-1 do
+            for divz=0,divs-1 do
+                local x0 = minp.x + math.floor((divx+0)*divlen)
+                local z0 = minp.z + math.floor((divz+0)*divlen)
+                local x1 = minp.x + math.floor((divx+1)*divlen)
+                local z1 = minp.z + math.floor((divz+1)*divlen)
+                -- Determine grass amount from perlin noise
+                local grass_amount = math.floor(perlin1:get2d({x=x0, y=z0}) )
+                -- Find random positions for grass based on this random
+                for i=0,grass_amount do
+                    local x = pr:next(x0, x1)
+                    local z = pr:next(z0, z1)
+                    -- Find ground level (0...15)
+                    local ground_y = nil
+                    for y=30,0,-1 do
+                        if multicraft.get_node({x=x,y=y,z=z}).name ~= "air"
+                        and not multicraft.get_node({x=x,y=y,z=z}).name:find("water") then
+                            ground_y = y
+                            break
+                        end
+                    end
+
+                    if ground_y then
+                        local p = {x=x,y=ground_y,z=z}
+                        -- Check if the node can be replaced
+                               if #(multicraft.find_nodes_in_area({x=x-5,y=ground_y-2,z=z-5}, {x=x+5,y=ground_y+2,z=z+5}, {"group:grass", "group:flower"}))>7 then
+                                  for i=1,pr:next(1,4) do
+                                     local ground_y = nil
+                                     for y=30,0,-1 do
+                                         if multicraft.get_node({x=x,y=y,z=z}).name ~= "air"
+                                         and not multicraft.get_node({x=x,y=y,z=z}).name:find("water") then
+                                             ground_y = y
+                                             break
+                                         end
+                                     end
+                                     local fruit = {"farming:pumpkin_face", "farming:melon", "farming:carrot", "farming:potato"}
+                                     local choice = fruit[pr:next(1,#fruit)]
+                                     print(choice)
+
+                                     if pr:next() < 2500 then -- the "proper" alternative
+                                        for i = 1, pr:next(1,3) do
+                                            local xx = pr:next(1,i+1)
+                                            local zz = pr:next(1,i+1)
+                                            local nname = multicraft.get_node({x=p.x+xx,z=p.z+zz,y=ground_y}).name
+                                            if nname ~="air"
+                                            and (multicraft.registered_nodes[nname] and not multicraft.registered_nodes[nname].buildable_to)
+                                            then
+
+                                               multicraft.set_node({x=p.x+xx,z=p.z+zz,y=ground_y+1},{name=choice})
+                                            end
+                                        end
+                                     end
+
+
+
+                                  end
+                               end
+
+                    end
+
+                end
+            end
+        end
+
 end)
 
 local function replace(old, new, min, max)

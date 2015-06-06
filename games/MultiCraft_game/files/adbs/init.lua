@@ -185,7 +185,7 @@ adbs.dd = {
                 self.state = 4
                 self:set_animation(4)
                 self.busy = true
-                multicraft.after(1,function()
+                multicraft.after(0.5,function()
                    v.y = vy
                    self.object:setvelocity(v)
                    self.busy = false
@@ -373,7 +373,7 @@ adbs.dd = {
                   if self.alive then
                      local pos =  self.object:getpos()
                      for _,drop in ipairs(self.drops) do
-                    if math.random(1, drop.chance) == 1 then
+                     if math.random(1, drop.chance) == 1 then
                             local itm = multicraft.add_item(pos, ItemStack(drop.name.." "..math.random(drop.min, drop.max)))
                             if itm then
                                itm:setvelocity({x=math.random()*math.random(-1,1),y=math.random()*math.random(0,2),z=math.random()*math.random(-1,1)})
@@ -1789,7 +1789,7 @@ adbs.register_mob("adbs:pig", {
     armour = {fleshy=100},
     drops = {
         {name = "farming:carrot",
-        chance = 0.5,
+        chance = 1,
         min = 0,
         max = 1,},
         {name = "default:porkchop_raw",
@@ -2011,7 +2011,7 @@ adbs.register_mob("adbs:skeleton", {
     weapon= "throwing:bow_wood",
     flying = false,
     view_range = 16,
-    attack_power = 3,
+    attack_power = 2,
     natural_damage_timer = 0,
     disable_fall_damage = false,
     fall_tolerance = 4,
@@ -2169,22 +2169,22 @@ end
 local _
 
 adbs.register_spawn("adbs:sheep", {"group:crumbly"}, _,
-                    5, 15, 5, 48, 2, 50, 10, 100, _, 100, _, 2, _,0,1)
+                    5, 15, 5, 48, 6, 50, 10, 100, _, 100, _, 4, _,0,1)
 
 adbs.register_spawn("adbs:pig", {"group:crumbly"}, _,
-                    3, 15, 5, 40, 3, 100, _, 100, _, 100, _, 1, _,0,1)
+                    3, 15, 5, 40, 6, 100, _, 100, _, 100, _, 4, _,0,1)
 
 adbs.register_spawn("adbs:chicken", {"group:crumbly"}, _,
-                    3, 15, 5, 60, 2, 100, _, 100, _, 100, _, 1, _,0,1)
+                    3, 15, 5, 60, 6, 100, _, 100, _, 100, _, 4, _,0,1)
 
 adbs.register_spawn("adbs:cow", {"group:crumbly"}, _,
-                    5, 15, 5, 50, 3, 100, _, 100, _, 100, _, 1, _,0,1)
+                    5, 15, 5, 50, 6, 100, _, 100, _, 100, _, 4, _,0,1)
 
 adbs.register_spawn("adbs:skeleton", {"group:cracky", "group:crumbly"}, _,
-                    7, 8, _, 40, 2, 100, -5000, 100, _, 100, _, 1, _,0.7,0.3)
+                    7, 8, _, 40, 6, 100, -5000, 100, _, 100, _, 4, _,0.7,0.3)
 
 adbs.register_spawn("adbs:zombie", {"group:crumbly", }, _,
-                    7, 9, _, 40, 2, 100, -5000, 100, _, 100, _, 1, _,0.7,0.3)
+                    7, 9, _, 40, 6, 100, -5000, 100, _, 100, _, 4, _,0.7,0.3)
 
 adbs.register_spawn("adbs:skeleton", {"group:cracky", "group:crumbly"}, _,
-                    7, 8, _, 30, 2, -8000, -35000, 100, _, 100, _, 1, _,0.7,0.3)
+                    7, 8, _, 30, 6, -8000, -35000, 100, _, 100, _, 4, _,0.7,0.3)

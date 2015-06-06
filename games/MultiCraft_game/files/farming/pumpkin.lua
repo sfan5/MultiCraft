@@ -19,6 +19,7 @@ multicraft.register_craftitem("farming:pumpkin_seed", {
 multicraft.register_node("farming:pumpkin_1", {
     paramtype = "light",
     walkable = false,
+    buildable_to = true,
     drawtype = "plantlike",
     sunlight_propagates = true,
     drop = "",
@@ -36,6 +37,7 @@ multicraft.register_node("farming:pumpkin_1", {
 multicraft.register_node("farming:pumpkin_2", {
     paramtype = "light",
     walkable = false,
+    buildable_to = true,
     drawtype = "plantlike",
     sunlight_propagates = true,
     drop = "",

@@ -3,6 +3,7 @@ multicraft.register_node("farming:carrot_1", {
     walkable = false,
     drawtype = "plantlike",
     drop = "farming:carrot_item",
+    buildable_to = true,
     tiles = {"farming_carrot_1.png"},
     selection_box = {
         type = "fixed",
@@ -17,6 +18,7 @@ multicraft.register_node("farming:carrot_1", {
 multicraft.register_node("farming:carrot_2", {
     paramtype = "light",
     walkable = false,
+    buildable_to = true,
     drawtype = "plantlike",
     drop = "farming:carrot_item",
     tiles = {"farming_carrot_2.png"},
@@ -33,6 +35,7 @@ multicraft.register_node("farming:carrot_2", {
 multicraft.register_node("farming:carrot_3", {
     paramtype = "light",
     walkable = false,
+    buildable_to = true,
     drawtype = "plantlike",
     drop = "farming:carrot_item",
     tiles = {"farming_carrot_3.png"},
@@ -49,6 +52,7 @@ multicraft.register_node("farming:carrot_3", {
 multicraft.register_node("farming:carrot", {
     paramtype = "light",
     walkable = false,
+    buildable_to = true,
     drawtype = "plantlike",
     tiles = {"farming_carrot_4.png"},
     drop = {

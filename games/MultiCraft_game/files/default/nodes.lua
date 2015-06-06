@@ -320,7 +320,7 @@ multicraft.register_node("default:sea_lantern", {
         }
     },
     tiles = {"default_sea_lantern.png"},
-    groups = {oddly_breakable_by_hand=3, building = 1},
+    groups = {dig_immediate=2, building = 1},
 })
 
 multicraft.register_node("default:prismarine", {
@@ -355,7 +355,7 @@ multicraft.register_node("default:tree", {
     is_ground_content = false,
     on_place = multicraft.rotate_node,
     stack_max = 64,
-    groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2, building = 1},
+    groups = {tree=1,choppy=3,flammable=2, building = 1},
     sounds = default.node_sound_wood_defaults(),
 })
 
@@ -1562,7 +1562,7 @@ multicraft.register_node("default:cobble", {
     tiles = {"default_cobble.png"},
     is_ground_content = true,
     stack_max = 64,
-    groups = {cracky=3, stone=2, building = 1, decorative = 1},
+    groups = {cracky=10, stone=2, building = 1, decorative = 1},
     sounds = default.node_sound_stone_defaults(),
 })
 
@@ -1708,7 +1708,7 @@ multicraft.register_node("default:grass", {
     },
     paramtype = "light",
     is_ground_content = true,
-    groups = {snappy=3,flammable=3,attached_node=1,dig_immediate=3, decorative=1},
+    groups = {snappy=3,flammable=3,attached_node=1,dig_immediate=3, decorative=1, grass=1},
     sounds = default.node_sound_leaves_defaults(),
     after_dig_node = function(pos, oldnode, oldmetadata, user)
     local item = user:get_wielded_item()

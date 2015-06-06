@@ -1,6 +1,7 @@
 multicraft.register_node("farming:melon", {
     description = "Melon",
     paramtype2 = "facedir",
+    buildable_to = true,
     stack_max = 64,
     tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
     groups = {choppy=2, oddly_breakable_by_hand=2, building = 1},
@@ -42,6 +43,7 @@ multicraft.register_node("farming:melontige_1", {
     walkable = false,
     drawtype = "plantlike",
     sunlight_propagates = true,
+    buildable_to = true,
     drop = "",
     tiles = {"farming_tige_1.png"},
     selection_box = {
@@ -58,6 +60,7 @@ multicraft.register_node("farming:melontige_2", {
     paramtype = "light",
     walkable = false,
     drawtype = "plantlike",
+    buildable_to = true,
     sunlight_propagates = true,
     drop = "",
     tiles = {"farming_tige_2.png"},

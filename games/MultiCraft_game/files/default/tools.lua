@@ -15,7 +15,9 @@ multicraft.register_item(":", {
         groupcaps = {
             crumbly = {times={[2]=3.00, [3]=0.70}, uses=0, maxlevel=1},
             snappy = {times={[3]=0.40}, uses=0, maxlevel=1},
-            oddly_breakable_by_hand = {times={[0]=90.00,[1]=7.00,[2]=4.00,[3]=1.40,[4]=480.70,[5]=999999.0}, uses=0, maxlevel=5}
+            choppy = {times={[3]=3}},
+            cracky = {times={[10]=10, [3]=7.5}},
+            oddly_breakable_by_hand = {times={[0]=90.00,[1]=7.00,[2]=3.00,[3]=3*3.33,[4]=250,[5]=999999.0,[6]=0.5}, uses=0, maxlevel=5}
         },
         damage_groups = {fleshy=1},
     }
@@ -29,9 +31,9 @@ multicraft.register_tool("default:pick_wood", {
         full_punch_interval = 1.2,
         max_drop_level=0,
         groupcaps={
-            cracky = {times={[3]=1.60}, uses=10, maxlevel=1},
+            cracky = {times={[3]=1.60, [10]=1.60}, uses=10, maxlevel=1},
         },
-        damage_groups = {fleshy=2},
+        damage_groups = {fleshy=3},
     },
     groups = {tools=1},
 })
@@ -42,9 +44,9 @@ multicraft.register_tool("default:pick_stone", {
         full_punch_interval = 1.3,
         max_drop_level=0,
         groupcaps={
-            cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
+            cracky = {times={[2]=2.0, [3]=1.20, [3]=0.60}, uses=20, maxlevel=1},
         },
-        damage_groups = {fleshy=3},
+        damage_groups = {fleshy=4},
     },
     groups = {tools=1},
 })
@@ -55,9 +57,9 @@ multicraft.register_tool("default:pick_steel", {
         full_punch_interval = 1.0,
         max_drop_level=1,
         groupcaps={
-            cracky = {times={[1]=4.00, [2]=1.60, [3]=0.80}, uses=20, maxlevel=2},
+            cracky = {times={[1]=4.00, [2]=1.60, [3]=0.80,[3]=0.40}, uses=20, maxlevel=2},
         },
-        damage_groups = {fleshy=4},
+        damage_groups = {fleshy=5},
     },
     groups = {tools=1},
 })
@@ -68,7 +70,7 @@ multicraft.register_tool("default:pick_gold", {
         full_punch_interval = 1.3,
         max_drop_level=0,
         groupcaps={
-            cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
+            cracky = {times={[2]=2.0, [3]=1.20, [10]=0.30}, uses=20, maxlevel=1},
         },
         damage_groups = {fleshy=3},
     },
@@ -81,9 +83,9 @@ multicraft.register_tool("default:pick_diamond", {
         full_punch_interval = 0.9,
         max_drop_level=3,
         groupcaps={
-            cracky = {times={[1]=2.0, [2]=1.0, [3]=0.50,[4]=20.00 }, uses=30, maxlevel=4},
+            cracky = {times={[1]=2.0, [2]=1.0, [3]=0.50,[4]=20.00,[3]=0.20 }, uses=30, maxlevel=4},
         },
-        damage_groups = {fleshy=5},
+        damage_groups = {fleshy=6},
     },
     groups = {tools=1},
 })
@@ -155,7 +157,7 @@ multicraft.register_tool("default:shovel_diamond", {
         groupcaps={
             crumbly = {times={[1]=1.10, [2]=0.50, [3]=0.30}, uses=30, maxlevel=3},
         },
-        damage_groups = {fleshy=4},
+        damage_groups = {fleshy=5},
     },
     groups = {tools=1},
 })
@@ -170,7 +172,7 @@ multicraft.register_tool("default:axe_wood", {
         groupcaps={
             choppy = {times={[2]=3.00, [3]=2.00}, uses=10, maxlevel=1},
         },
-        damage_groups = {fleshy=2},
+        damage_groups = {fleshy=1},
     },
     groups = {tools=1},
 })
@@ -196,7 +198,7 @@ multicraft.register_tool("default:axe_steel", {
         groupcaps={
             choppy={times={[1]=2.50, [2]=1.40, [3]=1.00}, uses=20, maxlevel=2},
         },
-        damage_groups = {fleshy=4},
+        damage_groups = {fleshy=5},
     },
     groups = {tools=1},
 })
@@ -222,7 +224,7 @@ multicraft.register_tool("default:axe_diamond", {
         groupcaps={
             choppy={times={[1]=2.10, [2]=0.90, [3]=0.50}, uses=30, maxlevel=2},
         },
-        damage_groups = {fleshy=7},
+        damage_groups = {fleshy=6},
     },
     groups = {tools=1},
 })
@@ -289,7 +291,7 @@ multicraft.register_tool("default:sword_diamond", {
         groupcaps={
             snappy={times={[1]=1.90, [2]=0.90, [3]=0.30}, uses=40, maxlevel=3},
         },
-        damage_groups = {fleshy=8},
+        damage_groups = {fleshy=7},
     },
     groups = {combat=1},
 })

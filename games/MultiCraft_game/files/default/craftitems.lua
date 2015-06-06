@@ -173,7 +173,7 @@ multicraft.register_craftitem("default:quartz_crystal", {
 
 multicraft.register_craftitem('default:rotten_flesh', {
     description = "Rotten flesh",
-    inventory_image = "zombie_flesh",
+    inventory_image = "zombie_flesh.png",
     on_use = multicraft.item_eat(1),
 })
 

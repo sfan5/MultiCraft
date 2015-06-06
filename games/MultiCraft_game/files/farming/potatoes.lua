@@ -2,6 +2,7 @@ multicraft.register_node("farming:potato_1", {
     paramtype = "light",
     walkable = false,
     drawtype = "plantlike",
+    buildable_to = true,
     drop = "farming:potato_item",
     tiles = {"farming_potato_1.png"},
     selection_box = {
@@ -19,6 +20,7 @@ multicraft.register_node("farming:potato_2", {
     walkable = false,
     drawtype = "plantlike",
     drop = "farming:potato_item",
+    buildable_to = true,
     tiles = {"farming_potato_2.png"},
     selection_box = {
         type = "fixed",
@@ -34,6 +36,7 @@ multicraft.register_node("farming:potato", {
     paramtype = "light",
     walkable = false,
     drawtype = "plantlike",
+    buildable_to = true,
     tiles = {"farming_potato_3.png"},
     drop = {
         max_items = 1,

@@ -66,7 +66,7 @@
 max_save_time    = 10
 save_time        = 0
 max_drumsticks   = 20
-foodTickTimerMAX = 5
+foodTickTimerMAX = 10
 max_exhaustion   = 8
 foodTickTimerMax = {}
 food_level       = {}
@@ -384,7 +384,7 @@ local doit = false
                    timers[pll] = 15
                    player:hud_change(hungerhudb[pll],"text",'hunger_tile_d.png')
                    player:hud_change(hungerhud[pll] ,"text",'hunger_tile_c.png')
-                    if doit==true and hp>1 then
+                    if doit==true and hp>10 then
                        player:set_hp(hp-1)
                        hp=hp-1
                     end
