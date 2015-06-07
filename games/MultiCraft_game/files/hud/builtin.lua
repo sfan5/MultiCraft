@@ -7,25 +7,25 @@ end
 HUD_SB_SIZE = {x = 24, y = 24}
 
 HUD_HEALTH_POS = {x = 0.5,y = 1}
-HUD_HEALTH_OFFSET = {x = -262, y = -87}
+HUD_HEALTH_OFFSET = {x = -262, y = -93}
 HUD_AIR_POS = {x = 0.5, y = 1}
-HUD_AIR_OFFSET = {x = 15, y = -118}
+HUD_AIR_OFFSET = {x = 15, y = -124
 HUD_HUNGER_POS = {x = 0.5, y = 1}
-HUD_HUNGER_OFFSET = {x = 15, y = -87}
+HUD_HUNGER_OFFSET = {x = 15, y = -93}
 HUD_ARMOR_POS = {x = 0.5, y = 1}
-HUD_ARMOR_OFFSET = {x = -262, y = -118}
+HUD_ARMOR_OFFSET = {x = -262, y = -15}
 
 -- Reorder everything when using ItemWeel
 hud.item_wheel = false --multicraft.setting_getbool("hud_item_wheel")
 if hud.item_wheel then
         HUD_HEALTH_POS = {x = 0.5,y = 1}
-        HUD_HEALTH_OFFSET = {x = -385, y = -77}
+        HUD_HEALTH_OFFSET = {x = -385, y = -83}
         HUD_AIR_POS = {x = 0.5, y = 1}
-        HUD_AIR_OFFSET = {x = 150, y = -77}
+        HUD_AIR_OFFSET = {x = 150, y = -83}
         HUD_HUNGER_POS = {x = 0.5, y = 1}
-        HUD_HUNGER_OFFSET = {x = 180, y = -44}
+        HUD_HUNGER_OFFSET = {x = 180, y = -50}
         HUD_ARMOR_POS = {x = 0.5, y = 1}
-        HUD_ARMOR_OFFSET = {x = -415, y = -44}
+        HUD_ARMOR_OFFSET = {x = -415, y = -50}
 end
 
 -- read hud.conf settings
