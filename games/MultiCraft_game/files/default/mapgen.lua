@@ -501,7 +501,7 @@ multicraft.register_on_generated(function(minp, maxp, seed)
                                      end
                                      local fruit = {"farming:pumpkin_face", "farming:melon", "farming:carrot", "farming:potato"}
                                      local choice = fruit[pr:next(1,#fruit)]
-                                     print(choice)
+                                     --print(choice)
 
                                      if pr:next() < 2500 then -- the "proper" alternative
                                         for i = 1, pr:next(1,3) do
