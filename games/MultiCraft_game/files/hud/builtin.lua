@@ -13,7 +13,7 @@ HUD_AIR_OFFSET = {x = 15, y = -124}
 HUD_HUNGER_POS = {x = 0.5, y = 1}
 HUD_HUNGER_OFFSET = {x = 15, y = -93}
 HUD_ARMOR_POS = {x = 0.5, y = 1}
-HUD_ARMOR_OFFSET = {x = -262, y = -15}
+HUD_ARMOR_OFFSET = {x = -262, y = -124}
 
 -- Reorder everything when using ItemWeel
 hud.item_wheel = false --multicraft.setting_getbool("hud_item_wheel")
