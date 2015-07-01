@@ -26,7 +26,15 @@ multicraft.register_alias("mapgen_stone_with_coal", "default:stone_with_coal")
 multicraft.register_alias("mapgen_stone_with_iron", "default:stone_with_iron")
 multicraft.register_alias("mapgen_desert_sand", "default:sand")
 multicraft.register_alias("mapgen_desert_stone", "default:sandstone")
-
+multicraft.register_alias("mapgen_dirt_with_snow", "default:dirt_with_snow")
+multicraft.register_alias("mapgen_snowblock", "default:snowblock")
+multicraft.register_alias("mapgen_snow", "default:snow")
+multicraft.register_alias("mapgen_ice", "default:ice")
+multicraft.register_alias("mapgen_jungletree", "default:jungletree")
+multicraft.register_alias("mapgen_jungleleaves", "default:jungleleaves")
+multicraft.register_alias("mapgen_junglegrass", "default:junglegrass")
+multicraft.register_alias("mapgen_pinetree", "default:pinetree")
+multicraft.register_alias("mapgen_pine_needles", "default:pine_needles")
 
 --
 -- Ore generation
@@ -490,40 +498,20 @@ multicraft.register_on_generated(function(minp, maxp, seed)
                         local p = {x=x,y=ground_y,z=z}
                         -- Check if the node can be replaced
                                if #(multicraft.find_nodes_in_area({x=x-5,y=ground_y-2,z=z-5}, {x=x+5,y=ground_y+2,z=z+5}, {"group:grass", "group:flower"}))>7 then
-                                  for i=1,pr:next(1,4) do
-                                     local ground_y = nil
-                                     for y=30,0,-1 do
-                                         if multicraft.get_node({x=x,y=y,z=z}).name ~= "air"
-                                         and not multicraft.get_node({x=x,y=y,z=z}).name:find("water") then
-                                             ground_y = y
-                                             break
-                                         end
+                                  local fruit = {"farming:pumpkin_face", "farming:melon", "farming:carrot", "farming:potato"}
+                                  local choice = fruit[pr:next(1,#fruit)]
+                                  if pr:next() < 2500 then -- the "proper" alternative
+                                     local xx = pr:next(1,i+1)
+                                     local zz = pr:next(1,i+1)
+                                     local nname = multicraft.get_node({x=p.x+xx,z=p.z+zz,y=ground_y}).name
+                                     if nname ~="air"
+                                     and (multicraft.registered_nodes[nname] and not multicraft.registered_nodes[nname].buildable_to)
+                                     then
+                                         multicraft.set_node({x=p.x+xx,z=p.z+zz,y=ground_y+1},{name=choice})
                                      end
-                                     local fruit = {"farming:pumpkin_face", "farming:melon", "farming:carrot", "farming:potato"}
-                                     local choice = fruit[pr:next(1,#fruit)]
-                                     --print(choice)
-
-                                     if pr:next() < 2500 then -- the "proper" alternative
-                                        for i = 1, pr:next(1,3) do
-                                            local xx = pr:next(1,i+1)
-                                            local zz = pr:next(1,i+1)
-                                            local nname = multicraft.get_node({x=p.x+xx,z=p.z+zz,y=ground_y}).name
-                                            if nname ~="air"
-                                            and (multicraft.registered_nodes[nname] and not multicraft.registered_nodes[nname].buildable_to)
-                                            then
-
-                                               multicraft.set_node({x=p.x+xx,z=p.z+zz,y=ground_y+1},{name=choice})
-                                            end
-                                        end
-                                     end
-
-
-
                                   end
                                end
-
                     end
-
                 end
             end
         end

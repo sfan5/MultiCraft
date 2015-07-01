@@ -1,16 +1,12 @@
 if not multicraft.get_modpath("check") then os.exit() end
-if not multicraft.get_modpath("check") then os.exit() end
 if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
--------------------------
--- adbs mod by 4aiman  --
--------------------------
---  (Multicraft port)  --
--------------------------
---                     --
---    Licence:GPLv3    --
---                     --
--------------------------
+-----------------------------------------------
+--- adbs mod by 4aiman - Multicraft version ---
+-----------------------------------------------
+---              CC BY-NC-SA                ---
+-----------------------------------------------
 
+--Update: Merged upstream changes. (License change, less "jumpy" mobs)
 
 
 math.randomseed(os.time())
@@ -496,12 +492,15 @@ adbs.dd = {
                    end
                end
 
-               local yaw = self.object:getyaw()
+               local yaw = self.object:getyaw()                         -- jump, if there's something that can be juped on
                local x = -math.sin(yaw)
                local z = math.cos(yaw)
-               local nm = multicraft.get_node(posf).name
-               if  multicraft.registered_nodes[nm]
-               and multicraft.registered_nodes[nm].walkable
+               local nm = minetest.get_node({x = posf.x+x,y = posf.y+1,z = posf.z+z}).name
+               local nm2 = minetest.get_node({x = posf.x+x,y = posf.y+2,z = posf.z+z}).name
+               if  minetest.registered_nodes[nm]
+               and minetest.registered_nodes[nm].walkable
+               and minetest.registered_nodes[nm2]
+               and not minetest.registered_nodes[nm2].walkable
                then
                    self:jump()
                end

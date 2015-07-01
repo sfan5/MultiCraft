@@ -61,7 +61,7 @@ function hud.register(name, def)
 			end
 		end
 	end
-	
+
 	-- no error so far, return sucess
 	return true
 end
@@ -106,7 +106,7 @@ function hud.change_item(player, name, def)
 				if bg and bg.max and bg.max < 1 and def.max and def.max > bg.max then
 					player:hud_change(bg.id, "number", def.max)
 					bg.max = def.max
-				end	
+				end
 			end
 		end
 	end
@@ -183,7 +183,6 @@ local function add_hud_item(player, name, def)
 end
 
 multicraft.register_on_joinplayer(function(player)
-
 	-- first: hide the default statbars
 	local hud_flags = player:hud_get_flags()
 	hud_flags.healthbar = false

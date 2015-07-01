@@ -1,7 +1,7 @@
 HUD_IW_MAX = 8
 HUD_IW_TICK = 0.4
 if multicraft.is_singleplayer() == true then
-        HUD_IW_TICK = 0.2
+        HUD_IW_TICK = 0.1
 end
 
 HUD_SB_SIZE = {x = 24, y = 24}
@@ -50,6 +50,7 @@ if damage_enabled then
         text = "hud_heart_fg.png",
         number = 20,
         alignment = {x = -1, y = -1},
+        autohide_bg = false,
         offset = HUD_HEALTH_OFFSET,
         background = "hud_heart_bg.png",
         events = {
@@ -97,7 +98,6 @@ if damage_enabled then
         autohide_bg = false,
         max = 20,
     })
-
 else
         hud.show_armor = false
 end
