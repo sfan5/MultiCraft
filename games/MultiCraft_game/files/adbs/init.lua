@@ -493,14 +493,14 @@ adbs.dd = {
                end
 
                local yaw = self.object:getyaw()                         -- jump, if there's something that can be juped on
-               local x = -math.sin(yaw)
-               local z = math.cos(yaw)
-               local nm = minetest.get_node({x = posf.x+x,y = posf.y+1,z = posf.z+z}).name
-               local nm2 = minetest.get_node({x = posf.x+x,y = posf.y+2,z = posf.z+z}).name
-               if  minetest.registered_nodes[nm]
-               and minetest.registered_nodes[nm].walkable
-               and minetest.registered_nodes[nm2]
-               and not minetest.registered_nodes[nm2].walkable
+               local x   = -math.sin(yaw)
+               local z   = math.cos(yaw)
+               local nm  = multicraft.get_node({x = posf.x+x,y = posf.y+1,z = posf.z+z}).name
+               local nm2 = multicraft.get_node({x = posf.x+x,y = posf.y+2,z = posf.z+z}).name
+               if  multicraft.registered_nodes[nm]
+               and multicraft.registered_nodes[nm].walkable
+               and multicraft.registered_nodes[nm2]
+               and not multicraft.registered_nodes[nm2].walkable
                then
                    self:jump()
                end
@@ -1533,7 +1533,7 @@ function adbs.register_spawn(name,
                     if aocw > aocnt then return end
                     if not adbs.spawning_mobs[nm] then return end
 
-                    local test = minetest.get_node(pos).name
+                    local test = multicraft.get_node(pos).name
                     if test:find('water')
                     then
                         return
@@ -1541,7 +1541,7 @@ function adbs.register_spawn(name,
                       --print(test)
                     end
                     pos.y = pos.y+1
-                    local test = minetest.get_node(pos).name
+                    local test = multicraft.get_node(pos).name
                     if  test:find('water')
                     then
                         return

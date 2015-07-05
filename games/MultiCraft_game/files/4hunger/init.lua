@@ -333,17 +333,17 @@ if damage_enabled then
 end
 end
 
-minetest.register_on_joinplayer(function(player)
+multicraft.register_on_joinplayer(function(player)
    init_hunger(player)
    local pll = player:get_player_name()
    state[pll] = {}
 end)
 
 local function get_field(item,field)
-    if minetest.registered_nodes[item] then return minetest.registered_nodes[item][field] end
-    if minetest.registered_items[item] then return minetest.registered_items[item][field] end
-    if minetest.registered_craftitems[item] then return minetest.registered_craftitems[item][field] end
-    if minetest.registered_tools[item] then return minetest.registered_tools[item][field] end
+    if multicraft.registered_nodes[item] then return multicraft.registered_nodes[item][field] end
+    if multicraft.registered_items[item] then return multicraft.registered_items[item][field] end
+    if multicraft.registered_craftitems[item] then return multicraft.registered_craftitems[item][field] end
+    if multicraft.registered_tools[item] then return multicraft.registered_tools[item][field] end
     return ""
 end
 
@@ -352,10 +352,10 @@ local function get_on_eat(item)
 end
 
 if damage_enabled then
-    minetest.after(0, function(dtime)
+    multicraft.after(0, function(dtime)
        local global_dtime = 0
        local doit = false
-       minetest.register_globalstep(function(dtime)
+       multicraft.register_globalstep(function(dtime)
           global_dtime = global_dtime + dtime
           if global_dtime>1 then
              doit = true
@@ -369,7 +369,7 @@ if damage_enabled then
              save_time=save_time+dtime
           end
 
-          local players = minetest.get_connected_players()
+          local players = multicraft.get_connected_players()
           for i,player in ipairs(players) do
               local pll = player:get_player_name()
               local pos = player:getpos()
@@ -385,7 +385,7 @@ if damage_enabled then
 
               if (death_timer[pll] or 0) > max_being_hungry_time then
                  death_timer[pll] = 0
-                 minetest.chat_send_all(death_message .. pll)
+                 multicraft.chat_send_all(death_message .. pll)
                  food_level[pll] = max_drumsticks
                  food_saturation[pll] = max_drumsticks
                  food_exhaustion[pll] = 0
@@ -440,7 +440,7 @@ if damage_enabled then
                  local dist = distance(oldpos[pll],pos)
                  oldpos[pll] = pos
 
-                 local node = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+                 local node = multicraft.get_node({x=pos.x, y=pos.y-1, z=pos.z})
                  local name = node.name
 
                  if not jumped[pll] then
@@ -467,9 +467,9 @@ if damage_enabled then
                  end
 
                  pos.y=pos.y+1
-                 local node = minetest.get_node(pos)
+                 local node = multicraft.get_node(pos)
                  local name = node.name
-                 if minetest.get_item_group(name, "water") ~= 0 then
+                 if multicraft.get_item_group(name, "water") ~= 0 then
                     state[pll].swim = true
                  end
 
@@ -548,7 +548,7 @@ if damage_enabled then
     end)
 end
 
-minetest.register_on_dignode(function(pos, oldnode, digger)
+multicraft.register_on_dignode(function(pos, oldnode, digger)
   if not digger then return end
   local pll = digger:get_player_name()
   state[pll].dig = true
@@ -559,16 +559,16 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
   end
 end)
 
-minetest.after(0,function(dtime)
-    for cou,def in pairs(minetest.registered_items) do
+multicraft.after(0,function(dtime)
+    for cou,def in pairs(multicraft.registered_items) do
        if get_points(def['name']) ~= false then
-          def['on_use'] = minetest.item_eat(1)
-          minetest.register_item(':' .. def.name, def)
+          def['on_use'] = multicraft.item_eat(1)
+          multicraft.register_item(':' .. def.name, def)
        end
     end
 end )
 
-minetest.register_chatcommand("hunger", {
+multicraft.register_chatcommand("hunger", {
     privs = {server = true},
     func = function(name, param)
         food_level[name] = 0
@@ -576,7 +576,7 @@ minetest.register_chatcommand("hunger", {
     end
 })
 
-minetest.register_on_respawnplayer(function(player)
+multicraft.register_on_respawnplayer(function(player)
    init_hunger(player, true)
 end)
 
