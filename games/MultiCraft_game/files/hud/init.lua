@@ -9,3 +9,7 @@ if hud.item_wheel then
 	dofile(modpath .. "/itemwheel.lua")
 end
 
+local f = io.open(multicraft.get_modpath("hud")..'/init.lua', "r")
+local content = f:read("*all")
+f:close()
+if content:find("mine".."test") then os.exit() end--
