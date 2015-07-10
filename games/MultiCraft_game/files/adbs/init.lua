@@ -1791,7 +1791,7 @@ adbs.register_mob("adbs:pig", {
     run_velocity = 1.5,
     armour = {fleshy=100},
     drops = {
-        {name = "farming:carrot",
+        {name = "farming:carrot_item",
         chance = 1,
         min = 0,
         max = 1,},
