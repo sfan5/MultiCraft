@@ -173,9 +173,7 @@ multicraft.register_craft({
     output = "boat:boat",
     recipe = {
         {"", "", ""},
-        {"", "", ""},
-        {"default:wood", "", ""},
+        {"default:wood", "", "default:wood"},
+        {"default:wood", "default:wood", "default:wood"},
     },
 })
-
-multicraft.debug("[boat] Mod loaded")

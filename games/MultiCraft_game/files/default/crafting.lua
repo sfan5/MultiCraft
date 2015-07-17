@@ -127,6 +127,15 @@ multicraft.register_craft({
 })
 
 multicraft.register_craft({
+    output = 'default:diamondblock',
+    recipe = {
+        {'default:diamond', 'default:diamond', 'default:diamond'},
+        {'default:diamond', 'default:diamond', 'default:diamond'},
+        {'default:diamond', 'default:diamond', 'default:diamond'},
+    }
+})
+
+multicraft.register_craft({
     output = 'default:pick_diamond',
     recipe = {
         {'default:diamond', 'default:diamond', 'default:diamond'},

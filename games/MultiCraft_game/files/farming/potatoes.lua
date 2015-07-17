@@ -61,13 +61,13 @@ multicraft.register_craftitem("farming:potato_item", {
     end,
 })
 
-multicraft.register_craftitem("farming:potato_item_baked", {
-    description = "Baked Potato",
-    stack_max = 64,
-    inventory_image = "farming_potato_baked.png",
-    on_use = multicraft.item_eat(6),
-    groups = {foodstuffs=1},
-})
+--multicraft.register_craftitem("farming:potato_item_baked", {
+--    description = "Baked Potato",
+--    stack_max = 64,
+--    inventory_image = "farming_potato_baked.png",
+--    on_use = multicraft.item_eat(6),
+--    groups = {foodstuffs=1},
+--})
 
 multicraft.register_craftitem("farming:potato_item_poison", {
     description = "Poisonous Potato",
@@ -77,10 +77,10 @@ multicraft.register_craftitem("farming:potato_item_poison", {
     groups = {foodstuffs=1},
 })
 
-multicraft.register_craft({
-    type = "cooking",
-    output = "farming:potato_item_baked",
-    recipe = "farming:potato_item",
-})
+--multicraft.register_craft({
+--    type = "cooking",
+--    output = "farming:potato_item_baked",
+--    recipe = "farming:potato_item",
+--})
 
 farming:add_plant("farming:potato", {"farming:potato_1", "farming:potato_2"}, 50, 20)
