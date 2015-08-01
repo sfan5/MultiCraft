@@ -301,7 +301,3 @@ generate_line = function(s, ypos)
     end
     return texture
 end
-
-if multicraft.setting_get("log_mods") then
-        multicraft.log("action", "signs loaded")
-end

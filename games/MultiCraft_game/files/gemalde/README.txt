@@ -1,1 +1,0 @@
-This mod is an edited version of gemalde. The textures are from minecraft. This mod was edited by jojoa1997.

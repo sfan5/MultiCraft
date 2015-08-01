@@ -153,7 +153,7 @@ multicraft.register_tool("3d_armor:boots_chain", {
 -- Register Craft Recipies
 
 local craft_ingreds = {
-    leather = "default:wood",
+    leather = "default:leather",
     steel = "default:steel_ingot",
     gold = "default:gold_ingot",
     diamond = "default:diamond",

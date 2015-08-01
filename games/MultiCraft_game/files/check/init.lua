@@ -24,7 +24,6 @@ local check = {
 "fences",
 "fire",
 "flowers",
-"gemalde",
 "give_initial_stuff",
 "hardened_clay",
 "hud",

@@ -621,14 +621,6 @@ multicraft.register_craft({
 
 
 --
--- Crafting (tool repair)
---
-multicraft.register_craft({
-    type = "toolrepair",
-    additional_wear = -0.02,
-})
-
---
 -- Cooking recipes
 --
 
@@ -666,7 +658,7 @@ multicraft.register_craft({
     type = "cooking",
     output = "default:fish",
     recipe = "default:fish_raw",
-    cooktime = 2,
+--  cooktime = 2,
 })
 
 multicraft.register_craft({
@@ -681,6 +673,44 @@ multicraft.register_craft({
     recipe = "default:sponge_wet",
 })
 
+multicraft.register_craft({
+    type = "cooking",
+    output = "default:steak",
+    recipe = "default:beef_raw",
+})
+
+multicraft.register_craft({
+    type = "cooking",
+    output = "default:chicken_cooked",
+    recipe = "default:chicken_raw",
+})
+
+multicraft.register_craft({
+    type = "cooking",
+    output = "default:coal_lump",
+    recipe = "default:stone_with_coal",
+})
+
+multicraft.register_craft({
+    type = "cooking",
+    output = "mesecons:wire_00000000_off 5",
+    recipe = "default:stone_with_redstone",
+})
+
+multicraft.register_craft({
+    type = "cooking",
+    output = "default:diamond",
+    recipe = "default:stone_with_diamond",
+})
+
+multicraft.register_craft({
+    type = "cooking",
+    output = "default:stonebrickcracked",
+    recipe = "default:stonebrick",
+})
+
+
+
 --
 -- Fuels
 --
@@ -688,37 +718,13 @@ multicraft.register_craft({
 multicraft.register_craft({
     type = "fuel",
     recipe = "group:tree",
-    burntime = 30,
-})
-
-multicraft.register_craft({
-    type = "fuel",
-    recipe = "default:junglegrass",
-    burntime = 2,
-})
-
-multicraft.register_craft({
-    type = "fuel",
-    recipe = "group:leaves",
-    burntime = 1,
-})
-
-multicraft.register_craft({
-    type = "fuel",
-    recipe = "default:cactus",
     burntime = 15,
 })
 
 multicraft.register_craft({
     type = "fuel",
-    recipe = "default:reeds",
-    burntime = 1,
-})
-
-multicraft.register_craft({
-    type = "fuel",
     recipe = "default:bookshelf",
-    burntime = 30,
+    burntime = 15,
 })
 
 multicraft.register_craft({
@@ -729,86 +735,68 @@ multicraft.register_craft({
 
 multicraft.register_craft({
     type = "fuel",
-    recipe = "default:ladder",
-    burntime = 5,
-})
-
-multicraft.register_craft({
-    type = "fuel",
     recipe = "group:wood",
-    burntime = 7,
+    burntime = 15,
 })
 
 multicraft.register_craft({
     type = "fuel",
-    recipe = "default:lava_source",
-    burntime = 60,
-})
-
-multicraft.register_craft({
-    type = "fuel",
-    recipe = "default:torch",
-    burntime = 4,
-})
-
-multicraft.register_craft({
-    type = "fuel",
-    recipe = "signs:sign_wall",
-    burntime = 10,
+    recipe = "bucket:bucket_lava",
+    burntime = 1000,
 })
 
 multicraft.register_craft({
     type = "fuel",
     recipe = "default:chest",
-    burntime = 30,
+    burntime = 15,
 })
 
 multicraft.register_craft({
     type = "fuel",
     recipe = "default:sapling",
-    burntime = 10,
+    burntime = 5,
 })
 
 multicraft.register_craft({
     type = "fuel",
-    recipe = "default:apple",
-    burntime = 3,
-})
-
-multicraft.register_craft({
-    type = "fuel",
-    recipe = "default:apple_gold",
-    burntime = 6,
+    recipe = "default:coal_block",
+    burntime = 800,
 })
 
 multicraft.register_craft({
     type = "fuel",
     recipe = "default:coal_lump",
-    burntime = 40,
-})
-
-multicraft.register_craft({
-    type = "fuel",
-    recipe = "default:haybale",
-    burntime = 40,
+    burntime = 80,
 })
 
 multicraft.register_craft({
     type = "fuel",
     recipe = "default:charcoal_lump",
-    burntime = 45,
+    burntime = 80,
 })
 
 multicraft.register_craft({
     type = "fuel",
     recipe = "default:junglesapling",
-    burntime = 10,
+    burntime = 5,
 })
 
 multicraft.register_craft({
     type = "fuel",
-    recipe = "default:grass_1",
-    burntime = 2,
+    recipe = "default:stick",
+    burntime = 5,
+})
+
+multicraft.register_craft({
+    type = "fuel",
+    recipe = "crafting:workbench",
+    burntime = 15,
+})
+
+multicraft.register_craft({
+    type = "fuel",
+    recipe = "default:chest",
+    burntime = 15,
 })
 
 
