@@ -296,6 +296,8 @@ function distance(pos1,pos2)
     return math.sqrt( (pos1.x - pos2.x)^2 + (pos1.y - pos2.y)^2 + (pos1.z - pos2.z)^2 )
 end
 
+local damage_enabled = multicraft.setting_getbool("enable_damage")
+
 function init_hunger(player, force)
   if player then
      local pll = player:get_player_name()
@@ -306,7 +308,7 @@ function init_hunger(player, force)
      if not timers[pll]           or force then timers[pll] = -1                       end
      if not keypress_track[pll]   or force then keypress_track[pll] = {}               end
      if not state[pll] or type(state[pll])~="table" or force then state[pll] = {}      end
-local damage_enabled = multicraft.setting_getbool("enable_damage")
+
 if damage_enabled then
      multicraft.after(0.5, function()
         if not player then return end
