@@ -374,44 +374,6 @@ multicraft.register_node("default:haybale", {
     sounds = default.node_sound_wood_defaults(),
 })
 
-multicraft.register_node("default:sea_lantern", {
-    description = "Sea Lantern",
-    paramtype2 = "facedir",
-    stack_max = 64,
-    light_source = LIGHT_MAX,
-    drop = {
-        max_items = 1,
-        items = {
-            { items = {'default:prismarine_cry 2'} },
-            { items = {'default:prismarine_cry 3'}, rarity = 2 }
-        }
-    },
-    tiles = {"default_sea_lantern.png"},
-    groups = {dig_immediate=2, building = 1},
-})
-
-multicraft.register_node("default:prismarine", {
-     description = "Prismarine",
-     stack_max = 64,
-     tiles = {{name="default_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
-     groups = {cracky=3, building = 1},
-})
-
-multicraft.register_node("default:prismarine_brick", {
-     description = "Prismarine Brick",
-     stack_max = 64,
-     tiles = {"default_prismarine_bricks.png"},
-     groups = {cracky=2, building = 1},
-})
-
-multicraft.register_node("default:prismarine_dark", {
-     description = "Dark Prismarine",
-     stack_max = 64,
-     tiles = {"default_prismarine_dark.png"},
-     groups = {cracky=2, building = 1},
-})
-
-
 
 
 -- Normal tree --
