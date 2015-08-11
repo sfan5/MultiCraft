@@ -88,6 +88,7 @@ local function set_inventory(player)
     end
 
     local form = "size[9,8.75]"..
+    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
     "background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory.png"..armor_img.."]"..
     "bgcolor[#080808BB;true]"..
     "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
@@ -125,6 +126,7 @@ local function set_workbench(player)
     player:get_inventory():set_size("main", 9*4)
 
     local form = "size[9,8.75]"..
+    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
     "background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_workbench.png]"..
     "bgcolor[#080808BB;true]"..
     "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..

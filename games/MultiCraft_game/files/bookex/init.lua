@@ -33,6 +33,7 @@ newbook.on_use = function ( itemstack, user, pointed_thing )
     local text = itemstack:get_metadata();
 
     local formspec = "size[8,9]"..
+        "image_button_exit[8,0;1,1;;exit;X;true;true;]"..
 		"background[-0.5,-0.5;9,10;book_bg.png]"..
         "textarea[0.5,0.25;7.5,9.25;text;;"..multicraft.formspec_escape(text).."]"..
         "button_exit[3,8.25;2,1;ok;Exit]";

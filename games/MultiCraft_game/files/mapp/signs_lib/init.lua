@@ -468,6 +468,7 @@ signs_lib.construct_sign = function(pos, locked)
     meta:set_string(
         "formspec",
         "size[6,4]"..
+        "image_button_exit[6,0;1,1;;exit;X;true;true;]"..
         "textarea[0,-0.3;6.5,3;text;;${text}]"..
         "button_exit[2,3.4;2,1;ok;Write]"..
         "background[-0.5,-0.5;7,5;bg_signs_lib.jpg]")

@@ -1184,6 +1184,7 @@ multicraft.register_node("default:chest", {
             local p = get_chest_neighborpos(pos, param2, "right")
             meta:set_string("formspec",
                     "size[9,11.5]"..
+                    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                     "list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0;9,3;]"..
                     "list[current_name;main;0,3;9,3;]"..
                     "list[current_player;main;0,7;9,3;9]"..
@@ -1193,6 +1194,7 @@ multicraft.register_node("default:chest", {
             local m = multicraft.env:get_meta(p)
             m:set_string("formspec",
                     "size[9,11.5]"..
+                    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                     "list[current_name;main;0,0;9,3;]"..
                     "list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3;9,3;]"..
                     "list[current_player;main;0,7;9,3;9]"..
@@ -1203,6 +1205,7 @@ multicraft.register_node("default:chest", {
             local p = get_chest_neighborpos(pos, param2, "left")
             meta:set_string("formspec",
                     "size[9,11.5]"..
+                    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                     "list[current_name;main;0,0;9,3;]"..
                     "list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3;9,3;]"..
                     "list[current_player;main;0,7;9,3;9]"..
@@ -1212,6 +1215,7 @@ multicraft.register_node("default:chest", {
             local m = multicraft.env:get_meta(p)
             m:set_string("formspec",
                     "size[9,11.5]"..
+                    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                     "list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0;9,3;]"..
                     "list[current_name;main;0,3;9,3;]"..
                     "list[current_player;main;0,7;9,3;9]"..
@@ -1220,6 +1224,7 @@ multicraft.register_node("default:chest", {
         else
             meta:set_string("formspec",
                     "size[9,8.5]"..
+                    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                     "list[current_name;main;0,0;9,3;]"..
                     "list[current_player;main;0,4;9,3;9]"..
                     "list[current_player;main;0,7.5.5;9,1;]")
@@ -1254,6 +1259,13 @@ multicraft.register_node("default:chest", {
         multicraft.log("action", player:get_player_name()..
                 " takes stuff from chest at "..multicraft.pos_to_string(pos))
     end,
+    on_receive_fields = function(pos, formname, fields, sender)      
+       if fields.exit then
+          print('test')
+          fields.quit = true
+      --    minetest.show_formspec(sender:get_player_name(), 'quit', "")
+       end
+    end
 })
 
 multicraft.register_node("default:chest_left", {
@@ -1276,6 +1288,7 @@ multicraft.register_node("default:chest_left", {
         local meta = multicraft.env:get_meta(p)
         meta:set_string("formspec",
                 "size[9,8.5]"..
+                "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                 "list[current_name;main;0,0;9,3;]"..
                 "list[current_player;main;0,4;9,3;9]"..
                 "list[current_player;main;0,7.5.5;9,1;]")
@@ -1330,6 +1343,7 @@ multicraft.register_node("default:chest_right", {
         local meta = multicraft.env:get_meta(p)
         meta:set_string("formspec",
                 "size[9,8.5]"..
+                "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                 "list[current_name;main;0,0;9,3;]"..
                 "list[current_player;main;0,4;9,3;9]"..
                 "list[current_player;main;0,7.5.5;9,1;]")
@@ -1366,6 +1380,7 @@ multicraft.register_node("default:chest_right", {
 
 default.furnace_inactive_formspec =
     "size[9,9]"..
+    "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
     "image[2,2;1,1;default_furnace_fire_bg.png]"..
     "list[current_name;fuel;2,3;1,1;]"..
     "list[current_name;src;2,1;1,1;]"..
@@ -1579,6 +1594,7 @@ multicraft.register_abm({
             hacky_swap_node(pos,"default:furnace_active")
             meta:set_string("formspec",
                 "size[9,9]"..
+                "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
                 "image[2,2;1,1;default_furnace_fire_bg.png^[lowpart:"..
                         (100-percent)..":default_furnace_fire_fg.png]"..
                 "list[current_name;fuel;2,3;1,1;]"..

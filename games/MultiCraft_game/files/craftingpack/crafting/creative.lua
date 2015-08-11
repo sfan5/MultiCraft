@@ -223,6 +223,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
             "list[detached:"..player_name.."_armor;armor;1,2.55;1,1;3]"
     end
     formspec = "size[10,9.3]"..
+        "image_button_exit[10,0;1,1;;exit;X;true;true;]"..
         "background[-0.19,-0.25;10.5,9.87;crafting_inventory_creative.png]"..
         "bgcolor[#080808BB;true]"..
         "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
