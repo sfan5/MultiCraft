@@ -401,8 +401,8 @@ if damage_enabled then
               if state[pll].poison1 or state[pll].poison2 then
                  if not timers[pll] then
                     timers[pll] = 15
-                    player:hud_change(hungerhudb[pll],"text",'hunger_tile_d.png')
-                    player:hud_change(hungerhud[pll] ,"text",'hunger_tile_c.png')
+                    --player:hud_change(hungerhudb[pll],"text",'hunger_tile_d.png')
+                    --player:hud_change(hungerhud[pll] ,"text",'hunger_tile_c.png')
                     if doit==true and hp>10 then
                         player:set_hp(hp-1)
                         hp=hp-1

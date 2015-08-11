@@ -1253,7 +1253,7 @@ adbs.dd = {
                                                               minsize = 0.5,
                                                               maxsize = 3,
                                                               collisiondetection = false,
-                                                              texture = "heart.png"
+                                                              texture = "hud_heart_fg.png"
                                                              })
                      multicraft.after(1,function() multicraft.delete_particlespawner(sdd) end)
                   end

@@ -110,12 +110,12 @@ function default.player_set_model(player, model_name)
 			visual_size = model.visual_size or {x=1, y=1},
 		})
 		default.player_set_animation(player, "stand")
-	else
-		player:set_properties({
-			textures = { "player.png", "player_back.png", },
-			visual = "upright_sprite",
-		})
-	end
+	--else
+		--player:set_properties({
+			--textures = { "player.png", "player_back.png", },
+			--visual = "upright_sprite",
+		--})
+		end
 	player_model[name] = model_name
 end
 

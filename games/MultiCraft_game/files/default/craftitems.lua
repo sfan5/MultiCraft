@@ -149,19 +149,6 @@ multicraft.register_craftitem("default:string",{
     groups = {materials = 1},
 })
 
-multicraft.register_craftitem("default:prismarine_cry", {
-    description = "Prismarine Crystals",
-    inventory_image = "default_prismarine_crystals.png",
-    stack_max = 64,
-    groups = {materials = 1},
-})
-
-multicraft.register_craftitem("default:prismarine_shard", {
-    description = "Prismarine Shard",
-    inventory_image = "default_prismarine_shard.png",
-    stack_max = 64,
-    groups = {materials = 1},
-})
 
 multicraft.register_craftitem("default:quartz_crystal", {
     description = "Quartz Crystal",

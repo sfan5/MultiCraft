@@ -348,40 +348,6 @@ multicraft.register_craft({
     }
 })
 
-multicraft.register_craft({
-    output = 'default:sea_lantern',
-    recipe = {
-        {'default:prismarine_shard', 'default:prismarine_cry', 'default:prismarine_shard'},
-        {'default:prismarine_cry', 'default:prismarine_cry', 'default:prismarine_cry'},
-        {'default:prismarine_shard', 'default:prismarine_cry', 'default:prismarine_shard'},
-    }
-})
-
-multicraft.register_craft({
-    output = 'default:prismarine',
-    recipe = {
-        {'default:prismarine_shard', 'default:prismarine_shard'},
-        {'default:prismarine_shard', 'default:prismarine_shard'},
-    }
-})
-
-multicraft.register_craft({
-    output = 'default:prismarine_brick',
-    recipe = {
-        {'default:prismarine_shard', 'default:prismarine_shard', 'default:prismarine_shard'},
-        {'default:prismarine_shard', 'default:prismarine_shard', 'default:prismarine_shard'},
-        {'default:prismarine_shard', 'default:prismarine_shard', 'default:prismarine_shard'},
-    }
-})
-
-multicraft.register_craft({
-    output = 'default:prismarine_dark',
-    recipe = {
-        {'default:prismarine_shard', 'default:prismarine_shard', 'default:prismarine_shard'},
-        {'default:prismarine_shard', 'dye:black', 'default:prismarine_shard'},
-        {'default:prismarine_shard', 'default:prismarine_shard', 'default:prismarine_shard'},
-    }
-})
 
 multicraft.register_craft({
     output = 'default:steelblock',
