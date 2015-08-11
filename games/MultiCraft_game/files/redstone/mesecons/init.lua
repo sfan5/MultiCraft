@@ -106,9 +106,6 @@ function mesecon:receptor_off(pos, rules)
 	end
 end
 
-
-print("[OK] Mesecons")
-
 --The actual wires
 dofile(multicraft.get_modpath("mesecons").."/wires.lua");
 

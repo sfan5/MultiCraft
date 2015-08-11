@@ -344,7 +344,7 @@ end
 ]]--
 function DOM_mb(m,c)
 --  multicraft.log("action", "[DOM]"..m.." loaded from "..multicraft.get_modpath(multicraft.get_current_modname()))
-  multicraft.log("action", "[DOM]"..m.." is ready.")
+
 end
 
 

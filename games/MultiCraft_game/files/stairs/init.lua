@@ -286,5 +286,3 @@ stairs.register_slab("quartzstair", "default:quartz_pillar",
     "Quartz Pillar slab",
     default.node_sound_stone_defaults()
 )
-
-print('[OK] Stairs loaded')

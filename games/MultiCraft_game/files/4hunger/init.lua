@@ -585,6 +585,3 @@ multicraft.register_chatcommand("hunger", {
 multicraft.register_on_respawnplayer(function(player)
    init_hunger(player, true)
 end)
-
-
-print('[OK] 4hunger (Multicraft version) loaded')

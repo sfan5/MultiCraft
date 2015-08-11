@@ -645,5 +645,3 @@ multicraft.register_craft({
         {'', '', ''},
     }
 })
-
-print('[OK] Doors loaded!')
