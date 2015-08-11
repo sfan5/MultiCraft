@@ -47,6 +47,7 @@ end
 protector.generate_formspec = function(meta)
     if meta:get_int("page") == nil then meta:set_int("page",0) end
     local formspec = "size[8,7]"
+        .."image_button_exit[8,0;1,1;;exit;X;true;true;]"
         .."label[0,0;-- Protector interface --]"
         .."label[0,1;Punch node to show protected area]"
         .."label[0,2;Members: (type nick, press Enter to add)]"

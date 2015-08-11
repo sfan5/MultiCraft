@@ -93,7 +93,8 @@ function map_handler (itemstack, user, pointed_thing)
 
         pp = pp + 1
         p[pp] = "size[8.2,8]"..
-                        "background[-1,-1;9.8,9.8;map_block_bg.png]"
+                "image_button_exit[8,0;1,1;;exit;X;true;true;]"..
+                "background[-1,-1;9.8,9.8;map_block_bg.png]"
 
         for i=1,50,1 do
                 for j=1,50,1 do
