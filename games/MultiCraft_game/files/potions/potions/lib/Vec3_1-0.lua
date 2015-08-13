@@ -14,7 +14,7 @@ local THIS_VERSION = "1.0"
  -- paramter, it may instead be a list/array with numeric indices, like
  -- { 1.0, 2.0, 3.0 } in place of { x = 1.0, y = 2.0, z = 3.0 }.
  --
- -- @author prestidigitator (as registered at forum.multicraft.net)
+ -- @author prestidigitator (as registered at forum.minetest.net)
  -- @copyright 2013, licensed under WTFPL
  --
 local Vec3 = {}

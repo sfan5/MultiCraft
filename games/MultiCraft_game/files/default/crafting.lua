@@ -524,7 +524,7 @@ multicraft.register_craft({
 
 
 multicraft.register_craft({
-    output = 'default:redstone_dust',
+    output = 'default:bluestone_dust',
     recipe = {{"mesecons:wire_00000000_off"}},
 })
 
@@ -660,7 +660,7 @@ multicraft.register_craft({
 multicraft.register_craft({
     type = "cooking",
     output = "mesecons:wire_00000000_off 5",
-    recipe = "default:stone_with_redstone",
+    recipe = "default:stone_with_bluestone",
 })
 
 multicraft.register_craft({

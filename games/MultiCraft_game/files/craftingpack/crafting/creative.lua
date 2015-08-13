@@ -231,7 +231,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
         "image[" .. offset[name] .. ";1.5,1.44;crafting_creative_active.png"..hoch[name].."]"..
         "image_button[-0.1,0;1,1;"..bg["blocks"].."^crafting_creative_build.png;build;]"..  --build blocks
         "image_button[1.15,0;1,1;"..bg["deco"].."^crafting_creative_deko.png;deco;]"..  --decoration blocks
-        "image_button[2.415,0;1,1;"..bg["mese"].."^crafting_creative_mese.png;mese;]".. --redstone
+        "image_button[2.415,0;1,1;"..bg["mese"].."^crafting_creative_mese.png;mese;]".. --bluestone
         "image_button[3.693,0;1,1;"..bg["rail"].."^crafting_creative_rail.png;rail;]".. --transportation
         "image_button[4.93,0;1,1;"..bg["misc"].."^crafting_creative_misc.png;misc;]"..  --miscellaneous
         "image_button[9.19,0;1,1;"..bg["nix"].."^crafting_creative_all.png;default;]".. --search
@@ -362,7 +362,7 @@ if multicraft.setting_getbool("creative_mode") then
     multicraft.register_item(":", {
         type = "none",
         wield_image = "wieldhand.png",
-        wield_scale = {x=1,y=1,z=2.5},
+        wield_scale = {x=1,y=1,z=0.5},
         tool_capabilities = {
             full_punch_interval = 0.5,
             max_drop_level = 3,

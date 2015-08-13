@@ -735,7 +735,7 @@ multicraft.register_craft({
     recipe = {
         {"group:wood", "group:wood", "group:wood"},
         {"default:cobble", "default:steel_ingot", "default:cobble"},
-        {"default:cobble", "default:redstone_dust", "default:cobble"},
+        {"default:cobble", "default:bluestone_dust", "default:cobble"},
     }
 })
 

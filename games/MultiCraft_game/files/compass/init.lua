@@ -74,7 +74,7 @@ multicraft.register_craft({
     output = 'compass:1',
     recipe = {
         {'', 'default:iron_ingot', ''},
-        {'default:iron_ingot', 'default_redstone_dust', 'default:iron_ingot'},
+        {'default:iron_ingot', 'default_bluestone_dust', 'default:iron_ingot'},
         {'', 'default:iron_ingot', ''}
     }
 })

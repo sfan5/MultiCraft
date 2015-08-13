@@ -4,7 +4,7 @@ multicraft.register_craft({
   output = 'watch:watch',
   recipe = {
     {'', 'default:gold_ingot', ''},
-    {'default:gold_ingot', 'default:redstone_dust', 'default:gold_ingot'},
+    {'default:gold_ingot', 'default:bluestone_dust', 'default:gold_ingot'},
     {'', 'default:gold_ingot', ''}
   }
 })

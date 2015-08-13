@@ -22,14 +22,14 @@ Dig dirt with it and turn it to soil. Water the soil and plant the seeds
 you get by digging dirt with the hoe. Wait until the seeds are seasoned
 and harvest them. When harvesting you will get the product and new seeds.
 For further information or help see:
-http://multicraft.net/forum/viewtopic.php?id=2787
+http://minetest.net/forum/viewtopic.php?id=2787
 
 License:
 Sourcecode: WTFPL (see below)
 Graphics: WTFPL (see below)
 
 See also:
-http://multicraft.net/
+http://minetest.net/
 
          DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                     Version 2, December 2004

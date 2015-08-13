@@ -96,13 +96,13 @@ for zmy=0, 1 do
     end
 
     multicraft.register_node("mesecons:wire_"..nodeid.."_off", {
-        description = "Redstone Dust",
+        description = "Bluestone Dust",
         drawtype = "nodebox",
         tiles = tiles_off,
 --      inventory_image = "wires_inv.png",
 --      wield_image = "wires_inv.png",
-        inventory_image = "default_redstone_dust.png",
-        wield_image = "default_redstone_dust.png",
+        inventory_image = "default_bluestone_dust.png",
+        wield_image = "default_bluestone_dust.png",
         paramtype = "light",
         paramtype2 = "facedir",
         sunlight_propagates = true,
@@ -125,13 +125,13 @@ for zmy=0, 1 do
     })
 
     multicraft.register_node("mesecons:wire_"..nodeid.."_on", {
-        description = "Redstone Dust",
+        description = "Bluestone Dust",
         drawtype = "nodebox",
         tiles = tiles_on,
 --      inventory_image = "wires_inv.png",
 --      wield_image = "wires_inv.png",
-        inventory_image = "default_redstone_dust.png",
-        wield_image = "default_redstone_dust.png",
+        inventory_image = "default_bluestone_dust.png",
+        wield_image = "default_bluestone_dust.png",
         paramtype = "light",
         paramtype2 = "facedir",
         sunlight_propagates = true,

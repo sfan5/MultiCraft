@@ -9,7 +9,7 @@ if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copyin
 --
 --
 --
--- This mod adds mesecons[=minecraft redstone] and different receptors/effectors to multicraft.
+-- This mod adds bluestone and different receptors/effectors to multicraft.
 -- See the documentation on the forum for additional information, especially about crafting
 --
 --

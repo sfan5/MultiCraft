@@ -39,7 +39,7 @@ end
 multicraft.register_craft({
     output = '"mesecons_torch:mesecon_torch_on" 4',
     recipe = {
-    {"default:redstone_dust"},
+    {"default:bluestone_dust"},
     {"default:stick"},}
 })
 
@@ -80,16 +80,16 @@ multicraft.register_node("mesecons_torch:mesecon_torch_on", {
     selection_box = torch_selectionbox,
     groups = {dig_immediate=3, mese = 1},
     light_source = LIGHT_MAX-10,
-    description="Redstone Torch",
+    description="Bluestone Torch",
     mesecons = {receptor = {
         state = mesecon.state.on,
         rules = torch_get_output_rules
     }},
 })
 
-multicraft.register_node("mesecons_torch:redstoneblock", {
-    description = "Redstone Block",
-    tiles = {"default_redstone_block.png"},
+multicraft.register_node("mesecons_torch:bluestoneblock", {
+    description = "Bluestone Block",
+    tiles = {"default_bluestone_block.png"},
     stack_max = 64,
     groups = {cracky=1, mese = 1},
     sounds = default.node_sound_stone_defaults(),
@@ -100,7 +100,7 @@ multicraft.register_node("mesecons_torch:redstoneblock", {
 })
 
 multicraft.register_craft({
-    output = "mesecons_torch:redstoneblock",
+    output = "mesecons_torch:bluestoneblock",
     recipe = {
         {'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
         {'mesecons:wire_00000000_off','mesecons:wire_00000000_off','mesecons:wire_00000000_off'},
@@ -111,7 +111,7 @@ multicraft.register_craft({
 multicraft.register_craft({
     output = 'mesecons:wire_00000000_off 9',
     recipe = {
-        {'mesecons_torch:redstoneblock'},
+        {'mesecons_torch:bluestoneblock'},
     }
 })
 

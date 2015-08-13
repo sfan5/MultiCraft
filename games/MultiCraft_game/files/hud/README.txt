@@ -42,26 +42,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 See LICENSE.txt and http://www.gnu.org/licenses/lgpl-2.1.txt
 
 
-Textures:
-hud_heart_fg.png - celeron55 (CC BY-SA 3.0), modified by BlockMen
-hud_heart_bg.png - celeron55 (CC BY-SA 3.0), modified by BlockMen
-hud_hunger_fg.png - PilzAdam (WTFPL), modified by BlockMen
-hud_hunger_bg.png - PilzAdam (WTFPL), modified by BlockMen
-wieldhand.png (from character.png) - Jordach (CC BY-SA 3.0), modified by BlockMen
-hud_air_fg.png - kaeza (WTFPL), modified by BlockMen
-hud_armor_fg.png - Stu (CC BY-SA 3.0), modified by BlockMen
-hud_armor_bg.png - Stu (CC BY-SA 3.0), modified by BlockMen
-
-
 Github:
 ~~~~~~~
 https://github.com/BlockMen/hud
 
 Forum:
 ~~~~~~
-https://forum.multicraft.net/viewtopic.php?id=6342
-
-
-Changelog:
-~~~~~~~~~~
-see changelog.txt
+https://forum.minetest.net/viewtopic.php?id=6342

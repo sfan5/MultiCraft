@@ -4,7 +4,7 @@ multicraft.register_node("mesecons_lightstone:lightstone_off", {
         tiles = {"jeija_lightstone_gray_off.png"},
         inventory_image = multicraft.inventorycube("jeija_lightstone_gray_off.png"),
         groups = {cracky=2, mesecon_effector_off = 1, mesecon = 2, mese = 1},
-        description= "Redstone Lamp",
+        description= "Bluestone Lamp",
         sounds = default.node_sound_stone_defaults(),
         mesecons = {effector = {
                 action_on = function (pos, node)
@@ -30,8 +30,8 @@ multicraft.register_node("mesecons_lightstone:lightstone_on", {
 multicraft.register_craft({
     output = "node mesecons_lightstone:lightstone_off",
     recipe = {
-            {'',"default:redstone_dust",''},
-            {"default:redstone_dust",'default:glowstone',"default:redstone_dust"},
-            {'','default:redstone_dust',''},
+            {'',"default:bluestone_dust",''},
+            {"default:bluestone_dust",'default:glowstone',"default:bluestone_dust"},
+            {'','default:bluestone_dust',''},
     }
 })

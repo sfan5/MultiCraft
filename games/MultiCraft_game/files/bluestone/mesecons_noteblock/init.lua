@@ -28,7 +28,7 @@ multicraft.register_craft({
     output = '"mesecons_noteblock:noteblock" 1',
     recipe = {
         {"group:wood", "group:wood", "group:wood"},
-        {"default:steel_ingot", "default:redstone_dust", "default:steel_ingot"},
+        {"default:steel_ingot", "default:bluestone_dust", "default:steel_ingot"},
         {"group:wood", "group:wood", "group:wood"},
     }
 })

@@ -3,7 +3,7 @@ if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copyin
 --[[
   DOM, renew of the watch mod
 
-  Original from Echo, here: http://forum.multicraft.net/viewtopic.php?id=3795
+  Original from Echo, here: http://forum.minetest.net/viewtopic.php?id=3795
 ]]--
 
 

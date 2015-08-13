@@ -157,12 +157,12 @@ multicraft.register_ore({
 })
 
 --
--- Redstone
+-- Bluestone
 --
 
 multicraft.register_ore({
     ore_type       = "scatter",
-    ore            = "default:stone_with_redstone",
+    ore            = "default:stone_with_bluestone",
     wherein        = "default:stone",
     clust_scarcity = 10000,
     clust_num_ores = 5,
@@ -173,7 +173,7 @@ multicraft.register_ore({
 
 multicraft.register_ore({
     ore_type       = "scatter",
-    ore            = "default:stone_with_redstone",
+    ore            = "default:stone_with_bluestone",
     wherein        = "default:stone",
     clust_scarcity = 10000,
     clust_num_ores = 10,

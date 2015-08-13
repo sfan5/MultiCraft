@@ -1,4 +1,4 @@
--- Wielded Item Transformations - http://dev.multicraft.net/texture
+-- Wielded Item Transformations - http://dev.minetest.net/texture
 
 wieldview_transform = {
 	["default:torch"]="R270",

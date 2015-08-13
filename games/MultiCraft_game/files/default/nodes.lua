@@ -114,9 +114,9 @@ multicraft.register_node("default:stone_with_gold", {
 })
 
 
-multicraft.register_node("default:stone_with_redstone", {
-    description = "Redstone Ore",
-    tiles = {"default_stone.png^default_mineral_redstone.png"},
+multicraft.register_node("default:stone_with_bluestone", {
+    description = "Bluestone Ore",
+    tiles = {"default_stone.png^default_mineral_bluestone.png"},
     is_ground_content = true,
     stack_max = 64,
     groups = {cracky=2, building = 1},

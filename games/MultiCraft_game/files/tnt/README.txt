@@ -28,7 +28,7 @@ License:
 WTFPL (see below)
 
 See also:
-http://multicraft.net/
+http://minetest.net/
 
          DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                     Version 2, December 2004
