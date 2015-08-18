@@ -1607,7 +1607,7 @@ multicraft.register_node("default:cobble", {
     tiles = {"default_cobble.png"},
     is_ground_content = true,
     stack_max = 64,
-    groups = {cracky=10, stone=2, building = 1, decorative = 1},
+    groups = {cracky=3, stone=2, building = 1, decorative = 1},
     sounds = default.node_sound_stone_defaults(),
 })
 
