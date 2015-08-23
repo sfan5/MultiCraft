@@ -2172,22 +2172,22 @@ end
 local _
 
 adbs.register_spawn("adbs:sheep", {"group:crumbly"}, _,
-                    5, 15, 5, 48, 6, 50, 10, 100, _, 100, _, 4, _,0,1)
+                    5, 15, 5, 48, 6, 50, 10, 100, _, 100, _, 2, _,0,1)
 
 adbs.register_spawn("adbs:pig", {"group:crumbly"}, _,
-                    3, 15, 5, 40, 6, 100, _, 100, _, 100, _, 4, _,0,1)
+                    3, 15, 5, 40, 6, 100, _, 100, _, 100, _, 2, _,0,1)
 
 adbs.register_spawn("adbs:chicken", {"group:crumbly"}, _,
-                    3, 15, 5, 60, 6, 100, _, 100, _, 100, _, 4, _,0,1)
+                    3, 15, 5, 60, 6, 100, _, 100, _, 100, _, 2, _,0,1)
 
 adbs.register_spawn("adbs:cow", {"group:crumbly"}, _,
-                    5, 15, 5, 50, 6, 100, _, 100, _, 100, _, 4, _,0,1)
+                    5, 15, 5, 50, 6, 100, _, 100, _, 100, _, 2, _,0,1)
 
 adbs.register_spawn("adbs:skeleton", {"group:cracky", "group:crumbly"}, _,
-                    7, 8, _, 40, 6, 100, -5000, 100, _, 100, _, 4, _,0.7,0.3)
+                    7, 8, _, 40, 6, 100, -5000, 100, _, 100, _, 2, _,0.7,0.3)
 
-adbs.register_spawn("adbs:zombie", {"group:crumbly", }, _,
-                    7, 9, _, 40, 6, 100, -5000, 100, _, 100, _, 4, _,0.7,0.3)
+adbs.register_spawn("adbs:zombie", {"group:crumbly", "group:cracky"}, _,
+                    7, 9, _, 40, 6, 100, -5000, 100, _, 100, _, 2, _,0.7,0.3)
 
 adbs.register_spawn("adbs:skeleton", {"group:cracky", "group:crumbly"}, _,
-                    7, 8, _, 30, 6, -8000, -35000, 100, _, 100, _, 4, _,0.7,0.3)
+                    7, 8, _, 30, 6, -8000, -35000, 100, _, 100, _, 2, _,0.7,0.3)
