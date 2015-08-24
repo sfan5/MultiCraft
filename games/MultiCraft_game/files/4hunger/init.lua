@@ -332,6 +332,7 @@ if damage_enabled then
             number = 20,
            alignment = {x=-1,y=-1},
            offset = HUD_HUNGER_OFFSET,
+           direction = 1,
         })
         local hhf,hhb = player:hud_get(hungerhud[pll]), player:hud_get(hungerhudb[pll])
     end)
