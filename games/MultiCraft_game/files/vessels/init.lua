@@ -1,9 +1,9 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 -- multicraft 0.4 mod: vessels
 -- See README.txt for licensing and other information.
 
-multicraft.register_node("vessels:glass_bottle", {
+minetest.register_node("vessels:glass_bottle", {
     description = "Glass Bottle (empty)",
     drawtype = "plantlike",
     tiles = {"vessels_glass_bottle.png"},
@@ -19,7 +19,7 @@ multicraft.register_node("vessels:glass_bottle", {
     sounds = default.node_sound_glass_defaults(),
 })
 
-multicraft.register_craft( {
+minetest.register_craft( {
     output = "vessels:glass_bottle 4",
     recipe = {
         { "default:glass", "", "default:glass" },

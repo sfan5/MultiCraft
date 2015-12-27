@@ -1,17 +1,17 @@
 function mesecon:swap_node(pos, name)
-    local node = multicraft.get_node(pos)
-    local data = multicraft.get_meta(pos):to_table()
+    local node = minetest.get_node(pos)
+    local data = minetest.get_meta(pos):to_table()
     node.name = name
-    multicraft.add_node(pos, node)
-    multicraft.get_meta(pos):from_table(data)
+    minetest.add_node(pos, node)
+    minetest.get_meta(pos):from_table(data)
 end
 
 function mesecon:move_node(pos, newpos)
-    local node = multicraft.get_node(pos)
-    local meta = multicraft.get_meta(pos):to_table()
-    multicraft.remove_node(pos)
-    multicraft.add_node(newpos, node)
-    multicraft.get_meta(pos):from_table(meta)
+    local node = minetest.get_node(pos)
+    local meta = minetest.get_meta(pos):to_table()
+    minetest.remove_node(pos)
+    minetest.add_node(newpos, node)
+    minetest.get_meta(pos):from_table(meta)
 end
 
 

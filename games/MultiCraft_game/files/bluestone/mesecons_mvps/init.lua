@@ -1,5 +1,5 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 --register stoppers for movestones/pistons
 
 mesecon.mvps_stoppers={}
@@ -23,7 +23,7 @@ function mesecon:mvps_process_stack(stack)
     -- update mesecons for placed nodes ( has to be done after all nodes have been added )
     for _, n in ipairs(stack) do
         nodeupdate(n.pos)
-        mesecon.on_placenode(n.pos, multicraft.get_node(n.pos))
+        mesecon.on_placenode(n.pos, minetest.get_node(n.pos))
         mesecon:update_autoconnect(n.pos)
     end
 end
@@ -34,14 +34,14 @@ function mesecon:mvps_push(pos, dir, maximum) -- pos: pos of mvps; dir: directio
     -- determine the number of nodes to be pushed
     local nodes = {}
     while true do
-        local nn = multicraft.get_node_or_nil(np)
+        local nn = minetest.get_node_or_nil(np)
         if not nn or #nodes > maximum then
             -- don't push at all, something is in the way (unloaded map or too many nodes)
             return
         end
 
         if nn.name == "air"
-        or multicraft.registered_nodes[nn.name].liquidtype ~= "none" then --is liquid
+        or minetest.registered_nodes[nn.name].liquidtype ~= "none" then --is liquid
             break
         end
 
@@ -59,8 +59,8 @@ function mesecon:mvps_push(pos, dir, maximum) -- pos: pos of mvps; dir: directio
 
     -- remove all nodes
     for _, n in ipairs(nodes) do
-        n.meta = multicraft.get_meta(n.pos):to_table()
-        multicraft.remove_node(n.pos)
+        n.meta = minetest.get_meta(n.pos):to_table()
+        minetest.remove_node(n.pos)
     end
 
     -- update mesecons for removed nodes ( has to be done after all nodes have been removed )
@@ -72,8 +72,8 @@ function mesecon:mvps_push(pos, dir, maximum) -- pos: pos of mvps; dir: directio
     -- add nodes
     for _, n in ipairs(nodes) do
         np = mesecon:addPosRule(n.pos, dir)
-        multicraft.add_node(np, n.node)
-        multicraft.get_meta(np):from_table(n.meta)
+        minetest.add_node(np, n.node)
+        minetest.get_meta(np):from_table(n.meta)
     end
 
     for i in ipairs(nodes) do
@@ -85,14 +85,14 @@ end
 
 function mesecon:mvps_pull_single(pos, dir) -- pos: pos of mvps; direction: direction of pull (matches push direction for sticky pistons)
     local np = mesecon:addPosRule(pos, dir)
-    local nn = multicraft.get_node(np)
+    local nn = minetest.get_node(np)
 
-    if multicraft.registered_nodes[nn.name].liquidtype == "none"
+    if minetest.registered_nodes[nn.name].liquidtype == "none"
     and not mesecon:is_mvps_stopper(nn, {x = -dir.x, y = -dir.y, z = -dir.z}, {{pos = np, node = nn}}, 1) then
-        local meta = multicraft.get_meta(np):to_table()
-        multicraft.remove_node(np)
-        multicraft.add_node(pos, nn)
-        multicraft.get_meta(pos):from_table(meta)
+        local meta = minetest.get_meta(np):to_table()
+        minetest.remove_node(np)
+        minetest.add_node(pos, nn)
+        minetest.get_meta(pos):from_table(meta)
 
         nodeupdate(np)
         nodeupdate(pos)
@@ -104,25 +104,25 @@ end
 
 function mesecon:mvps_pull_all(pos, direction) -- pos: pos of mvps; direction: direction of pull
         local lpos = {x=pos.x-direction.x, y=pos.y-direction.y, z=pos.z-direction.z} -- 1 away
-        local lnode = multicraft.get_node(lpos)
+        local lnode = minetest.get_node(lpos)
         local lpos2 = {x=pos.x-direction.x*2, y=pos.y-direction.y*2, z=pos.z-direction.z*2} -- 2 away
-        local lnode2 = multicraft.get_node(lpos2)
+        local lnode2 = minetest.get_node(lpos2)
 
-        if lnode.name ~= "ignore" and lnode.name ~= "air" and multicraft.registered_nodes[lnode.name].liquidtype == "none" then return end
-        if lnode2.name == "ignore" or lnode2.name == "air" or not(multicraft.registered_nodes[lnode2.name].liquidtype == "none") then return end
+        if lnode.name ~= "ignore" and lnode.name ~= "air" and minetest.registered_nodes[lnode.name].liquidtype == "none" then return end
+        if lnode2.name == "ignore" or lnode2.name == "air" or not(minetest.registered_nodes[lnode2.name].liquidtype == "none") then return end
 
         local oldpos = {x=lpos2.x+direction.x, y=lpos2.y+direction.y, z=lpos2.z+direction.z}
         repeat
-            lnode2 = multicraft.get_node(lpos2)
-            multicraft.add_node(oldpos, {name=lnode2.name})
+            lnode2 = minetest.get_node(lpos2)
+            minetest.add_node(oldpos, {name=lnode2.name})
             nodeupdate(oldpos)
             oldpos = {x=lpos2.x, y=lpos2.y, z=lpos2.z}
             lpos2.x = lpos2.x-direction.x
             lpos2.y = lpos2.y-direction.y
             lpos2.z = lpos2.z-direction.z
-            lnode = multicraft.get_node(lpos2)
-        until lnode.name=="air" or lnode.name=="ignore" or not(multicraft.registered_nodes[lnode2.name].liquidtype == "none")
-        multicraft.remove_node(oldpos)
+            lnode = minetest.get_node(lpos2)
+        until lnode.name=="air" or lnode.name=="ignore" or not(minetest.registered_nodes[lnode2.name].liquidtype == "none")
+        minetest.remove_node(oldpos)
 end
 
 mesecon:register_mvps_stopper("default:chest_locked")

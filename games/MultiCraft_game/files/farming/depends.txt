@@ -1,4 +1,0 @@
-check
-default
-bucket
-wool

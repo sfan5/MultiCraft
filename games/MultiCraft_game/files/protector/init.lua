@@ -1,6 +1,6 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
-multicraft.register_privilege("delprotect","Delete other's protection")
+
+
+minetest.register_privilege("delprotect","Delete other's protection")
 
 protector = {}
 
@@ -95,7 +95,7 @@ protector.can_dig = function(r,pos,digger,onlyowner,infolevel)
 
     -- Delprotect privileged users can override protections
 
-    if multicraft.check_player_privs(whois, {delprotect=true}) and infolevel < 3 then
+    if minetest.check_player_privs(whois, {delprotect=true}) and infolevel < 3 then
         return true
     end
 
@@ -103,23 +103,23 @@ protector.can_dig = function(r,pos,digger,onlyowner,infolevel)
 
     -- Find the protector nodes
 
-    local positions = multicraft.find_nodes_in_area(
+    local positions = minetest.find_nodes_in_area(
         {x=pos.x-r, y=pos.y-r, z=pos.z-r},
         {x=pos.x+r, y=pos.y+r, z=pos.z+r},
         "protector:protect")
 
     for _, pos in ipairs(positions) do
-        local meta = multicraft.get_meta(pos)
+        local meta = minetest.get_meta(pos)
         local owner = meta:get_string("owner")
 
         if owner ~= whois then
             if onlyowner or not protector.is_member(meta, whois) then
                 if infolevel == 1 then
-                    multicraft.chat_send_player(whois, "This area is owned by "..owner.." !")
+                    minetest.chat_send_player(whois, "This area is owned by "..owner.." !")
                 elseif infolevel == 2 then
-                    multicraft.chat_send_player(whois,"This area is owned by "..meta:get_string("owner")..".")
+                    minetest.chat_send_player(whois,"This area is owned by "..meta:get_string("owner")..".")
                     if meta:get_string("members") ~= "" then
-                        multicraft.chat_send_player(whois,"Members: "..meta:get_string("members")..".")
+                        minetest.chat_send_player(whois,"Members: "..meta:get_string("members")..".")
                     end
                 end
                 return false
@@ -129,23 +129,23 @@ protector.can_dig = function(r,pos,digger,onlyowner,infolevel)
 
     if infolevel == 2 then
         if #positions < 1 then
-            multicraft.chat_send_player(whois,"This area is not protected.")
+            minetest.chat_send_player(whois,"This area is not protected.")
         else
-            local meta = multicraft.get_meta(positions[1])
-            multicraft.chat_send_player(whois,"This area is owned by "..meta:get_string("owner")..".")
+            local meta = minetest.get_meta(positions[1])
+            minetest.chat_send_player(whois,"This area is owned by "..meta:get_string("owner")..".")
             if meta:get_string("members") ~= "" then
-                multicraft.chat_send_player(whois,"Members: "..meta:get_string("members")..".")
+                minetest.chat_send_player(whois,"Members: "..meta:get_string("members")..".")
             end
         end
-        multicraft.chat_send_player(whois,"You can build here.")
+        minetest.chat_send_player(whois,"You can build here.")
     end
     return true
 end
 
 -- Can node be added or removed, if so return node else true (for protected)
 
-protector.old_is_protected = multicraft.is_protected
-multicraft.is_protected = function(pos, digger)
+protector.old_is_protected = minetest.is_protected
+minetest.is_protected = function(pos, digger)
 
     if protector.can_dig(5, pos, digger, false, 1) then
         return protector.old_is_protected(pos, digger)
@@ -156,8 +156,8 @@ end
 
 -- Make sure protection block doesn't overlap another block's area
 
-protector.old_node_place = multicraft.item_place
-function multicraft.item_place(itemstack, placer, pointed_thing)
+protector.old_node_place = minetest.item_place
+function minetest.item_place(itemstack, placer, pointed_thing)
 
     if itemstack:get_name() == "protector:protect" then
         local pos = pointed_thing.above
@@ -165,7 +165,7 @@ function multicraft.item_place(itemstack, placer, pointed_thing)
         if protector.can_dig(10, pos, user, true, 3) then
 --
         else
-            multicraft.chat_send_player(placer:get_player_name(),"Overlaps into another protected area")
+            minetest.chat_send_player(placer:get_player_name(),"Overlaps into another protected area")
             return protector.old_node_place(itemstack, placer, pos)
         end
     end
@@ -175,7 +175,7 @@ end
 
 -- END
 
-multicraft.register_node("protector:protect", {
+minetest.register_node("protector:protect", {
     description = "Protection",
     tiles = {"protector_top.png","protector_top.png","protector_side.png"},
     sounds = default.node_sound_stone_defaults(),
@@ -189,7 +189,7 @@ multicraft.register_node("protector:protect", {
     paramtype = "light",
 
     after_place_node = function(pos, placer)
-        local meta = multicraft.get_meta(pos)
+        local meta = minetest.get_meta(pos)
         meta:set_string("owner", placer:get_player_name() or "")
         meta:set_string("infotext", "Protection (owned by "..
         meta:get_string("owner")..")")
@@ -205,10 +205,10 @@ multicraft.register_node("protector:protect", {
     end,
 
     on_rightclick = function(pos, node, clicker, itemstack)
-        local meta = multicraft.get_meta(pos)
+        local meta = minetest.get_meta(pos)
         if protector.can_dig(1,pos,clicker:get_player_name(),true,1) then
-            multicraft.show_formspec(clicker:get_player_name(),
-            "protector_"..multicraft.pos_to_string(pos), protector.generate_formspec(meta)
+            minetest.show_formspec(clicker:get_player_name(),
+            "protector_"..minetest.pos_to_string(pos), protector.generate_formspec(meta)
             )
         end
     end,
@@ -218,13 +218,13 @@ multicraft.register_node("protector:protect", {
             return
         end
 
-        local objs = multicraft.get_objects_inside_radius(pos,.5)
-        multicraft.add_entity(pos, "protector:display")
-        multicraft.get_node_timer(pos):start(10)
+        local objs = minetest.get_objects_inside_radius(pos,.5)
+        minetest.add_entity(pos, "protector:display")
+        minetest.get_node_timer(pos):start(10)
     end,
 
     on_timer = function(pos)
-        local objs = multicraft.get_objects_inside_radius(pos,.5)
+        local objs = minetest.get_objects_inside_radius(pos,.5)
         for _, o in pairs(objs) do
             if (not o:is_player()) and o:get_luaentity().name == "protector:display" then
                 o:remove()
@@ -233,11 +233,11 @@ multicraft.register_node("protector:protect", {
     end,
 })
 
-multicraft.register_on_player_receive_fields(function(player,formname,fields)
+minetest.register_on_player_receive_fields(function(player,formname,fields)
     if string.sub(formname,0,string.len("protector_")) == "protector_" then
         local pos_s = string.sub(formname,string.len("protector_")+1)
-        local pos = multicraft.string_to_pos(pos_s)
-        local meta = multicraft.get_meta(pos)
+        local pos = minetest.string_to_pos(pos_s)
+        local meta = minetest.get_meta(pos)
 
         if meta:get_int("page") == nil then meta:set_int("page",0) end
 
@@ -267,12 +267,12 @@ multicraft.register_on_player_receive_fields(function(player,formname,fields)
 
         if fields.close_me then
             meta:set_int("page",meta:get_int("page"))
-            else multicraft.show_formspec(player:get_player_name(), formname, protector.generate_formspec(meta))
+            else minetest.show_formspec(player:get_player_name(), formname, protector.generate_formspec(meta))
         end
     end
 end)
 
-multicraft.register_craft({
+minetest.register_craft({
     output = "protector:protect 4",
     recipe = {
         {"default:stone","default:stone","default:stone"},
@@ -281,14 +281,14 @@ multicraft.register_craft({
     }
 })
 
-multicraft.register_entity("protector:display", {
+minetest.register_entity("protector:display", {
     physical = false,
     collisionbox = {0,0,0,0,0,0},
     visual = "wielditem",
     visual_size = {x=1.0/1.5,y=1.0/1.5}, -- wielditem seems to be scaled to 1.5 times original node size
     textures = {"protector:display_node"},
     on_step = function(self, dtime)
-        if multicraft.get_node(self.object:getpos()).name ~= "protector:protect" then
+        if minetest.get_node(self.object:getpos()).name ~= "protector:protect" then
             self.object:remove()
             return
         end
@@ -299,7 +299,7 @@ multicraft.register_entity("protector:display", {
 -- Do NOT place the display as a node
 -- it is made to be used as an entity (see above)
 
-multicraft.register_node("protector:display_node", {
+minetest.register_node("protector:display_node", {
     tiles = {"protector_display.png"},
     use_texture_alpha = true,
     walkable = false,

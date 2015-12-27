@@ -54,10 +54,10 @@ local function update_wheel(player)
 			end
 
 			-- get the images
-			local def = multicraft.registered_items[m]
+			local def = minetest.registered_items[m]
 			if def then
 				if def.tiles and (def.tiles[1] and not def.tiles[1].name) then
-					image = multicraft.inventorycube(def.tiles[1], def.tiles[6] or def.tiles[3] or def.tiles[1], def.tiles[3] or def.tiles[1])
+					image = minetest.inventorycube(def.tiles[1], def.tiles[6] or def.tiles[3] or def.tiles[1], def.tiles[3] or def.tiles[1])
 					need_scale = true
 				end
 				if def.inventory_image and def.inventory_image ~= "" then
@@ -101,14 +101,14 @@ local function update_wheel(player)
 	end
 end
 
-multicraft.register_on_joinplayer(function(player)
+minetest.register_on_joinplayer(function(player)
     local name = player:get_player_name()
     hb[name]= {}
     hb[name].id = {}
     hb[name].item = "wheel_init"
     hb[name].index = 1
 
-    multicraft.after(0.1, function()
+    minetest.after(0.1, function()
 
 	-- hide builtin hotbar
 	local hud_flags = player:hud_get_flags()
@@ -161,7 +161,7 @@ multicraft.register_on_joinplayer(function(player)
 	})
 
 	-- init item wheel
-	multicraft.after(0, function()
+	minetest.after(0, function()
 		hb[name].item = "wheel_init"
 		update_wheel(player)
 	end)
@@ -173,22 +173,22 @@ local function update_wrapper(a, b, player)
 	if not name then
 		return
 	end
-	multicraft.after(0, function()
+	minetest.after(0, function()
 		hb[name].item = "wheel_init"
 		update_wheel(player)
 	end)
 end
 
-multicraft.register_on_placenode(update_wrapper)
-multicraft.register_on_dignode(update_wrapper)
+minetest.register_on_placenode(update_wrapper)
+minetest.register_on_dignode(update_wrapper)
 
 
 local timer = 0
-multicraft.register_globalstep(function(dtime)
+minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
 	if timer >= HUD_IW_TICK then
 		timer = 0
-		for _, player in ipairs(multicraft.get_connected_players()) do
+		for _, player in ipairs(minetest.get_connected_players()) do
 			update_wheel(player)
 		end
 	end--timer

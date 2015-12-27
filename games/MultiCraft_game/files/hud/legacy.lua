@@ -3,7 +3,7 @@ function hud.set_armor()
 end
 
 if hud.show_armor then
-    local shields = multicraft.get_modpath("shields") ~= nil
+    local shields = minetest.get_modpath("shields") ~= nil
     local armor_org_func = armor.update_armor
 
     local function get_armor_lvl(def)
@@ -47,7 +47,7 @@ if not hud.show_hunger then
     function hud.item_eat(hp_change, replace_with_item)
     	return function(itemstack, user, pointed_thing)
 		hud.notify_hunger(1, true)
-		local func = multicraft.item_eat(hp_change, replace_with_item)
+		local func = minetest.item_eat(hp_change, replace_with_item)
 		return func(itemstack, user, pointed_thing)
 	end
     end

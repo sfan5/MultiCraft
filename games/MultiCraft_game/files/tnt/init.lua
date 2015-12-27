@@ -1,8 +1,8 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 function spawn_tnt(pos, entname)
-    multicraft.sound_play("", {pos = pos,gain = 1.0,max_hear_distance = 15,})
-    return multicraft.add_entity(pos, entname)
+    minetest.sound_play("", {pos = pos,gain = 1.0,max_hear_distance = 15,})
+    return minetest.add_entity(pos, entname)
 end
 
 function activate_if_tnt(nname, np, tnt_np, tntr)
@@ -13,7 +13,7 @@ function activate_if_tnt(nname, np, tnt_np, tntr)
 end
 
 function do_tnt_physics(tnt_np,tntr)
-    local objs = multicraft.get_objects_inside_radius(tnt_np, tntr)
+    local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
         local oname = obj:get_entity_name()
         local v = obj:getvelocity()
@@ -32,8 +32,8 @@ function do_tnt_physics(tnt_np,tntr)
     end
 end
 
-multicraft.register_node("tnt:tnt", {
-        tile_images = {"default_tnt_top.png", "default_tnt_bottom.png",
+minetest.register_node("tnt:tnt", {
+        tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
                         "default_tnt_side.png", "default_tnt_side.png",
                         "default_tnt_side.png", "default_tnt_side.png"},
         dug_item = '', -- Get nothing
@@ -45,16 +45,16 @@ multicraft.register_node("tnt:tnt", {
         groups = {mese = 1},
         mesecons = {effector = {
                 action_on = (function(p, node)
-                        multicraft.remove_node(p)
+                        minetest.remove_node(p)
                         spawn_tnt(p, "tnt:tnt")
                         nodeupdate(p)
                 end),
         }}
 })
 
-multicraft.register_on_punchnode(function(p, node)
+minetest.register_on_punchnode(function(p, node)
         if node.name == "tnt:tnt" then
-                multicraft.remove_node(p)
+                minetest.remove_node(p)
                 spawn_tnt(p, "tnt:tnt")
                 nodeupdate(p)
         end
@@ -85,7 +85,7 @@ end
 
 function TNT:on_step(dtime)
         local pos = self.object:getpos()
-        multicraft.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "tnt_smoke.png")
+        minetest.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "tnt_smoke.png")
         self.timer = self.timer + dtime
         self.blinktimer = self.blinktimer + dtime
     if self.timer>3 then
@@ -110,9 +110,9 @@ function TNT:on_step(dtime)
         pos.y = math.floor(pos.y+0.5)
         pos.z = math.floor(pos.z+0.5)
         do_tnt_physics(pos, TNT_RANGE)
-                local meta = multicraft.get_meta(pos)
-        multicraft.sound_play("tnt_explode", {pos = pos,gain = 1.0,max_hear_distance = 16,})
-        if multicraft.get_node(pos).name == "default:water_source" or multicraft.get_node(pos).name == "default:water_flowing" or multicraft.get_node(pos).name == "default:bedrock" or multicraft.get_node(pos).name == "protector:display" or multicraft.is_protected(pos, "tnt") then
+                local meta = minetest.get_meta(pos)
+        minetest.sound_play("tnt_explode", {pos = pos,gain = 1.0,max_hear_distance = 16,})
+        if minetest.get_node(pos).name == "default:water_source" or minetest.get_node(pos).name == "default:water_flowing" or minetest.get_node(pos).name == "default:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
             -- Cancel the Explosion
             self.object:remove()
             return
@@ -122,17 +122,17 @@ function TNT:on_step(dtime)
                                 for z=-TNT_RANGE,TNT_RANGE do
                                         if x*x+y*y+z*z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
                                                 local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
-                                                local n = multicraft.get_node(np)
+                                                local n = minetest.get_node(np)
                                                 if n.name ~= "air" and n.name ~= "default:obsidian" and n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
                                                         activate_if_tnt(n.name, np, pos, 3)
-                                                        multicraft.remove_node(np)
+                                                        minetest.remove_node(np)
                                                         nodeupdate(np)
                                                         if n.name ~= "tnt:tnt" and math.random() > 0.9 then
-                                                                local drop = multicraft.get_node_drops(n.name, "")
+                                                                local drop = minetest.get_node_drops(n.name, "")
                                                                         for _,item in ipairs(drop) do
                                                                                 if type(item) == "string" then
                                                                                         if math.random(1,100) > 40 then
-                                                                                                local obj = multicraft.add_item(np, item)
+                                                                                                local obj = minetest.add_item(np, item)
                                                                                         end
                                                                                 end
                                                                         end
@@ -154,9 +154,9 @@ function TNT:on_punch(hitter)
         end
 end
 
-multicraft.register_entity("tnt:tnt", TNT)
+minetest.register_entity("tnt:tnt", TNT)
 
-multicraft.register_craft({
+minetest.register_craft({
         output = "tnt:tnt",
         recipe = {
                 {'default:gunpowder','default:sand','default:gunpowder'},

@@ -24,5 +24,5 @@ mesecon.on_dignode = function (pos, node)
 	end
 end
 
-multicraft.register_on_placenode(mesecon.on_placenode)
-multicraft.register_on_dignode(mesecon.on_dignode)
+minetest.register_on_placenode(mesecon.on_placenode)
+minetest.register_on_dignode(mesecon.on_dignode)

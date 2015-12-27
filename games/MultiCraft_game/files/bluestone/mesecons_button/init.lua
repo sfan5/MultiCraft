@@ -1,19 +1,19 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 -- WALL BUTTON
 -- A button that when pressed emits power for 1 second
 -- and then turns off again
 
 mesecon.button_turnoff = function (pos)
-    local node = multicraft.env:get_node(pos)
+    local node = minetest.env:get_node(pos)
     if node.name=="mesecons_button:button_stone_on" then --has not been dug
         mesecon:swap_node(pos, "mesecons_button:button_stone_off")
-        multicraft.sound_play("mesecons_button_pop", {pos=pos})
+        minetest.sound_play("mesecons_button_pop", {pos=pos})
         local rules = mesecon.rules.buttonlike_get(node)
         mesecon:receptor_off(pos, rules)
     elseif node.name=="mesecons_button:button_wood_on" then --has not been dug
         mesecon:swap_node(pos, "mesecons_button:button_wood_off")
-        multicraft.sound_play("mesecons_button_pop", {pos=pos})
+        minetest.sound_play("mesecons_button_pop", {pos=pos})
         local rules = mesecon.rules.buttonlike_get(node)
         mesecon:receptor_off(pos, rules)
     end
@@ -22,7 +22,7 @@ end
 local boxes_off = { -4/16, -2/16, 8/16, 4/16, 2/16, 6/16 } -- The button
 local  boxes_on = { -4/16, -2/16, 8/16, 4/16, 2/16, 7/16 }  -- The button
 
-multicraft.register_node("mesecons_button:button_stone_off", {
+minetest.register_node("mesecons_button:button_stone_off", {
     drawtype = "nodebox",
     tiles = {"default_stone.png"},
     paramtype = "light",
@@ -43,8 +43,8 @@ multicraft.register_node("mesecons_button:button_stone_off", {
     on_punch = function (pos, node)
         mesecon:swap_node(pos, "mesecons_button:button_stone_on")
         mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
-        multicraft.sound_play("mesecons_button_push", {pos=pos})
-        multicraft.after(1, mesecon.button_turnoff, pos)
+        minetest.sound_play("mesecons_button_push", {pos=pos})
+        minetest.after(1, mesecon.button_turnoff, pos)
     end,
     sounds = default.node_sound_stone_defaults(),
     mesecons = {receptor = {
@@ -53,7 +53,7 @@ multicraft.register_node("mesecons_button:button_stone_off", {
     }}
 })
 
-multicraft.register_node("mesecons_button:button_stone_on", {
+minetest.register_node("mesecons_button:button_stone_on", {
     drawtype = "nodebox",
     tiles = {"default_stone.png"},
     paramtype = "light",
@@ -79,7 +79,7 @@ multicraft.register_node("mesecons_button:button_stone_on", {
     }}
 })
 
-multicraft.register_node("mesecons_button:button_wood_off", {
+minetest.register_node("mesecons_button:button_wood_off", {
     drawtype = "nodebox",
     tiles = {"default_wood.png"},
     paramtype = "light",
@@ -100,8 +100,8 @@ multicraft.register_node("mesecons_button:button_wood_off", {
     on_punch = function (pos, node)
         mesecon:swap_node(pos, "mesecons_button:button_wood_on")
         mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
-        multicraft.sound_play("mesecons_button_push", {pos=pos})
-        multicraft.after(1, mesecon.button_turnoff, pos)
+        minetest.sound_play("mesecons_button_push", {pos=pos})
+        minetest.after(1, mesecon.button_turnoff, pos)
     end,
     sounds = default.node_sound_stone_defaults(),
     mesecons = {receptor = {
@@ -110,7 +110,7 @@ multicraft.register_node("mesecons_button:button_wood_off", {
     }}
 })
 
-multicraft.register_node("mesecons_button:button_wood_on", {
+minetest.register_node("mesecons_button:button_wood_on", {
     drawtype = "nodebox",
     tiles = {"default_wood.png"},
     paramtype = "light",
@@ -136,14 +136,14 @@ multicraft.register_node("mesecons_button:button_wood_on", {
     }}
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'mesecons_button:button_stone_off',
     recipe = {
         {'default:stone'},
     }
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'mesecons_button:button_wood_off',
     recipe = {
         {'group:wood'},

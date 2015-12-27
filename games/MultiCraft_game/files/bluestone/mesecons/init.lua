@@ -1,5 +1,5 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 -- |\    /| ____ ____  ____ _____   ____         _____
 -- | \  / | |    |     |    |      |    | |\   | |
 -- |  \/  | |___ ____  |___ |      |    | | \  | |____
@@ -9,7 +9,7 @@ if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copyin
 --
 --
 --
--- This mod adds bluestone and different receptors/effectors to multicraft.
+-- This mod adds bluestone and different receptors/effectors to minetest.
 -- See the documentation on the forum for additional information, especially about crafting
 --
 --
@@ -52,28 +52,28 @@ mesecon.effectors={} --  saves all information about effectors  | DEPRECATED
 mesecon.conductors={} -- saves all information about conductors | DEPRECATED
 
 -- Settings
-dofile(multicraft.get_modpath("mesecons").."/settings.lua")
+dofile(minetest.get_modpath("mesecons").."/settings.lua")
 
 -- Presets (eg default rules)
-dofile(multicraft.get_modpath("mesecons").."/presets.lua");
+dofile(minetest.get_modpath("mesecons").."/presets.lua");
 
 
 -- Utilities like comparing positions,
 -- adding positions and rules,
 -- mostly things that make the source look cleaner
-dofile(multicraft.get_modpath("mesecons").."/util.lua");
+dofile(minetest.get_modpath("mesecons").."/util.lua");
 
 -- Internal stuff
 -- This is the most important file
 -- it handles signal transmission and basically everything else
 -- It is also responsible for managing the nodedef things,
 -- like calling action_on/off/change
-dofile(multicraft.get_modpath("mesecons").."/internal.lua");
+dofile(minetest.get_modpath("mesecons").."/internal.lua");
 
 -- Deprecated stuff
 -- To be removed in future releases
 -- Currently there is nothing here
-dofile(multicraft.get_modpath("mesecons").."/legacy.lua");
+dofile(minetest.get_modpath("mesecons").."/legacy.lua");
 
 -- API
 -- these are the only functions you need to remember
@@ -100,14 +100,14 @@ function mesecon:receptor_off(pos, rules)
 			if not mesecon:connected_to_receptor(np) then
 				mesecon:turnoff(np, rulename)
 			else
-				mesecon:changesignal(np, multicraft.env:get_node(np), rulename, mesecon.state.off)
+				mesecon:changesignal(np, minetest.env:get_node(np), rulename, mesecon.state.off)
 			end
 		end
 	end
 end
 
 --The actual wires
-dofile(multicraft.get_modpath("mesecons").."/wires.lua");
+dofile(minetest.get_modpath("mesecons").."/wires.lua");
 
 --Services like turnoff receptor on dignode and so on
-dofile(multicraft.get_modpath("mesecons").."/services.lua");
+dofile(minetest.get_modpath("mesecons").."/services.lua");

@@ -1,9 +1,9 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 local boxes = { -8/16, -8/16, -8/16,  8/16, -2/16, 8/16 } -- Solar Pannel
 
 -- Solar Panel
-multicraft.register_node("mesecons_solarpanel:solar_panel_on", {
+minetest.register_node("mesecons_solarpanel:solar_panel_on", {
     drawtype = "nodebox",
     tiles = { "jeija_solar_panel.png","jeija_solar_panel.png","jeija_solar_panel_side.png",
     "jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
@@ -28,7 +28,7 @@ multicraft.register_node("mesecons_solarpanel:solar_panel_on", {
 })
 
 -- Solar Panel
-multicraft.register_node("mesecons_solarpanel:solar_panel_off", {
+minetest.register_node("mesecons_solarpanel:solar_panel_off", {
     drawtype = "nodebox",
     tiles = { "jeija_solar_panel.png","jeija_solar_panel.png","jeija_solar_panel_side.png",
     "jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
@@ -52,7 +52,7 @@ multicraft.register_node("mesecons_solarpanel:solar_panel_off", {
     }}
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = '"mesecons_solarpanel:solar_panel_off" 1',
     recipe = {
         {'default:glass', 'default:glass', 'default:glass'},
@@ -61,29 +61,29 @@ multicraft.register_craft({
     }
 })
 
-multicraft.register_abm(
+minetest.register_abm(
     {nodenames = {"mesecons_solarpanel:solar_panel_off"},
     interval = 1,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        local light = multicraft.get_node_light(pos, nil)
+        local light = minetest.get_node_light(pos, nil)
 
-        if light >= 12 and multicraft.get_timeofday() > 0.2 and multicraft.get_timeofday() < 0.8 then
-            multicraft.set_node(pos, {name="mesecons_solarpanel:solar_panel_on", param2=node.param2})
+        if light >= 12 and minetest.get_timeofday() > 0.2 and minetest.get_timeofday() < 0.8 then
+            minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_on", param2=node.param2})
             mesecon:receptor_on(pos)
         end
     end,
 })
 
-multicraft.register_abm(
+minetest.register_abm(
     {nodenames = {"mesecons_solarpanel:solar_panel_on"},
     interval = 1,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        local light = multicraft.get_node_light(pos, nil)
+        local light = minetest.get_node_light(pos, nil)
 
         if light < 12 then
-            multicraft.set_node(pos, {name="mesecons_solarpanel:solar_panel_off", param2=node.param2})
+            minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_off", param2=node.param2})
             mesecon:receptor_off(pos)
         end
     end,
@@ -92,7 +92,7 @@ multicraft.register_abm(
 --- Solar panel inversed
 
 -- Solar Panel
-multicraft.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
+minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
     drawtype = "nodebox",
     tiles = { "jeija_solar_panel_inverted.png","jeija_solar_panel_inverted.png","jeija_solar_panel_side.png",
     "jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
@@ -117,7 +117,7 @@ multicraft.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 })
 
 -- Solar Panel
-multicraft.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
+minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
     drawtype = "nodebox",
     tiles = { "jeija_solar_panel_inverted.png","jeija_solar_panel_inverted.png","jeija_solar_panel_side.png",
     "jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
@@ -141,7 +141,7 @@ multicraft.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
     }}
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = '"mesecons_solarpanel:solar_panel_inverted_off" 1',
     recipe = {
         {'default:restone_dust', 'default:restone_dust', 'default:restone_dust'},
@@ -150,29 +150,29 @@ multicraft.register_craft({
     }
 })
 
-multicraft.register_abm(
+minetest.register_abm(
     {nodenames = {"mesecons_solarpanel:solar_panel_inverted_off"},
     interval = 1,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        local light = multicraft.get_node_light(pos, nil)
+        local light = minetest.get_node_light(pos, nil)
 
         if light < 12 then
-            multicraft.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_on", param2=node.param2})
+            minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_on", param2=node.param2})
             mesecon:receptor_on(pos)
         end
     end,
 })
 
-multicraft.register_abm(
+minetest.register_abm(
     {nodenames = {"mesecons_solarpanel:solar_panel_inverted_on"},
     interval = 1,
     chance = 1,
     action = function(pos, node, active_object_count, active_object_count_wider)
-        local light = multicraft.get_node_light(pos, nil)
+        local light = minetest.get_node_light(pos, nil)
 
-        if light >= 12 and multicraft.get_timeofday() > 0.8 and multicraft.get_timeofday() < 0.2 then
-            multicraft.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_off", param2=node.param2})
+        if light >= 12 and minetest.get_timeofday() > 0.8 and minetest.get_timeofday() < 0.2 then
+            minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_off", param2=node.param2})
             mesecon:receptor_off(pos)
         end
     end,

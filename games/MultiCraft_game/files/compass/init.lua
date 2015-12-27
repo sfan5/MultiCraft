@@ -1,18 +1,11 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
-local f = io.open(multicraft.get_modpath("compass")..'/init.lua', "r")
-local content = f:read("*all")
-f:close()
-if content:find("mine".."test") then os.exit() end--
+local default_spawn_settings = minetest.setting_get("static_spawnpoint")
 
-local default_spawn_settings = multicraft.setting_get("static_spawnpoint")
-
-multicraft.register_globalstep(function(dtime)
-    local players  = multicraft.get_connected_players()
+minetest.register_globalstep(function(dtime)
+    local players  = minetest.get_connected_players()
     for i,player in ipairs(players) do
         local function has_compass(player)
             for _,stack in ipairs(player:get_inventory():get_list("main")) do
-                if multicraft.get_item_group(stack:get_name(), "compass") ~= 0 then
+                if minetest.get_item_group(stack:get_name(), "compass") ~= 0 then
                     return true
                 end
             end
@@ -20,7 +13,7 @@ multicraft.register_globalstep(function(dtime)
         end
         if has_compass(player) then
             local spawn = beds_player_spawns[player:get_player_name()] or
-                          multicraft.setting_get("static_spawnpoint") or
+                          minetest.setting_get("static_spawnpoint") or
                           {x=0,y=0,z=0}
             pos = player:getpos()
             dir = player:get_look_yaw()
@@ -31,8 +24,8 @@ multicraft.register_globalstep(function(dtime)
             local compass_image = math.floor((angle_relative/30) + 0.5)%12
 
             for j,stack in ipairs(player:get_inventory():get_list("main")) do
-                if multicraft.get_item_group(stack:get_name(), "compass") ~= 0 and
-                        multicraft.get_item_group(stack:get_name(), "compass")-1 ~= compass_image then
+                if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
+                        minetest.get_item_group(stack:get_name(), "compass")-1 ~= compass_image then
                     player:get_inventory():set_stack("main", j, "compass:"..compass_image)
                 end
             end
@@ -61,7 +54,7 @@ for i,img in ipairs(images) do
     if i == 1 then
         inv = 0
     end
-    multicraft.register_tool("compass:"..(i-1), {
+    minetest.register_tool("compass:"..(i-1), {
         description = "Compass",
         inventory_image = img,
         wield_image = img,
@@ -70,7 +63,7 @@ for i,img in ipairs(images) do
     })
 end
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'compass:1',
     recipe = {
         {'', 'default:iron_ingot', ''},

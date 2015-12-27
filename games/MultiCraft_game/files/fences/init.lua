@@ -1,9 +1,3 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
-local f = io.open(multicraft.get_modpath("fences")..'/init.lua', "r")
-local content = f:read("*all")
-f:close()
-if content:find("mine".."test") then os.exit() end--
 local override_original = true  --change to "true" if you want original and placed fences replaced
 
 local function dockable(nodename)
@@ -18,47 +12,47 @@ local function find_dock(pos, second)
         return false
     end
 
-    local h1 = multicraft.get_node({x=pos.x+1, y=pos.y, z=pos.z})
-    local v1 = multicraft.get_node({x=pos.x-1, y=pos.y, z=pos.z})
-    local r1 = multicraft.get_node({x=pos.x, y=pos.y, z=pos.z+1})
-    local l1 = multicraft.get_node({x=pos.x, y=pos.y, z=pos.z-1})
+    local h1 = minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z})
+    local v1 = minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z})
+    local r1 = minetest.get_node({x=pos.x, y=pos.y, z=pos.z+1})
+    local l1 = minetest.get_node({x=pos.x, y=pos.y, z=pos.z-1})
     local code = 0
     if dockable(l1.name) then
         code = code+1
         if second < 2 then
-            multicraft.punch_node({x=pos.x, y=pos.y, z=pos.z-1})
+            minetest.punch_node({x=pos.x, y=pos.y, z=pos.z-1})
         end
     end
     if dockable(r1.name) then
         code = code+2
         if second < 2 then
-            multicraft.punch_node({x=pos.x, y=pos.y, z=pos.z+1})
+            minetest.punch_node({x=pos.x, y=pos.y, z=pos.z+1})
         end
     end
     if dockable(v1.name) then
         code = code+11
         if second < 2 then
-            multicraft.punch_node({x=pos.x-1, y=pos.y, z=pos.z})
+            minetest.punch_node({x=pos.x-1, y=pos.y, z=pos.z})
         end
     end
     if dockable(h1.name) then
         code = code+21
         if second < 2 then
-            multicraft.punch_node({x=pos.x+1, y=pos.y, z=pos.z})
+            minetest.punch_node({x=pos.x+1, y=pos.y, z=pos.z})
         end
     end
-        local me = multicraft.get_node(pos)
+        local me = minetest.get_node(pos)
         if code > 0 then
             local tmp_name = "fences:fence_wood_"..code
             local tmp_node = {name=tmp_name, param1=me.param1, param2=me.param2}
             if second > 0 then
                 local tmp_node = {name=tmp_name, param1=me.param1, param2=me.param2}
-                multicraft.set_node(pos, tmp_node)
+                minetest.set_node(pos, tmp_node)
             end
         elseif code == 0 then
             if second == 2 then
                 local tmp_node = {name="fences:fence_wood", param1=me.param1, param2=me.param2}
-                multicraft.set_node(pos, tmp_node)
+                minetest.set_node(pos, tmp_node)
             end
         end
 
@@ -99,7 +93,7 @@ local bx2 = {5/16, 1/2-1/16, 1/16, 5/16, 1/2+8/16, 1/16}   --oben_block(quer) x 
 local bx21 = {5/16, 1/2-1/16, -1/16, 5/16, 1/2+8/16, -1/16}   --oben_block(quer) x 2seite
 
 
-multicraft.register_node("fences:fence_wood", {
+minetest.register_node("fences:fence_wood", {
     description = "Wooden Fence",
     tiles = {"default_wood.png"},
     inventory_image = "default_fence.png",
@@ -133,7 +127,7 @@ multicraft.register_node("fences:fence_wood", {
 
 --different fence types- (1=left,2=right,3=top,4=bottom)
 
-multicraft.register_node("fences:fence_wood_1", {
+minetest.register_node("fences:fence_wood_1", {
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -160,7 +154,7 @@ multicraft.register_node("fences:fence_wood_1", {
     end
 })
 
-multicraft.register_node("fences:fence_wood_2", {
+minetest.register_node("fences:fence_wood_2", {
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -187,7 +181,7 @@ multicraft.register_node("fences:fence_wood_2", {
     end
 })
 
-multicraft.register_node("fences:fence_wood_3", {  --left+right(3)
+minetest.register_node("fences:fence_wood_3", {  --left+right(3)
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -214,7 +208,7 @@ multicraft.register_node("fences:fence_wood_3", {  --left+right(3)
     end
 })
 
-multicraft.register_node("fences:fence_wood_11", {  --top
+minetest.register_node("fences:fence_wood_11", {  --top
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -241,7 +235,7 @@ multicraft.register_node("fences:fence_wood_11", {  --top
     end
 })
 
-multicraft.register_node("fences:fence_wood_21", {  --bottom
+minetest.register_node("fences:fence_wood_21", {  --bottom
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -269,7 +263,7 @@ multicraft.register_node("fences:fence_wood_21", {  --bottom
 })
 
 
-multicraft.register_node("fences:fence_wood_32", {  --top+bottom(32)
+minetest.register_node("fences:fence_wood_32", {  --top+bottom(32)
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -296,7 +290,7 @@ multicraft.register_node("fences:fence_wood_32", {  --top+bottom(32)
     end
 })
 
-multicraft.register_node("fences:fence_wood_14", {  --left+right(3)+ top(11) =14
+minetest.register_node("fences:fence_wood_14", {  --left+right(3)+ top(11) =14
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -323,7 +317,7 @@ multicraft.register_node("fences:fence_wood_14", {  --left+right(3)+ top(11) =14
     end
 })
 
-multicraft.register_node("fences:fence_wood_24", {  --left+right(3)+ bottom(21) =24
+minetest.register_node("fences:fence_wood_24", {  --left+right(3)+ bottom(21) =24
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -350,7 +344,7 @@ multicraft.register_node("fences:fence_wood_24", {  --left+right(3)+ bottom(21) 
     end
 })
 
-multicraft.register_node("fences:fence_wood_35", {  --left+right(3)+top+bottom(32) = 35
+minetest.register_node("fences:fence_wood_35", {  --left+right(3)+top+bottom(32) = 35
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -377,7 +371,7 @@ multicraft.register_node("fences:fence_wood_35", {  --left+right(3)+top+bottom(3
     end
 })
 
-multicraft.register_node("fences:fence_wood_12", {  --left(1)+top(11)=12
+minetest.register_node("fences:fence_wood_12", {  --left(1)+top(11)=12
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -404,7 +398,7 @@ multicraft.register_node("fences:fence_wood_12", {  --left(1)+top(11)=12
     end
 })
 
-multicraft.register_node("fences:fence_wood_22", {  --left(1)+bottom(21)=22
+minetest.register_node("fences:fence_wood_22", {  --left(1)+bottom(21)=22
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -431,7 +425,7 @@ multicraft.register_node("fences:fence_wood_22", {  --left(1)+bottom(21)=22
     end
 })
 
-multicraft.register_node("fences:fence_wood_33", {  --left(1)+top+bottom(32)=33
+minetest.register_node("fences:fence_wood_33", {  --left(1)+top+bottom(32)=33
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -458,7 +452,7 @@ multicraft.register_node("fences:fence_wood_33", {  --left(1)+top+bottom(32)=33
     end
 })
 
-multicraft.register_node("fences:fence_wood_34", {  --right(2)+top+bottom(32)=34
+minetest.register_node("fences:fence_wood_34", {  --right(2)+top+bottom(32)=34
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -485,7 +479,7 @@ multicraft.register_node("fences:fence_wood_34", {  --right(2)+top+bottom(32)=34
     end
 })
 
-multicraft.register_node("fences:fence_wood_23", {  --right(2)+bottom(21)=23
+minetest.register_node("fences:fence_wood_23", {  --right(2)+bottom(21)=23
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -512,7 +506,7 @@ multicraft.register_node("fences:fence_wood_23", {  --right(2)+bottom(21)=23
     end
 })
 
-multicraft.register_node("fences:fence_wood_13", {  --right(2)+top(11)=13
+minetest.register_node("fences:fence_wood_13", {  --right(2)+top(11)=13
     tiles = {"default_wood.png"},
     paramtype = "light",
     groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fences=1,not_in_inventory=1},
@@ -539,9 +533,9 @@ multicraft.register_node("fences:fence_wood_13", {  --right(2)+top(11)=13
     end
 })
 
-multicraft.register_alias("default:fence_wood", "fences:fence")
+minetest.register_alias("default:fence_wood", "fences:fence")
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'fences:fence_wood 2',
     recipe = {
         {'default:stick', 'default:stick', 'default:stick'},
@@ -549,7 +543,7 @@ multicraft.register_craft({
     }
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'fences:fencegate',
     recipe = {
         {'default:stick', 'default:wood', 'default:stick'},
@@ -564,27 +558,27 @@ local meta2
 local state2 = 0
 
 local function update_gate(pos, node)
-    multicraft.set_node(pos, node)
+    minetest.set_node(pos, node)
 end
 
 local function punch_gate(pos, node)
-    meta2 = multicraft.get_meta(pos)
+    meta2 = minetest.get_meta(pos)
     state2 = meta2:get_int("state")
     local tmp_node2
         if state2 == 1 then
             state2 = 0
-            multicraft.sound_play("door_close", {gain = 0.3, max_hear_distance = 10})
+            minetest.sound_play("door_close", {gain = 0.3, max_hear_distance = 10})
             tmp_node2 = {name="fences:fencegate", param1=node.param1, param2=node.param2}
         else
             state2 = 1
-            multicraft.sound_play("door_open", {gain = 0.3, max_hear_distance = 10})
+            minetest.sound_play("door_open", {gain = 0.3, max_hear_distance = 10})
             tmp_node2 = {name="fences:fencegate_open", param1=node.param1, param2=node.param2}
         end
         update_gate(pos, tmp_node2)
         meta2:set_int("state", state2)
 end
 
-multicraft.register_node("fences:fencegate_open", {
+minetest.register_node("fences:fencegate_open", {
     tiles = {"default_wood.png"},
     inventory_image = "default_fence.png",
     wield_image = "default_fence.png",
@@ -628,7 +622,7 @@ multicraft.register_node("fences:fencegate_open", {
     end
 })
 
-multicraft.register_node("fences:fencegate", {
+minetest.register_node("fences:fencegate", {
     description = "Wooden Fancegate",
     tiles = {"default_wood.png"},
     inventory_image = "fences_fencegate.png",
@@ -663,8 +657,8 @@ multicraft.register_node("fences:fencegate", {
             }
     },
     on_construct = function(pos)
-        me2 = multicraft.get_node(pos)
-        meta2 = multicraft.get_meta(pos)
+        me2 = minetest.get_node(pos)
+        meta2 = minetest.get_meta(pos)
         meta2:set_int("state", 0)
         state2 = 0
         find_dock(pos, -1)
@@ -684,14 +678,14 @@ multicraft.register_node("fences:fencegate", {
 
 
 if override_original == true then
-    multicraft.register_abm({
+    minetest.register_abm({
         nodenames = {"default:fence_wood"},
         interval = 1.0,
         chance = 1,
         action = function(pos, node, active_object_count, active_object_count_wider)
             local tmp_node3 = {name="fences:fence_wood"}
-            multicraft.set_node(pos, tmp_node3)
-            multicraft.punch_node(pos)
+            minetest.set_node(pos, tmp_node3)
+            minetest.punch_node(pos)
         end
     })
 end

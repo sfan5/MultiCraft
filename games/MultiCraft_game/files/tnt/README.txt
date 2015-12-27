@@ -2,7 +2,7 @@
 by PilzAdam
 
 Introduction:
-This mod adds TNT to multicraft. TNT is a tool to help the player
+This mod adds TNT to minetest. TNT is a tool to help the player
 in mining.
 
 How to install:
@@ -12,7 +12,7 @@ a linux system-wide instalation place it in ~/.multicraft/mods/multicraft/.
 If you want to install this mod only in one world create the folder
 worldmods/ in your worlddirectory.
 For further information or help see:
-http://wiki.multicraft.com/wiki/Installing_Mods
+http://wiki.minetest.com/wiki/Installing_Mods
 
 How to use the mod:
 Craft gunpowder by placing coal and gravel in the crafting area. The

@@ -1,9 +1,9 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 -- WALL LEVER
 -- Basically a switch that can be attached to a wall
 -- Powers the block 2 nodes behind (using a receiver)
-multicraft.register_node("mesecons_walllever:wall_lever_off", {
+minetest.register_node("mesecons_walllever:wall_lever_off", {
     drawtype = "nodebox",
     tiles = {
         "jeija_wall_lever_tb.png",
@@ -34,7 +34,7 @@ multicraft.register_node("mesecons_walllever:wall_lever_off", {
     on_punch = function (pos, node)
         mesecon:swap_node(pos, "mesecons_walllever:wall_lever_on")
         mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
-        multicraft.sound_play("mesecons_lever", {pos=pos})
+        minetest.sound_play("mesecons_lever", {pos=pos})
     end,
     sounds = default.node_sound_wood_defaults(),
     mesecons = {receptor = {
@@ -42,7 +42,7 @@ multicraft.register_node("mesecons_walllever:wall_lever_off", {
         state = mesecon.state.off
     }}
 })
-multicraft.register_node("mesecons_walllever:wall_lever_on", {
+minetest.register_node("mesecons_walllever:wall_lever_on", {
     drawtype = "nodebox",
     tiles = {
         "jeija_wall_lever_top.png",
@@ -73,7 +73,7 @@ multicraft.register_node("mesecons_walllever:wall_lever_on", {
     on_punch = function (pos, node)
         mesecon:swap_node(pos, "mesecons_walllever:wall_lever_off")
         mesecon:receptor_off(pos, mesecon.rules.buttonlike_get(node))
-        multicraft.sound_play("mesecons_lever", {pos=pos})
+        minetest.sound_play("mesecons_lever", {pos=pos})
     end,
     sounds = default.node_sound_wood_defaults(),
     mesecons = {receptor = {
@@ -82,7 +82,7 @@ multicraft.register_node("mesecons_walllever:wall_lever_on", {
     }}
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'mesecons_walllever:wall_lever_off',
     recipe = {
         {'default:stick'},

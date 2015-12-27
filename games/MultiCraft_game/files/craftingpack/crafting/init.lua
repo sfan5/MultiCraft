@@ -1,9 +1,9 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
-dofile(multicraft.get_modpath("crafting").."/formspecs.lua")
+
+
+dofile(minetest.get_modpath("crafting").."/formspecs.lua")
 
 local show_armor = false
-if multicraft.get_modpath("3d_armor") ~= nil then show_armor = true end
+if minetest.get_modpath("3d_armor") ~= nil then show_armor = true end
 
 local function item_drop(itemstack, dropper, pos)
     if dropper:is_player() then
@@ -11,7 +11,7 @@ local function item_drop(itemstack, dropper, pos)
         local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
         p.x = p.x+(math.random(1,3)*0.2)
         p.z = p.z+(math.random(1,3)*0.2)
-        local obj = multicraft.add_item(p, itemstack)
+        local obj = minetest.add_item(p, itemstack)
         if obj then
             v.x = v.x*4
             v.y = v.y*4 + 2
@@ -19,7 +19,7 @@ local function item_drop(itemstack, dropper, pos)
             obj:setvelocity(v)
         end
     else
-        multicraft.add_item(pos, itemstack)
+        minetest.add_item(pos, itemstack)
     end
     return itemstack
 end
@@ -57,8 +57,8 @@ local function update_armor(player)
 end
 
 local function set_inventory(player)
-    if multicraft.setting_getbool("creative_mode") then
-        multicraft.after(0.5,function()
+    if minetest.setting_getbool("creative_mode") then
+        minetest.after(0.5,function()
             crafting.set_creative_formspec(player, 0, 1)
             return
         end)
@@ -89,7 +89,7 @@ local function set_inventory(player)
 
     local form = "size[9,8.75]"..
     "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
-    "background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory.png"..armor_img.."]"..
+    "background[-0.19,-0.25;9.41,9.49;crafting_formspec_inv.png]"..
     "bgcolor[#080808BB;true]"..
     "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
     img_element
@@ -127,7 +127,7 @@ local function set_workbench(player)
 
     local form = "size[9,8.75]"..
     "image_button_exit[9,0;1,1;;exit;X;true;true;]"..
-    "background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_workbench.png]"..
+    "background[-0.19,-0.25;9.41,9.49;crafting_formspec_workbench.png]"..
     "bgcolor[#080808BB;true]"..
     "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
     "list[current_player;main;0,4.5;9,3;9]"..
@@ -137,11 +137,11 @@ local function set_workbench(player)
     "wob"
 
     --player:set_inventory_formspec(form)
-    multicraft.show_formspec(player:get_player_name(), "main", form)
+    minetest.show_formspec(player:get_player_name(), "main", form)
 end
 
 --drop craf items and reset inventory on closing
-multicraft.register_on_player_receive_fields(function(player, formname, fields)
+minetest.register_on_player_receive_fields(function(player, formname, fields)
     if fields.quit then
         local formspec = player:get_inventory_formspec()
         local size = string.len(formspec)
@@ -153,21 +153,21 @@ multicraft.register_on_player_receive_fields(function(player, formname, fields)
     end
 end)
 
-multicraft.register_on_joinplayer(function(player)
+minetest.register_on_joinplayer(function(player)
     minetest.after(0,function(dt)
        if player then set_inventory(player) end
     end)
-    if multicraft.setting_getbool("creative_mode") then
-        dofile(multicraft.get_modpath("crafting").."/creative.lua")
+    if minetest.setting_getbool("creative_mode") then
+        dofile(minetest.get_modpath("crafting").."/creative.lua")
     end
     --init inventory
     set_inventory(player)
     --set hotbar size
     if player.hud_set_hotbar_itemcount then
-        multicraft.after(0.5, player.hud_set_hotbar_itemcount, player, 8)
+        minetest.after(0.5, player.hud_set_hotbar_itemcount, player, 8)
     end
     --add hotbar images
-    multicraft.after(0.5,function()
+    minetest.after(0.5,function()
         player:hud_set_hotbar_image("crafting_hotbar.png")
         player:hud_set_hotbar_selected_image("crafting_hotbar_selected.png")
 
@@ -182,7 +182,7 @@ multicraft.register_on_joinplayer(function(player)
     end)
 end)
 
-multicraft.register_node("crafting:workbench", {
+minetest.register_node("crafting:workbench", {
     description = "Workbench",
     tiles = {"crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",
         "crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
@@ -194,7 +194,7 @@ multicraft.register_node("crafting:workbench", {
     end
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = "crafting:workbench",
     recipe = {
         {"group:wood", "group:wood"},

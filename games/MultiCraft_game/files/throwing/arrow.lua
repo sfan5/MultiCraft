@@ -1,10 +1,10 @@
-multicraft.register_craftitem("throwing:arrow", {
+minetest.register_craftitem("throwing:arrow", {
     description = "Arrow",
     inventory_image = "throwing_arrow_inv.png",
     groups = {combat = 1},
 })
 
-multicraft.register_node("throwing:arrow_box", {
+minetest.register_node("throwing:arrow_box", {
     drawtype = "nodebox",
     node_box = {
         type = "fixed",
@@ -44,10 +44,10 @@ local THROWING_ARROW_ENTITY={
 THROWING_ARROW_ENTITY.on_step = function(self, dtime)
     self.timer=self.timer+dtime
     local pos = self.object:getpos()
-    local node = multicraft.get_node(pos)
+    local node = minetest.get_node(pos)
 
     if self.timer>0.2 then
-        local objs = multicraft.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
+        local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
         for k, obj in pairs(objs) do
             if obj:get_luaentity() ~= nil then
                 if obj:get_luaentity().name ~= "throwing:arrow_entity" and obj:get_luaentity().name ~= "__builtin:item" then
@@ -71,16 +71,16 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 
     if self.lastpos.x~=nil then
         if node.name ~= "air" then
-            multicraft.add_item(self.lastpos, 'throwing:arrow')
+            minetest.add_item(self.lastpos, 'throwing:arrow')
             self.object:remove()
         end
     end
     self.lastpos={x=pos.x, y=pos.y, z=pos.z}
 end
 
-multicraft.register_entity("throwing:arrow_entity", THROWING_ARROW_ENTITY)
+minetest.register_entity("throwing:arrow_entity", THROWING_ARROW_ENTITY)
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'throwing:arrow 4',
     recipe = {
         {'default:flint'},

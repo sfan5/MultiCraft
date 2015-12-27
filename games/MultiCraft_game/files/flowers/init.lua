@@ -1,381 +1,286 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
-local f = io.open(multicraft.get_modpath("flowers")..'/init.lua', "r")
-local content = f:read("*all")
-f:close()
-if content:find("mine".."test") then os.exit() end--
--- multicraft 0.4 mod: default
+-- Minetest 0.4 mod: default
 -- See README.txt for licensing and other information.
 
-flower_tmp={}
+
+-- Namespace for functions
+
+flowers = {}
 
 
 -- Map Generation
-dofile(multicraft.get_modpath("flowers").."/mapgen.lua")
-dofile(multicraft.get_modpath("flowers").."/func.lua")
+
+dofile(minetest.get_modpath("flowers") .. "/mapgen.lua")
 
 
+--
+-- Flowers
+--
 
--------------------------------
---- Fleur Simple (une case) ---
--------------------------------
+-- Aliases for original flowers mod
+
+minetest.register_alias("flowers:flower_rose", "flowers:rose")
+minetest.register_alias("flowers:flower_tulip", "flowers:tulip")
+minetest.register_alias("flowers:flower_dandelion_yellow", "flowers:dandelion_yellow")
+minetest.register_alias("flowers:flower_orchid", "flowers:orchid")
+minetest.register_alias("flowers:flower_allium", "flowers:allium")
+minetest.register_alias("flowers:flower_dandelion_white", "flowers:dandelion_white")
 
 
-local function add_simple_flower(name, desc, image, color)
-        multicraft.register_node("flowers:"..name.."", {
-                description = desc,
-                drawtype = "plantlike",
-                tiles = { image..".png" },
-                inventory_image = image..".png",
-                wield_image = image..".png",
-                sunlight_propagates = true,
-                paramtype = "light",
-                buildable_to = true,
-                walkable = false,
-                stack_max = 64,
-                groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,dig_by_water=1,color=1, decorative = 1},
-                sounds = default.node_sound_leaves_defaults(),
-                selection_box = {
-                        type = "fixed",
-                        fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-                },
-        })
+-- Flower registration
+
+local function add_simple_flower(name, desc, box, f_groups)
+	-- Common flowers' groups
+	f_groups.snappy = 3
+	f_groups.flammable = 2
+	f_groups.flower = 1
+	f_groups.flora = 1
+	f_groups.attached_node = 1
+
+	minetest.register_node("flowers:" .. name, {
+		description = desc,
+		drawtype = "plantlike",
+		waving = 1,
+		tiles = {"flowers_" .. name .. ".png"},
+		inventory_image = "flowers_" .. name .. ".png",
+		wield_image = "flowers_" .. name .. ".png",
+		sunlight_propagates = true,
+		paramtype = "light",
+		walkable = false,
+		buildable_to = true,
+		stack_max = 99,
+		groups = f_groups,
+		sounds = default.node_sound_leaves_defaults(),
+		selection_box = {
+			type = "fixed",
+			fixed = box
+		}
+	})
 end
 
-add_simple_flower("rose", "Coqlicot", "flowers_coqlicot", "color_red")
---add_simple_flower("rose", "Rose", "flowers_rose", "color_red") -- Old skin :( you miss me
-add_simple_flower("dandelion_yellow", "Yellow Dandelion", "flowers_dandelion_yellow", "color_yellow")
-add_simple_flower("oxeye_daisy", "Oxeye Daisy", "flower_oxeye_daisy", "color_yellow")
-add_simple_flower("tulip_orange", "Orange Tulip", "flower_tulip_orange", "color_orange")
+flowers.datas = {
+	{"rose", "Rose", {-0.15, -0.5, -0.15, 0.15, 0.3, 0.15}, {color_red = 1}},
+	{"tulip", "Orange Tulip", {-0.15, -0.5, -0.15, 0.15, 0.2, 0.15}, {color_orange = 1}},
+	{"dandelion_yellow", "Yellow Dandelion", {-0.15, -0.5, -0.15, 0.15, 0.2, 0.15}, {color_yellow = 1}},
+	{"orchid", "Blue Orchid", {-0.15, -0.5, -0.15, 0.15, 0.2, 0.15}, {color_blue = 1}},
+	{"allium", "Allium", {-0.5, -0.5, -0.5, 0.5, -0.2, 0.5}, {color_violet = 1}},
+	{"dandelion_white", "White dandelion", {-0.5, -0.5, -0.5, 0.5, -0.2, 0.5}, {color_white = 1}}
+}
 
-multicraft.register_node("flowers:tulip_pink", {
-        description = "Pink Tulip",
-        drawtype = "plantlike",
-        tiles = { "flower_tulip_pink.png" },
-        inventory_image = "flower_tulip_pink.png",
-        wield_image = "flower_tulip_pink.png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        buildable_to = true,
-        walkable = false,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
-multicraft.register_node("flowers:tulip_red", {
-        description = "Red Tulip",
-        drawtype = "plantlike",
-        tiles = { "flower_tulip_red.png" },
-        inventory_image = "flower_tulip_red.png",
-        wield_image = "flower_tulip_red.png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        walkable = false,
-        buildable_to = true,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_red=1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
-
-multicraft.register_node("flowers:tulip_white", {
-        description = "White Tulip",
-        drawtype = "plantlike",
-        tiles = { "flower_tulip_white.png" },
-        inventory_image = "flower_tulip_white.png",
-        wield_image = "flower_tulip_white.png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        walkable = false,
-        buildable_to = true,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
-
---- allium ---
-
-multicraft.register_node("flowers:allium", {
-        description = "Allium",
-        drawtype = "plantlike",
-        tiles = { "flower_allium.png" },
-        inventory_image = "flower_allium.png",
-        wield_image = "flower_allium.png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        buildable_to = true,
-        walkable = false,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
---- paeonia ---
-
-multicraft.register_node("flowers:paeonia", {
-        description = "Paeonia",
-        drawtype = "plantlike",
-        tiles = { "flower_paeonia.png" },
-        inventory_image = "flower_paeonia.png",
-        wield_image = "flower_paeonia.png",
-        sunlight_propagates = true,
-        buildable_to = true,
-        paramtype = "light",
-        walkable = false,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
-
---- houstonia ---
-
-multicraft.register_node("flowers:houstonia", {
-        description = "Houstonia",
-        drawtype = "plantlike",
-        tiles = { "flower_houstonia.png" },
-        inventory_image = "flower_houstonia.png",
-        wield_image = "flower_houstonia.png",
-        sunlight_propagates = true,
-        buildable_to = true,
-        paramtype = "light",
-        walkable = false,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
----blue_orchid ---
-
-multicraft.register_node("flowers:blue_orchid", {
-        description = "Blue Orchid",
-        drawtype = "plantlike",
-        tiles = { "flower_blue_orchid.png" },
-        inventory_image = "flower_blue_orchid.png",
-        wield_image = "flower_blue_orchid.png",
-        sunlight_propagates = true,
-        paramtype = "light",
-
-        buildable_to = true,
-        walkable = false,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_blue=1,decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
---- Fern ---
-
-multicraft.register_node("flowers:fern", {
-        description = "Fern",
-        drawtype = "plantlike",
-        tiles = { "fern.png" },
-        inventory_image = "fern.png",
-        wield_image = "fern.png",
-        buildable_to = true,
-        sunlight_propagates = true,
-        paramtype = "light",
-        walkable = false,
-        stack_max = 64,
-        groups = {snappy=3,flammable=2,flower=1,attached_node=1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-                type = "fixed",
-                fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-        },
-})
-
-function register_large(name, desc, inv_img, bot_img, colr) --change in function
-    multicraft.register_node("flowers:"..name.."_bottom", {
-        description = desc.." Bottom",
-        drawtype = "plantlike",
-        tiles = { "double_plant_"..name.."_bottom.png" },
-        inventory_image = "flowers_"..inv_img..".png",
-        buildable_to = true,
-        wield_image = "flowers_"..inv_img..".png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        walkable = false,
-        buildable_to = true,
-        --[[
-        on_place = function(itemstack, placer, pointed_thing)
-            pointed_thing.under = pointed_thing.under-1
-            local name = multicraft.get_node({x=pointed_thing.under, y=pointed_thing.under-1, z=pointed_thing.under}).name
-            if multicraft.get_item_group(name, "soil") ~= 0 then
-                pointed_thing.under = pointed_thing.under+1
-                local height = 0
-                while multicraft.get_node(pointed_thing.under).name == "flowers:"..name.."_bottom" and height < 2 do
-                    height = height+1
-                    pointed_thing.under = pointed_thing.under+1
-                end
-                if height <2 then
-                    if multicraft.get_node(pointed_thing.under).name == "air" then
-                        multicraft.set_node(pointed_thing.under, {name="flowers:"..name.."_top"})
-                    end
-                end
-            end
-        end,
-        ]]
-        drop = "flowers:"..name,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,colr=1, dig_by_water=1, double_bottom =1, decorative = 1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-            type = "fixed",
-            fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 },
-        },
-    })
-
-    -- Top
-    multicraft.register_node("flowers:"..name.."_top", {
-        description = desc.." Top",
-        drawtype = "plantlike",
-        tiles = { "double_plant_"..name.."_top.png" },
-        inventory_image = "double_plant_"..inv_img.."_top.png",
-        wield_image = "double_plant_"..inv_img.."_top.png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        walkable = false,
-        buildable_to = true,
-        drop = "flowers:"..name,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,colr=1, dig_by_water=1, not_in_creative_inventory = 1, double_top =1},
-        sounds = default.node_sound_leaves_defaults(),
-        selection_box = {
-            type = "fixed",
-            fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 },
-        },
-    })
+for _,item in pairs(flowers.datas) do
+	add_simple_flower(unpack(item))
 end
 
 
+-- Flower spread
 
------------------------------
----   Terrain Generation  ---
------------------------------
+minetest.register_abm({
+	nodenames = {"group:flora"},
+	neighbors = {"default:dirt_with_grass", "default:desert_sand"},
+	interval = 50,
+	chance = 25,
+	action = function(pos, node)
+		pos.y = pos.y - 1
+		local under = minetest.get_node(pos)
+		pos.y = pos.y + 1
+		if under.name == "default:desert_sand" then
+			minetest.set_node(pos, {name = "default:dry_shrub"})
+		elseif under.name ~= "default:dirt_with_grass" then
+			return
+		end
 
-multicraft.register_abm({
-        nodenames = {"group:flora"},
-        neighbors = {"default:dirt_with_grass", "default:sand"},
-        interval = 40,
-        chance = 20,
-        action = function(pos, node)
-                pos.y = pos.y - 1
-                local under = multicraft.get_node(pos)
-                pos.y = pos.y + 1
-                if under.name == "default:sand" then
-                        multicraft.set_node(pos, {name="default:dry_shrub"})
-                elseif under.name ~= "default:sand" then
-                        return
-                end
+		local light = minetest.get_node_light(pos)
+		if not light or light < 13 then
+			return
+		end
 
-                local light = multicraft.get_node_light(pos)
-                if not light or light < 10 then
-                        return
-                end
+		local pos0 = {x = pos.x - 4, y = pos.y - 4, z = pos.z - 4}
+		local pos1 = {x = pos.x + 4, y = pos.y + 4, z = pos.z + 4}
+		if #minetest.find_nodes_in_area(pos0, pos1, "group:flora_block") > 0 then
+			return
+		end
 
-                local pos0 = {x=pos.x-4,y=pos.y-4,z=pos.z-4}
-                local pos1 = {x=pos.x+4,y=pos.y+4,z=pos.z+4}
+		local flowers = minetest.find_nodes_in_area(pos0, pos1, "group:flora")
+		if #flowers > 3 then
+			return
+		end
 
-                local flowers = multicraft.find_nodes_in_area(pos0, pos1, "group:flora")
-                if #flowers > 3 then
-                        return
-                end
-
-                local seedling = multicraft.find_nodes_in_area(pos0, pos1, "default:dirt_with_grass")
-                if #seedling > 0 then
-                        seedling = seedling[math.random(#seedling)]
-                        seedling.y = seedling.y + 1
-                        light = multicraft.get_node_light(seedling)
-                        if not light or light < 13 then
-                                return
-                        end
-                        if multicraft.get_node(seedling).name == "air" then
-                                multicraft.set_node(seedling, {name=node.name})
-                        end
-                end
-        end,
-})
-
---
--- Flower Pot
---
-
-multicraft.register_node("flowers:pot",{
-        description = "Flower Pot",
-        drawtype = "nodebox",
-        node_box = { type = "fixed", fixed = {
-                {-0.125,-0.125,-0.187500,-0.187500,-0.500,0.1875}, --Wall 1
-                {0.1875,-0.125,-0.125,0.125,-0.500,0.1875}, --Wall 2
-                {-0.1875,-0.125,-0.125,0.1875,-0.500,-0.1875}, --Wall 3
-                {0.1875,-0.125,0.125,-0.1875,-0.500,0.1875}, --Wall 4
-                {-0.125,-0.500,-0.125,0.125,-0.250,0.125}, --Dirt 5
-        }},
-        selection_box = { type = "fixed", fixed = {-0.125,-0.5,-0.125,0.125,-0.25,0.125 }},
-        tiles = {"flowers_pot_top.png", "flowers_pot_bottom.png", "flowers_pot_top.png"},
-        inventory_image="flowers_pot_inventory.png",
-        paramtype = "light",
-        groups = {snappy=3, decorative = 1},
-        stack_max = 16,
-        sounds = default.node_sound_defaults(),
-        after_place_node = function(pos, placer, itemstack)
-                local meta = multicraft.get_meta(pos)
-                meta:set_string("owner",placer:get_player_name())
-        end,
-        on_rightclick = function(pos, node, clicker, itemstack)
-                if not itemstack then return end
-                local meta = multicraft.get_meta(pos)
-                if clicker:get_player_name() == meta:get_string("owner") then
-                        flower_pot_drop_item(pos,node)
-                        local s = itemstack:take_item()
-                        meta:set_string("item",s:to_string())
-                        flower_pot_update_item(pos,node)
-                end
-                return itemstack
-        end,
-        on_punch = function(pos,node,puncher)
-                local meta = multicraft.get_meta(pos)
-                if puncher:get_player_name() == meta:get_string("owner") then
-                        flower_pot_drop_item(pos,node)
-                end
-        end,
-        can_dig = function(pos,player)
-                local meta = multicraft.get_meta(pos)
-                return player:get_player_name() == meta:get_string("owner")
-        end,
-        on_destruct = function(pos)
-                local node = multicraft.get_node(pos)
-                flower_pot_drop_item(pos,node)
-                multicraft.add_node(pos, {name="air"})
-                multicraft.add_item(pos, "flowers:pot")
-        end,
+		local seedling = minetest.find_nodes_in_area(pos0, pos1, "default:dirt_with_grass")
+		if #seedling > 0 then
+			seedling = seedling[math.random(#seedling)]
+			seedling.y = seedling.y + 1
+			light = minetest.get_node_light(seedling)
+			if not light or light < 13 then
+				return
+			end
+			if minetest.get_node(seedling).name == "air" then
+				minetest.set_node(seedling, {name = node.name})
+			end
+		end
+	end,
 })
 
 
+--
+-- Mushrooms
+--
+
+local mushrooms_datas = {
+	{"brown", 2},
+	{"red", -6}
+}
+
+for _, m in pairs(mushrooms_datas) do
+	local name, nut = m[1], m[2]
+
+	-- Register fertile mushrooms
+
+	-- These are placed by mapgen and the growing ABM.
+	-- These drop an infertile mushroom, and 0 to 3 spore
+	-- nodes with an average of 1.25 per mushroom, for
+	-- a slow multiplication of mushrooms when farming.
+
+	minetest.register_node("flowers:mushroom_fertile_" .. name, {
+		description = string.sub(string.upper(name), 0, 1) ..
+			string.sub(name, 2) .. " Fertile Mushroom",
+		tiles = {"flowers_mushroom_" .. name .. ".png"},
+		inventory_image = "flowers_mushroom_" .. name .. ".png",
+		wield_image = "flowers_mushroom_" .. name .. ".png",
+		drawtype = "plantlike",
+		paramtype = "light",
+		sunlight_propagates = true,
+		walkable = false,
+		buildable_to = true,
+		groups = {snappy = 3, flammable = 3, attached_node = 1,
+			not_in_creative_inventory = 1},
+		drop = {
+			items = {
+				{items = {"flowers:mushroom_" .. name}},
+				{items = {"flowers:mushroom_spores_" .. name}, rarity = 4},
+				{items = {"flowers:mushroom_spores_" .. name}, rarity = 2},
+				{items = {"flowers:mushroom_spores_" .. name}, rarity = 2}
+			}
+		},
+		sounds = default.node_sound_leaves_defaults(),
+		on_use = minetest.item_eat(nut),
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.3, -0.5, -0.3, 0.3, 0, 0.3}
+		}
+	})
+
+	-- Register infertile mushrooms
+
+	-- These do not drop spores, to avoid the use of repeated digging
+	-- and placing of a single mushroom to generate unlimited spores.
+
+	minetest.register_node("flowers:mushroom_" .. name, {
+		description = string.sub(string.upper(name), 0, 1) ..
+			string.sub(name, 2) .. " Mushroom",
+		tiles = {"flowers_mushroom_" .. name .. ".png"},
+		inventory_image = "flowers_mushroom_" .. name .. ".png",
+		wield_image = "flowers_mushroom_" .. name .. ".png",
+		drawtype = "plantlike",
+		paramtype = "light",
+		sunlight_propagates = true,
+		walkable = false,
+		buildable_to = true,
+		groups = {snappy = 3, flammable = 3, attached_node = 1},
+		sounds = default.node_sound_leaves_defaults(),
+		on_use = minetest.item_eat(nut),
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.3, -0.5, -0.3, 0.3, 0, 0.3}
+		}
+	})
+
+	-- Register mushroom spores
+
+	minetest.register_node("flowers:mushroom_spores_" .. name, {
+		description = string.sub(string.upper(name), 0, 1) ..
+			string.sub(name, 2) .. " Mushroom Spores",
+		drawtype = "signlike",
+		tiles = {"flowers_mushroom_spores_" .. name .. ".png"},
+		inventory_image = "flowers_mushroom_spores_" .. name .. ".png",
+		wield_image = "flowers_mushroom_spores_" .. name .. ".png",
+		paramtype = "light",
+		paramtype2 = "wallmounted",
+		sunlight_propagates = true,
+		walkable = false,
+		buildable_to = true,
+		selection_box = {
+			type = "wallmounted",
+		},
+		groups = {dig_immediate = 3, attached_node = 1},
+	})
+end
+
+
+-- Register growing ABM
+
+minetest.register_abm({
+	nodenames = {"flowers:mushroom_spores_brown", "flowers:mushroom_spores_red"},
+	interval = 11,
+	chance = 50,
+	action = function(pos, node)
+		local node_under = minetest.get_node_or_nil({x = pos.x,
+			y = pos.y - 1, z = pos.z})
+		if not node_under then
+			return
+		end
+		if minetest.get_item_group(node_under.name, "soil") ~= 0 and
+				minetest.get_node_light(pos, nil) <= 13 then
+			if node.name == "flowers:mushroom_spores_brown" then
+				minetest.set_node(pos, {name = "flowers:mushroom_fertile_brown"})
+			elseif node.name == "flowers:mushroom_spores_red" then
+				minetest.set_node(pos, {name = "flowers:mushroom_fertile_red"})
+			end
+		end
+	end
+})
+
+
+--
+-- Waterlily
+--
+
+minetest.register_node("flowers:waterlily", {
+	description = "Waterlily",
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	tiles = {"flowers_waterlily.png"},
+	inventory_image = "flowers_waterlily.png",
+	wield_image = "flowers_waterlily.png",
+	liquids_pointable = true,
+	walkable = false,
+	buildable_to = true,
+	groups = {snappy = 3, flower = 1},
+	sounds = default.node_sound_leaves_defaults(),
+	node_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -0.46875, 0.5}
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -0.4375, 0.5}
+	},
+
+	after_place_node = function(pos, placer, itemstack, pointed_thing)
+		local find_water = minetest.find_nodes_in_area({x = pos.x - 1, y = pos.y, z = pos.z - 1},
+			{x = pos.x + 1, y = pos.y, z = pos.z + 1}, "default:water_source")
+		local find_river_water = minetest.find_nodes_in_area({x = pos.x - 1, y = pos.y, z = pos.z - 1},
+			{x = pos.x + 1, y = pos.y, z = pos.z + 1}, "default:river_water_source")
+		if #find_water ~= 0 then
+			minetest.set_node(pos, {name = "default:water_source"})
+			pos.y = pos.y + 1
+			minetest.set_node(pos, {name = "flowers:waterlily", param2 = math.random(0, 3)})
+		elseif #find_river_water ~= 0 then
+			minetest.set_node(pos, {name = "default:river_water_source"})
+			pos.y = pos.y + 1
+			minetest.set_node(pos, {name = "flowers:waterlily", param2 = math.random(0, 3)})
+		else
+			minetest.remove_node(pos)
+			return true
+		end
+	end
+})

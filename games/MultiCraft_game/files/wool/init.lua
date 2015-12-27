@@ -1,10 +1,10 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 -- multicraft/wool/init.lua
 
 -- Backwards compatibility with jordach's 16-color wool mod
-multicraft.register_alias("wool:dark_blue", "wool:blue")
-multicraft.register_alias("wool:gold", "wool:yellow")
+minetest.register_alias("wool:dark_blue", "wool:blue")
+minetest.register_alias("wool:gold", "wool:yellow")
 
 local wool = {}
 -- This uses a trick: you can first define the recipes using all of the base
@@ -33,14 +33,14 @@ for _, row in ipairs(wool.dyes) do
     local desc = row[2]
     local craft_color_group = row[3]
     -- Node Definition
-        multicraft.register_node("wool:"..name, {
+        minetest.register_node("wool:"..name, {
             description = desc.." Wool",
             stack_max = 64,
             tiles = {"wool_"..name..".png"},
             groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=3,wool=1, building = 1},
             sounds = default.node_sound_defaults(),
         })
-        multicraft.register_node("wool:"..name.."_carpet", {
+        minetest.register_node("wool:"..name.."_carpet", {
             description = desc.." Carpet",
             walkable = false,
             tiles = {"wool_"..name..".png"},
@@ -59,12 +59,12 @@ for _, row in ipairs(wool.dyes) do
         })
     if craft_color_group then
     -- Crafting from dye and white wool
-        multicraft.register_craft({
+        minetest.register_craft({
             type = "shapeless",
             output = 'wool:'..name,
             recipe = {'group:dye,'..craft_color_group, 'group:wool'},
         })
-        multicraft.register_craft({
+        minetest.register_craft({
             type = "shapeless",
             output = 'wool:'..name..'_carpet 3',
             recipe = {'wool:'..name, 'wool:'..name},

@@ -40,7 +40,7 @@ watch.images_d={
 --Catch the sever time and convert to hour, 12000 = 12h = 0.5, 6000 = 6h = 0.25
 function watch.pega_hora(tipo)
   local tempo_r = "12:00"
-  local t = multicraft.get_timeofday()
+  local t = minetest.get_timeofday()
   local tempo = t*24 -- Get the time
   local tempo_h = math.floor(tempo) -- Get 24h only, losting minutes
   local tempo_m =math.floor((tempo - tempo_h)*60) --Get only minutes
@@ -83,7 +83,7 @@ function watch.usa (itemstack, user, pointed_thing)
   DOM_set_item_meta(item, meta)
   meta=DOM_get_item_meta(item)
 --DOM_inspeciona_r("Valores no meta:"..dump(meta))
-  multicraft.chat_send_player(user:get_player_name(), "[Watch] Time now is:" .. meta["time"])
+  minetest.chat_send_player(user:get_player_name(), "[Watch] Time now is:" .. meta["time"])
 
   itemstack:replace(item)
 
@@ -98,7 +98,7 @@ function watch.registra_item(nome,imagem,aparece_nas_receitas)
   end
 
 --DOM_inspeciona_r("Registrando item "..nome..","..imagem)
-  multicraft.register_tool(nome, {
+  minetest.register_tool(nome, {
     description = "Watch",
     inventory_image = imagem,
     groups = {not_in_creative_inventory=g, tools = g},
@@ -109,7 +109,7 @@ function watch.registra_item(nome,imagem,aparece_nas_receitas)
   })
 end
 
-multicraft.register_globalstep(function(dtime)
+minetest.register_globalstep(function(dtime)
   local t="a" -- d to digital, a to analogic
 
   local now = watch.pega_hora(2)
@@ -123,7 +123,7 @@ multicraft.register_globalstep(function(dtime)
   watch.ultimo_tempo = now
 
 
-  local players  = multicraft.get_connected_players()
+  local players  = minetest.get_connected_players()
   for i,player in ipairs(players) do
 
     if string.sub(player:get_wielded_item():get_name(), 0, 11) == "watch:watch" then

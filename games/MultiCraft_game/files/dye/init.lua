@@ -1,9 +1,3 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
-local f = io.open(multicraft.get_modpath("dye")..'/init.lua', "r")
-local content = f:read("*all")
-f:close()
-if content:find("mine".."test") then os.exit() end--
 -- multicraft/dye/init.lua
 
 -- To make recipes that will work with any dye ever made by anybody, define
@@ -13,7 +7,7 @@ if content:find("mine".."test") then os.exit() end--
 --
 -- Example of one shapeless recipe using a color group:
 -- Note: As this uses basecolor_*, you'd need 9 of these.
--- multicraft.register_craft({
+-- minetest.register_craft({
 --     type = "shapeless",
 --     output = '<mod>:item_yellow',
 --     recipe = {'<mod>:item_no_color', 'group:basecolor_yellow'},
@@ -94,13 +88,13 @@ for _, row in ipairs(dyelocal.dyes) do
     local groups = row[3]
     local item_name = "dye:"..name
     local item_image = "dye_"..name..".png"
-    multicraft.register_craftitem(item_name, {
+    minetest.register_craftitem(item_name, {
         inventory_image = item_image,
         description = description,
         groups = groups,
         stack_max = 64,
     })
-    multicraft.register_craft({
+    minetest.register_craft({
         type = "shapeless",
         output = item_name.." 4",
         recipe = {"group:flower,color_"..name},
@@ -134,7 +128,7 @@ lightblue ={ "violet",  "violet", "orange", "orange", "green", "green", "green",
 for one,results in pairs(dyelocal.mixes) do
     for i,result in ipairs(results) do
         local another = dyelocal.mixbases[i]
-        multicraft.register_craft({
+        minetest.register_craft({
             type = "shapeless",
             output = 'dye:'..result..' 2',
             recipe = {'dye:'..one, 'dye:'..another},
@@ -145,7 +139,7 @@ end
 -- Hide dyelocal
 dyelocal = nil
 
-multicraft.register_craftitem("dye:white", {
+minetest.register_craftitem("dye:white", {
     inventory_image = "dye_white.png",
     description = "Bone Meal",
     stack_max = 64,
@@ -155,7 +149,7 @@ multicraft.register_craftitem("dye:white", {
     end,
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = 'dye:lightblue',
     recipe = {
         {'flowers:blue_orchid'},

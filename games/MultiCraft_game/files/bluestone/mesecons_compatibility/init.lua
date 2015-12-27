@@ -1,5 +1,5 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 doors = {}
 
 -- Registers a door - REDEFINITION ONLY | DOORS MOD MUST HAVE BEEN LOADED BEFORE
@@ -40,27 +40,27 @@ function doors:register_door(name, def)
     local tb = def.tiles_bottom
 
     local function after_dig_node(pos, name)
-        if multicraft.get_node(pos).name == name then
-            multicraft.remove_node(pos)
+        if minetest.get_node(pos).name == name then
+            minetest.remove_node(pos)
         end
     end
 
     local function on_rightclick(pos, dir, check_name, replace, replace_dir, params)
         pos.y = pos.y+dir
-        if not multicraft.get_node(pos).name == check_name then
+        if not minetest.get_node(pos).name == check_name then
             return
         end
-        local p2 = multicraft.get_node(pos).param2
+        local p2 = minetest.get_node(pos).param2
         p2 = params[p2+1]
 
-        local meta = multicraft.get_meta(pos):to_table()
-        multicraft.set_node(pos, {name=replace_dir, param2=p2})
-        multicraft.get_meta(pos):from_table(meta)
+        local meta = minetest.get_meta(pos):to_table()
+        minetest.set_node(pos, {name=replace_dir, param2=p2})
+        minetest.get_meta(pos):from_table(meta)
 
         pos.y = pos.y-dir
-        meta = multicraft.get_meta(pos):to_table()
-        multicraft.set_node(pos, {name=replace, param2=p2})
-        multicraft.get_meta(pos):from_table(meta)
+        meta = minetest.get_meta(pos):to_table()
+        minetest.set_node(pos, {name=replace, param2=p2})
+        minetest.get_meta(pos):from_table(meta)
     end
 
     local function on_mesecons_signal_open (pos, node)
@@ -75,12 +75,12 @@ function doors:register_door(name, def)
         if not def.only_placer_can_open then
             return true
         end
-        local meta = multicraft.get_meta(pos)
+        local meta = minetest.get_meta(pos)
         local pn = player:get_player_name()
         return meta:get_string("doors_owner") == pn
     end
 
-    multicraft.register_node(":"..name.."_b_1", {
+    minetest.register_node(":"..name.."_b_1", {
         tiles = {tb[2], tb[2], tb[2], tb[2], tb[1], tb[1].."^[transformfx"},
         paramtype = "light",
         paramtype2 = "facedir",
@@ -114,7 +114,7 @@ function doors:register_door(name, def)
         can_dig = check_player_priv,
     })
 
-    multicraft.register_node(":"..name.."_b_2", {
+    minetest.register_node(":"..name.."_b_2", {
         tiles = {tb[2], tb[2], tb[2], tb[2], tb[1].."^[transformfx", tb[1]},
         paramtype = "light",
         paramtype2 = "facedir",

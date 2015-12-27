@@ -24,10 +24,10 @@ EXPIRE FUNCTION: The function that is run when the expire time runs out.
 potions.register_potion("Anti Gravity", "purple", 60,
 function(itemstack, user, pointed_thing) 
 	user:set_physics_override(3, 1.5, 0.5)
-	multicraft.chat_send_player(user:get_player_name(), "You have been blessed with Anti Gravity for 60 seconds!")
+	minetest.chat_send_player(user:get_player_name(), "You have been blessed with Anti Gravity for 60 seconds!")
 end,
 
 function(itemstack, user, pointed_thing)
 	user:set_physics_override(1,1,1)
-	multicraft.chat_send_player(user:get_player_name(), "Anti Gravity has worn off.")
+	minetest.chat_send_player(user:get_player_name(), "Anti Gravity has worn off.")
 end)

@@ -95,7 +95,7 @@ for zmy=0, 1 do
         nodebox = {-8/16, -.5, -1/16, 8/16, -.5+1/16, 1/16}
     end
 
-    multicraft.register_node("mesecons:wire_"..nodeid.."_off", {
+    minetest.register_node("mesecons:wire_"..nodeid.."_off", {
         description = "Bluestone Dust",
         drawtype = "nodebox",
         tiles = tiles_off,
@@ -124,7 +124,7 @@ for zmy=0, 1 do
         }},
     })
 
-    multicraft.register_node("mesecons:wire_"..nodeid.."_on", {
+    minetest.register_node("mesecons:wire_"..nodeid.."_on", {
         description = "Bluestone Dust",
         drawtype = "nodebox",
         tiles = tiles_on,
@@ -165,14 +165,14 @@ end
 -- Place the right connection wire
 
 local update_on_place_dig = function (pos, node)
-    if multicraft.registered_nodes[node.name]
-    and multicraft.registered_nodes[node.name].mesecons then
+    if minetest.registered_nodes[node.name]
+    and minetest.registered_nodes[node.name].mesecons then
         mesecon:update_autoconnect(pos)
     end
 end
 
-multicraft.register_on_placenode(update_on_place_dig)
-multicraft.register_on_dignode(update_on_place_dig)
+minetest.register_on_placenode(update_on_place_dig)
+minetest.register_on_dignode(update_on_place_dig)
 
 function mesecon:update_autoconnect(pos, secondcall, replace_old)
     local xppos = {x=pos.x+1, y=pos.y, z=pos.z}
@@ -207,7 +207,7 @@ function mesecon:update_autoconnect(pos, secondcall, replace_old)
         mesecon:update_autoconnect(zmympos, true)
     end
 
-    local nodename = multicraft.get_node(pos).name
+    local nodename = minetest.get_node(pos).name
     if string.find(nodename, "mesecons:wire_") == nil and not replace_old then return nil end
 
     local xp, xm, zp, zm, xpy, zpy, xmy, zmy
@@ -237,8 +237,8 @@ function mesecon:update_autoconnect(pos, secondcall, replace_old)
 
 
     if string.find(nodename, "_off") ~= nil then
-        multicraft.set_node(pos, {name = "mesecons:wire_"..nodeid.."_off"})
+        minetest.set_node(pos, {name = "mesecons:wire_"..nodeid.."_off"})
     else
-        multicraft.set_node(pos, {name = "mesecons:wire_"..nodeid.."_on" })
+        minetest.set_node(pos, {name = "mesecons:wire_"..nodeid.."_on" })
     end
 end

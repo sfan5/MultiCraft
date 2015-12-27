@@ -1,5 +1,5 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 -- Get mesecon rules of pistons
 piston_rules =
 {{x=0,  y=0,  z=1}, --everything apart from z- (pusher side)
@@ -57,34 +57,34 @@ piston_get_direction = function (dir, node)
 end
 
 local piston_remove_pusher = function (pos, node)
-    local pistonspec = multicraft.registered_nodes[node.name].mesecons_piston
+    local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 
     local dir = piston_get_direction(pistonspec.dir, node)
     local pusherpos = mesecon:addPosRule(pos, dir)
-    local pushername = multicraft.get_node(pusherpos).name
+    local pushername = minetest.get_node(pusherpos).name
 
     if pushername == pistonspec.pusher then --make sure there actually is a pusher (for compatibility reasons mainly)
-        multicraft.remove_node(pusherpos)
+        minetest.remove_node(pusherpos)
         nodeupdate(pusherpos)
     end
 end
 
 local piston_on = function (pos, node)
-    local pistonspec = multicraft.registered_nodes[node.name].mesecons_piston
+    local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 
     local dir = piston_get_direction(pistonspec.dir, node)
     local np = mesecon:addPosRule(pos, dir)
     local success, stack = mesecon:mvps_push(np, dir, PISTON_MAXIMUM_PUSH)
     if success then
-        multicraft.add_node(pos, {param2 = node.param2, name = pistonspec.onname})
-        multicraft.add_node(np, {param2 = node.param2, name = pistonspec.pusher})
+        minetest.add_node(pos, {param2 = node.param2, name = pistonspec.onname})
+        minetest.add_node(np, {param2 = node.param2, name = pistonspec.pusher})
         mesecon:mvps_process_stack(stack)
     end
 end
 
 local piston_off = function (pos, node)
-    local pistonspec = multicraft.registered_nodes[node.name].mesecons_piston
-    multicraft.add_node(pos, {param2 = node.param2, name = pistonspec.offname})
+    local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
+    minetest.add_node(pos, {param2 = node.param2, name = pistonspec.offname})
     piston_remove_pusher (pos, node)
 
     if pistonspec.sticky then
@@ -102,12 +102,12 @@ local piston_orientate = function (pos, placer)
     -- placer pitch in degrees
     local pitch = placer:get_look_pitch() * (180 / math.pi)
 
-    local node = multicraft.get_node(pos)
-    local pistonspec = multicraft.registered_nodes[node.name].mesecons_piston
+    local node = minetest.get_node(pos)
+    local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
     if pitch > 55 then --looking upwards
-        multicraft.add_node(pos, {name=pistonspec.piston_down})
+        minetest.add_node(pos, {name=pistonspec.piston_down})
     elseif pitch < -55 then --looking downwards
-        multicraft.add_node(pos, {name=pistonspec.piston_up})
+        minetest.add_node(pos, {name=pistonspec.piston_up})
     end
 end
 
@@ -144,7 +144,7 @@ local pistonspec_normal = {
 }
 
 -- offstate
-multicraft.register_node("mesecons_pistons:piston_normal_off", {
+minetest.register_node("mesecons_pistons:piston_normal_off", {
     description = "Piston",
     tiles = {
         "mesecons_piston_top.png",
@@ -166,7 +166,7 @@ multicraft.register_node("mesecons_pistons:piston_normal_off", {
 })
 
 -- onstate
-multicraft.register_node("mesecons_pistons:piston_normal_on", {
+minetest.register_node("mesecons_pistons:piston_normal_on", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_top.png",
@@ -194,7 +194,7 @@ multicraft.register_node("mesecons_pistons:piston_normal_on", {
 })
 
 -- pusher
-multicraft.register_node("mesecons_pistons:piston_pusher_normal", {
+minetest.register_node("mesecons_pistons:piston_pusher_normal", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_pusher_top.png",
@@ -225,7 +225,7 @@ local pistonspec_sticky = {
 }
 
 -- offstate
-multicraft.register_node("mesecons_pistons:piston_sticky_off", {
+minetest.register_node("mesecons_pistons:piston_sticky_off", {
     description = "Sticky Piston",
     tiles = {
         "mesecons_piston_top.png",
@@ -247,7 +247,7 @@ multicraft.register_node("mesecons_pistons:piston_sticky_off", {
 })
 
 -- onstate
-multicraft.register_node("mesecons_pistons:piston_sticky_on", {
+minetest.register_node("mesecons_pistons:piston_sticky_on", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_top.png",
@@ -275,7 +275,7 @@ multicraft.register_node("mesecons_pistons:piston_sticky_on", {
 })
 
 -- pusher
-multicraft.register_node("mesecons_pistons:piston_pusher_sticky", {
+minetest.register_node("mesecons_pistons:piston_pusher_sticky", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_pusher_top.png",
@@ -324,7 +324,7 @@ local pistonspec_normal_up = {
 }
 
 -- offstate
-multicraft.register_node("mesecons_pistons:piston_up_normal_off", {
+minetest.register_node("mesecons_pistons:piston_up_normal_off", {
     tiles = {
         "mesecons_piston_pusher_front.png",
         "mesecons_piston_back.png",
@@ -346,7 +346,7 @@ multicraft.register_node("mesecons_pistons:piston_up_normal_off", {
 })
 
 -- onstate
-multicraft.register_node("mesecons_pistons:piston_up_normal_on", {
+minetest.register_node("mesecons_pistons:piston_up_normal_on", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_on_front.png",
@@ -374,7 +374,7 @@ multicraft.register_node("mesecons_pistons:piston_up_normal_on", {
 })
 
 -- pusher
-multicraft.register_node("mesecons_pistons:piston_up_pusher_normal", {
+minetest.register_node("mesecons_pistons:piston_up_pusher_normal", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_pusher_front.png",
@@ -406,7 +406,7 @@ local pistonspec_sticky_up = {
 }
 
 -- offstate
-multicraft.register_node("mesecons_pistons:piston_up_sticky_off", {
+minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
     tiles = {
         "mesecons_piston_pusher_front_sticky.png",
         "mesecons_piston_back.png",
@@ -430,7 +430,7 @@ multicraft.register_node("mesecons_pistons:piston_up_sticky_off", {
 })
 
 -- onstate
-multicraft.register_node("mesecons_pistons:piston_up_sticky_on", {
+minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_on_front.png",
@@ -458,7 +458,7 @@ multicraft.register_node("mesecons_pistons:piston_up_sticky_on", {
 })
 
 -- pusher
-multicraft.register_node("mesecons_pistons:piston_up_pusher_sticky", {
+minetest.register_node("mesecons_pistons:piston_up_pusher_sticky", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_pusher_front_sticky.png",
@@ -509,7 +509,7 @@ local pistonspec_normal_down = {
 }
 
 -- offstate
-multicraft.register_node("mesecons_pistons:piston_down_normal_off", {
+minetest.register_node("mesecons_pistons:piston_down_normal_off", {
     tiles = {
         "mesecons_piston_back.png",
         "mesecons_piston_pusher_front.png",
@@ -532,7 +532,7 @@ multicraft.register_node("mesecons_pistons:piston_down_normal_off", {
 })
 
 -- onstate
-multicraft.register_node("mesecons_pistons:piston_down_normal_on", {
+minetest.register_node("mesecons_pistons:piston_down_normal_on", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_back.png",
@@ -560,7 +560,7 @@ multicraft.register_node("mesecons_pistons:piston_down_normal_on", {
 })
 
 -- pusher
-multicraft.register_node("mesecons_pistons:piston_down_pusher_normal", {
+minetest.register_node("mesecons_pistons:piston_down_pusher_normal", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_pusher_back.png",
@@ -589,7 +589,7 @@ local pistonspec_sticky_down = {
 }
 
 -- offstate
-multicraft.register_node("mesecons_pistons:piston_down_sticky_off", {
+minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
     tiles = {
         "mesecons_piston_back.png",
         "mesecons_piston_pusher_front_sticky.png",
@@ -612,7 +612,7 @@ multicraft.register_node("mesecons_pistons:piston_down_sticky_off", {
 })
 
 -- onstate
-multicraft.register_node("mesecons_pistons:piston_down_sticky_on", {
+minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_back.png",
@@ -640,7 +640,7 @@ multicraft.register_node("mesecons_pistons:piston_down_sticky_on", {
 })
 
 -- pusher
-multicraft.register_node("mesecons_pistons:piston_down_pusher_sticky", {
+minetest.register_node("mesecons_pistons:piston_down_pusher_sticky", {
     drawtype = "nodebox",
     tiles = {
         "mesecons_piston_pusher_back.png",
@@ -662,10 +662,10 @@ multicraft.register_node("mesecons_pistons:piston_down_pusher_sticky", {
 -- Register pushers as stoppers if they would be seperated from the piston
 local piston_pusher_get_stopper = function (node, dir, stack, stackid)
     if (stack[stackid + 1]
-    and stack[stackid + 1].node.name   == multicraft.registered_nodes[node.name].corresponding_piston
+    and stack[stackid + 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston
     and stack[stackid + 1].node.param2 == node.param2)
     or (stack[stackid - 1]
-    and stack[stackid - 1].node.name   == multicraft.registered_nodes[node.name].corresponding_piston
+    and stack[stackid - 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston
     and stack[stackid - 1].node.param2 == node.param2) then
         return false
     end
@@ -674,9 +674,9 @@ end
 
 local piston_pusher_up_down_get_stopper = function (node, dir, stack, stackid)
     if (stack[stackid + 1]
-    and stack[stackid + 1].node.name   == multicraft.registered_nodes[node.name].corresponding_piston)
+    and stack[stackid + 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston)
     or (stack[stackid - 1]
-    and stack[stackid - 1].node.name   == multicraft.registered_nodes[node.name].corresponding_piston) then
+    and stack[stackid - 1].node.name   == minetest.registered_nodes[node.name].corresponding_piston) then
         return false
     end
     return true
@@ -695,21 +695,21 @@ mesecon:register_mvps_stopper("mesecons_pistons:piston_down_pusher_sticky", pist
 -- Register pistons as stoppers if they would be seperated from the stopper
 local piston_up_down_get_stopper = function (node, dir, stack, stackid)
     if (stack[stackid + 1]
-    and stack[stackid + 1].node.name   == multicraft.registered_nodes[node.name].mesecons_piston.pusher)
+    and stack[stackid + 1].node.name   == minetest.registered_nodes[node.name].mesecons_piston.pusher)
     or (stack[stackid - 1]
-    and stack[stackid - 1].node.name   == multicraft.registered_nodes[node.name].mesecons_piston.pusher) then
+    and stack[stackid - 1].node.name   == minetest.registered_nodes[node.name].mesecons_piston.pusher) then
         return false
     end
     return true
 end
 
 local piston_get_stopper = function (node, dir, stack, stackid)
-    pistonspec = multicraft.registered_nodes[node.name].mesecons_piston
+    pistonspec = minetest.registered_nodes[node.name].mesecons_piston
     dir = piston_get_direction(pistonspec.dir, node)
     local pusherpos  = mesecon:addPosRule(stack[stackid].pos, dir)
-    local pushernode = multicraft.get_node(pusherpos)
+    local pushernode = minetest.get_node(pusherpos)
 
-    if multicraft.registered_nodes[node.name].mesecons_piston.pusher == pushernode.name then
+    if minetest.registered_nodes[node.name].mesecons_piston.pusher == pushernode.name then
         for _, s in ipairs(stack) do
             if  mesecon:cmpPos(s.pos, pusherpos) -- pusher is also to be pushed
             and s.node.param2 == node.param2 then
@@ -730,7 +730,7 @@ mesecon:register_mvps_stopper("mesecons_pistons:piston_down_normal_on", piston_u
 mesecon:register_mvps_stopper("mesecons_pistons:piston_down_sticky_on", piston_up_down_get_stopper)
 
 --craft recipes
-multicraft.register_craft({
+minetest.register_craft({
     output = 'mesecons_pistons:piston_normal_off',
     recipe = {
         {"group:wood", "group:wood", "group:wood"},
@@ -739,7 +739,7 @@ multicraft.register_craft({
     }
 })
 
-multicraft.register_craft({
+minetest.register_craft({
     output = "mesecons_pistons:piston_sticky_off",
     recipe = {
         {"mesecons_materials:glue"},

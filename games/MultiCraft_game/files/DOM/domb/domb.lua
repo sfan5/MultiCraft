@@ -2,8 +2,8 @@
 domb.aleatorio = nil
 
 --Inicialização da variável aleatoria para que seja usada quando necessário.
-multicraft.after(0.01, function()
-  domb.aleatorio=PseudoRandom(200 + (multicraft.get_timeofday()*100000))
+minetest.after(0.01, function()
+  domb.aleatorio=PseudoRandom(200 + (minetest.get_timeofday()*100000))
 end)
 
 -- Identifica vizinhança de um ponto, os pontos retornados tem a parte superior como ponto 1.
@@ -29,7 +29,7 @@ function DOM_vizinhos(ponto)
     for vx=-1, 1 do
       for vz=-1,1 do
         p.n[pontos] = ''
-        tipo =  multicraft.get_node({x=(ponto.x + vx), y=(ponto.y + vy), z=(ponto.z + vz)}).name
+        tipo =  minetest.get_node({x=(ponto.x + vx), y=(ponto.y + vy), z=(ponto.z + vz)}).name
 --print("Ponto pego: " .. tipo)
         -- Busca pontos onde dois eixos estejam zerados e um outro tenha valor.
         if vx==0 and vy==0 and vz==0 then
@@ -210,7 +210,7 @@ end
 --]]
 function DOM_log(...)
   -- action, error, info
-  multicraft.log("action", "[DOM]"..string.format(...))
+  minetest.log("action", "[DOM]"..string.format(...))
 end
 
 
@@ -343,7 +343,7 @@ end
     module name, path of the module
 ]]--
 function DOM_mb(m,c)
---  multicraft.log("action", "[DOM]"..m.." loaded from "..multicraft.get_modpath(multicraft.get_current_modname()))
+--  minetest.log("action", "[DOM]"..m.." loaded from "..minetest.get_modpath(minetest.get_current_modname()))
 
 end
 
@@ -355,9 +355,9 @@ end
   apaga x y z   Apaga node no lugar especificado.
 
     if  comando == "comando" then -- Comando?
-      multicraft.chat_send_player(name, "[DOM]dom_util: ".."Comando?")
+      minetest.chat_send_player(name, "[DOM]dom_util: ".."Comando?")
     elseif comando == "comando2" then -- Comando?
-      multicraft.chat_send_player(name, "[DOM]dom_util: ".."Comando2?")
+      minetest.chat_send_player(name, "[DOM]dom_util: ".."Comando2?")
     end
   end
 
@@ -438,7 +438,7 @@ function DOM_get_item_meta (item)
   end
 
   if string.find(v,"return {") then
-    r = multicraft.deserialize(v)
+    r = minetest.deserialize(v)
   end
 
   return r
@@ -446,7 +446,7 @@ end
 
 -- Associa valores meta a um item, provavelmente se aplica a nodos.
 function DOM_set_item_meta(i, v)
-  local t = multicraft.serialize(v)
+  local t = minetest.serialize(v)
 
   i["metadata"]=t
 end

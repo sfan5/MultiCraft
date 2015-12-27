@@ -1,5 +1,5 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 -- Function that get the input/output rules of the delayer
 local delayer_get_output_rules = function(node)
     local rules = {{x = 0, y = 0, z = 1}}
@@ -30,17 +30,17 @@ local delayer_turnoff = function(params)
 end
 
 local delayer_activate = function(pos, node)
-    local def = multicraft.registered_nodes[node.name]
+    local def = minetest.registered_nodes[node.name]
     local time = def.delayer_time
     mesecon:swap_node(pos, def.delayer_onstate)
-    multicraft.after(time, delayer_turnon , {pos = pos, node = node})
+    minetest.after(time, delayer_turnon , {pos = pos, node = node})
 end
 
 local delayer_deactivate = function(pos, node)
-    local def = multicraft.registered_nodes[node.name]
+    local def = minetest.registered_nodes[node.name]
     local time = def.delayer_time
     mesecon:swap_node(pos, def.delayer_offstate)
-    multicraft.after(time, delayer_turnoff, {pos = pos, node = node})
+    minetest.after(time, delayer_turnoff, {pos = pos, node = node})
 end
 
 -- Register the 2 (states) x 4 (delay times) delayers
@@ -88,7 +88,7 @@ boxes = {
 }
 end
 
-multicraft.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
+minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
     description = "Delayer",
     drawtype = "nodebox",
     tiles = {
@@ -144,7 +144,7 @@ multicraft.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 })
 
 
-multicraft.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
+minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
     description = "You hacker you",
     drawtype = "nodebox",
     tiles = {
@@ -198,7 +198,7 @@ multicraft.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 })
 end
 
-multicraft.register_craft({
+minetest.register_craft({
     output = "mesecons_delayer:delayer_off_1",
     recipe = {
         {"mesecons_torch:mesecon_torch_on", "", "mesecons_torch:mesecon_torch_on"},

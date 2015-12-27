@@ -1,198 +1,138 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
-local f = io.open(multicraft.get_modpath("fire")..'/init.lua', "r")
-local content = f:read("*all")
-f:close()
-if content:find("mine".."test") then os.exit() end--
--- multicraft/fire/init.lua
+fire = {}
+fire.mod = "redo"
 
-multicraft.register_node("fire:basic_flame", {
-	description = "Fire",
+-- initial check to see if fire is disabled
+local disable_fire = minetest.setting_getbool("disable_fire")
+
+minetest.register_node("fire:basic_flame", {
+	description = "Basic Flame",
 	drawtype = "plantlike",
-	tiles = {{
-		name="fire_basic_flame_animated.png",
-		animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1},
-	}},
+	tiles = {
+		{
+			name = "fire_basic_flame_animated.png",
+			animation = {
+				type="vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 1
+			},
+		},
+	},
 	inventory_image = "fire_basic_flame.png",
+	paramtype = "light",
 	light_source = 14,
-	groups = {igniter=2,dig_immediate=3,hot=3},
-	drop = '',
 	walkable = false,
 	buildable_to = true,
+	sunlight_propagates = true,
 	damage_per_second = 4,
+	groups = {igniter = 2, dig_immediate = 3},
+	drop = '',
+	on_blast = function()
+	end, -- unaffected by explosions
+})
 
-	after_place_node = function(pos, placer)
-		fire.on_flame_add_at(pos)
-	end,
+minetest.register_node("fire:permanent_flame", {
+	description = "Permanent Flame",
+	drawtype = "firelike",
+	tiles = {
+		{
+			name = "fire_basic_flame_animated.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 1
+			},
+		},
+	},
+	inventory_image = "fire_basic_flame.png",
+	paramtype = "light",
+	light_source = 14,
+	walkable = false,
+	buildable_to = true,
+	sunlight_propagates = true,
+	damage_per_second = 4,
+	groups = {igniter = 2, dig_immediate = 3},
+	drop = "",
 
-	after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		fire.on_flame_remove_at(pos)
+	on_blast = function()
 	end,
 })
 
-fire = {}
-fire.D = 6
--- key: position hash of low corner of area
--- value: {handle=sound handle, name=sound name}
-fire.sounds = {}
+-- compatibility
+minetest.register_alias("fire:eternal_flame", "fire:permanent_flame")
 
-function fire.get_area_p0p1(pos)
-	local p0 = {
-		x=math.floor(pos.x/fire.D)*fire.D,
-		y=math.floor(pos.y/fire.D)*fire.D,
-		z=math.floor(pos.z/fire.D)*fire.D,
-	}
-	local p1 = {
-		x=p0.x+fire.D-1,
-		y=p0.y+fire.D-1,
-		z=p0.z+fire.D-1
-	}
-	return p0, p1
-end
+-- extinguish flames quickly with dedicated ABM
+minetest.register_abm({
+	nodenames = {"fire:basic_flame"},
+	interval = 7,
+	chance = 2,
+	catch_up = false,
+	action = function(p0, node, _, _)
+		if not disable_fire then return end
+		minetest.set_node(p0, {name = "air"})
+	end,
+})
 
-function fire.update_sounds_around(pos)
-	local p0, p1 = fire.get_area_p0p1(pos)
-	local cp = {x=(p0.x+p1.x)/2, y=(p0.y+p1.y)/2, z=(p0.z+p1.z)/2}
-	local flames_p = multicraft.find_nodes_in_area(p0, p1, {"fire:basic_flame"})
-	--print("number of flames at "..multicraft.pos_to_string(p0).."/"
-	--		..multicraft.pos_to_string(p1)..": "..#flames_p)
-	local should_have_sound = (#flames_p > 0)
-	local wanted_sound = nil
-	if #flames_p >= 9 then
-		wanted_sound = {name="fire_large", gain=1.5}
-	elseif #flames_p > 0 then
-		wanted_sound = {name="fire_small", gain=1.5}
-	end
-	local p0_hash = multicraft.hash_node_position(p0)
-	local sound = fire.sounds[p0_hash]
-	if not sound then
-		if should_have_sound then
-			fire.sounds[p0_hash] = {
-				handle = multicraft.sound_play(wanted_sound, {pos=cp, loop=true}),
-				name = wanted_sound.name,
-			}
-		end
-	else
-		if not wanted_sound then
-			multicraft.sound_stop(sound.handle)
-			fire.sounds[p0_hash] = nil
-		elseif sound.name ~= wanted_sound.name then
-			multicraft.sound_stop(sound.handle)
-			fire.sounds[p0_hash] = {
-				handle = multicraft.sound_play(wanted_sound, {pos=cp, loop=true}),
-				name = wanted_sound.name,
-			}
-		end
-	end
-end
+-- extinguish flames quickly with water, snow, ice
+minetest.register_abm({
+	nodenames = {"fire:basic_flame", "fire:permanent_flame"},
+	neighbors = {"group:puts_out_fire"},
+	interval = 3,
+	chance = 2,
+	catch_up = false,
+	action = function(p0, node, _, _)
+		minetest.set_node(p0, {name = "air"})
+		minetest.sound_play("fire_extinguish_flame",
+			{pos = p0, max_hear_distance = 16, gain = 0.15})
+	end,
+})
 
-function fire.on_flame_add_at(pos)
-	--print("flame added at "..multicraft.pos_to_string(pos))
-	fire.update_sounds_around(pos)
-end
-
-function fire.on_flame_remove_at(pos)
-	--print("flame removed at "..multicraft.pos_to_string(pos))
-	fire.update_sounds_around(pos)
-end
-
-function fire.find_pos_for_flame_around(pos)
-	return multicraft.find_node_near(pos, 1, {"air"})
-end
-
-function fire.flame_should_extinguish(pos)
-	if multicraft.setting_getbool("disable_fire") then return true end
-	--return multicraft.find_node_near(pos, 1, {"group:puts_out_fire"})
-	local p0 = {x=pos.x-2, y=pos.y, z=pos.z-2}
-	local p1 = {x=pos.x+2, y=pos.y, z=pos.z+2}
-	local ps = multicraft.find_nodes_in_area(p0, p1, {"group:puts_out_fire"})
-	return (#ps ~= 0)
-end
-
--- Ignite neighboring nodes
-multicraft.register_abm({
+-- ignite neighboring nodes
+minetest.register_abm({
 	nodenames = {"group:flammable"},
 	neighbors = {"group:igniter"},
-	interval = 1,
-	chance = 2,
+	interval = 7,
+	chance = 16,
+	catch_up = false,
 	action = function(p0, node, _, _)
-		-- If there is water or stuff like that around flame, don't ignite
-		if fire.flame_should_extinguish(p0) then
+		-- check to see if fire is still disabled
+		disable_fire = minetest.setting_getbool("disable_fire")
+		--print ("disable fire set to ", disable_fire)
+
+		-- if there is water or stuff like that around flame, don't ignite
+		if disable_fire
+		or minetest.find_node_near(p0, 1, {"group:puts_out_fire"}) then
 			return
 		end
-		local p = fire.find_pos_for_flame_around(p0)
+		local p = minetest.find_node_near(p0, 1, {"air"})
 		if p then
-			multicraft.set_node(p, {name="fire:basic_flame"})
-			fire.on_flame_add_at(p)
+			minetest.set_node(p, {name = "fire:basic_flame"})
 		end
 	end,
 })
 
--- Rarely ignite things from far
-multicraft.register_abm({
-	nodenames = {"group:igniter"},
-	neighbors = {"air"},
-	interval = 2,
-	chance = 10,
-	action = function(p0, node, _, _)
-		local reg = multicraft.registered_nodes[node.name]
-		if not reg or not reg.groups.igniter or reg.groups.igniter < 2 then
-			return
-		end
-		local d = reg.groups.igniter
-		local p = multicraft.find_node_near(p0, d, {"group:flammable"})
-		if p then
-			-- If there is water or stuff like that around flame, don't ignite
-			if fire.flame_should_extinguish(p) then
-				return
-			end
-			local p2 = fire.find_pos_for_flame_around(p)
-			if p2 then
-				multicraft.set_node(p2, {name="fire:basic_flame"})
-				fire.on_flame_add_at(p2)
-			end
-		end
-	end,
-})
-
--- Remove flammable nodes and flame
-multicraft.register_abm({
+-- remove flammable nodes and flame
+minetest.register_abm({
 	nodenames = {"fire:basic_flame"},
-	interval = 1,
-	chance = 2,
+	interval = 5,
+	chance = 16,
+	catch_up = false,
 	action = function(p0, node, _, _)
-		-- If there is water or stuff like that around flame, remove flame
-		if fire.flame_should_extinguish(p0) then
-			multicraft.remove_node(p0)
-			fire.on_flame_remove_at(p0)
-			return
-		end
-		-- Make the following things rarer
-		if math.random(1,3) == 1 then
-			return
-		end
+
 		-- If there are no flammable nodes around flame, remove flame
-		if not multicraft.find_node_near(p0, 1, {"group:flammable"}) then
-			multicraft.remove_node(p0)
-			fire.on_flame_remove_at(p0)
+		if not minetest.find_node_near(p0, 1, {"group:flammable"}) then
+			minetest.set_node(p0, {name = "air"})
 			return
 		end
-		if math.random(1,3) == 1 then
+
+		if math.random(1, 4) == 1 then
 			-- remove a flammable node around flame
-			local p = multicraft.find_node_near(p0, 1, {"group:flammable"})
+			local p = minetest.find_node_near(p0, 1, {"group:flammable"})
 			if p then
-				-- If there is water or stuff like that around flame, don't remove
-				if fire.flame_should_extinguish(p0) then
-					return
-				end
-				multicraft.remove_node(p)
-				nodeupdate(p)
+				minetest.set_node(p, {name = "air"})
+--				nodeupdate(p)
 			end
-		else
-			-- remove flame
-			multicraft.remove_node(p0)
-			fire.on_flame_remove_at(p0)
 		end
 	end,
 })
-

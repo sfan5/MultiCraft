@@ -5,10 +5,10 @@
 --
 
 -- The hand
-multicraft.register_item(":", {
+minetest.register_item(":", {
     type = "none",
     wield_image = "wieldhand.png",
-    wield_scale = {x=1,y=1,z=0.5},
+    wield_scale = {x=1,y=1,z=0.3},
     tool_capabilities = {
         full_punch_interval = 0.9,
         max_drop_level = 0,
@@ -24,7 +24,7 @@ multicraft.register_item(":", {
 })
 
 -- Picks
-multicraft.register_tool("default:pick_wood", {
+minetest.register_tool("default:pick_wood", {
     description = "Wooden Pickaxe",
     inventory_image = "default_tool_woodpick.png",
     tool_capabilities = {
@@ -37,7 +37,7 @@ multicraft.register_tool("default:pick_wood", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:pick_stone", {
+minetest.register_tool("default:pick_stone", {
     description = "Stone Pickaxe",
     inventory_image = "default_tool_stonepick.png",
     tool_capabilities = {
@@ -50,7 +50,7 @@ multicraft.register_tool("default:pick_stone", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:pick_steel", {
+minetest.register_tool("default:pick_steel", {
     description = "Steel Pickaxe",
     inventory_image = "default_tool_steelpick.png",
     tool_capabilities = {
@@ -63,7 +63,7 @@ multicraft.register_tool("default:pick_steel", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:pick_gold", {
+minetest.register_tool("default:pick_gold", {
     description = "Gold Pickaxe",
     inventory_image = "default_tool_goldpick.png",
     tool_capabilities = {
@@ -76,7 +76,7 @@ multicraft.register_tool("default:pick_gold", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:pick_diamond", {
+minetest.register_tool("default:pick_diamond", {
     description = "Diamond Pickaxe",
     inventory_image = "default_tool_diamondpick.png",
     tool_capabilities = {
@@ -91,7 +91,7 @@ multicraft.register_tool("default:pick_diamond", {
 })
 
 -- Shovels
-multicraft.register_tool("default:shovel_wood", {
+minetest.register_tool("default:shovel_wood", {
     description = "Wooden Shovel",
     inventory_image = "default_tool_woodshovel.png",
     wield_image = "default_tool_woodshovel.png^[transformR90",
@@ -105,7 +105,7 @@ multicraft.register_tool("default:shovel_wood", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:shovel_stone", {
+minetest.register_tool("default:shovel_stone", {
     description = "Stone Shovel",
     inventory_image = "default_tool_stoneshovel.png",
     wield_image = "default_tool_stoneshovel.png^[transformR90",
@@ -119,7 +119,7 @@ multicraft.register_tool("default:shovel_stone", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:shovel_steel", {
+minetest.register_tool("default:shovel_steel", {
     description = "Steel Shovel",
     inventory_image = "default_tool_steelshovel.png",
     wield_image = "default_tool_steelshovel.png^[transformR90",
@@ -133,7 +133,7 @@ multicraft.register_tool("default:shovel_steel", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:shovel_gold", {
+minetest.register_tool("default:shovel_gold", {
     description = "Gold Shovel",
     inventory_image = "default_tool_goldshovel.png",
     wield_image = "default_tool_goldshovel.png^[transformR90",
@@ -147,7 +147,7 @@ multicraft.register_tool("default:shovel_gold", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:shovel_diamond", {
+minetest.register_tool("default:shovel_diamond", {
     description = "Diamond Shovel",
     inventory_image = "default_tool_diamondshovel.png",
     wield_image = "default_tool_diamondshovel.png^[transformR90",
@@ -163,7 +163,7 @@ multicraft.register_tool("default:shovel_diamond", {
 })
 
 -- Axes
-multicraft.register_tool("default:axe_wood", {
+minetest.register_tool("default:axe_wood", {
     description = "Wooden Axe",
     inventory_image = "default_tool_woodaxe.png",
     tool_capabilities = {
@@ -176,7 +176,7 @@ multicraft.register_tool("default:axe_wood", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:axe_stone", {
+minetest.register_tool("default:axe_stone", {
     description = "Stone Axe",
     inventory_image = "default_tool_stoneaxe.png",
     tool_capabilities = {
@@ -189,7 +189,7 @@ multicraft.register_tool("default:axe_stone", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:axe_steel", {
+minetest.register_tool("default:axe_steel", {
     description = "Steel Axe",
     inventory_image = "default_tool_steelaxe.png",
     tool_capabilities = {
@@ -202,7 +202,7 @@ multicraft.register_tool("default:axe_steel", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:axe_gold", {
+minetest.register_tool("default:axe_gold", {
     description = "Gold Axe",
     inventory_image = "default_tool_goldaxe.png",
     tool_capabilities = {
@@ -215,7 +215,7 @@ multicraft.register_tool("default:axe_gold", {
     },
     groups = {tools=1},
 })
-multicraft.register_tool("default:axe_diamond", {
+minetest.register_tool("default:axe_diamond", {
     description = "Diamond Axe",
     inventory_image = "default_tool_diamondaxe.png",
     tool_capabilities = {
@@ -230,7 +230,7 @@ multicraft.register_tool("default:axe_diamond", {
 })
 
 -- Swords
-multicraft.register_tool("default:sword_wood", {
+minetest.register_tool("default:sword_wood", {
     description = "Wooden Sword",
     inventory_image = "default_tool_woodsword.png",
     tool_capabilities = {
@@ -243,7 +243,7 @@ multicraft.register_tool("default:sword_wood", {
     },
     groups = {combat=1},
 })
-multicraft.register_tool("default:sword_stone", {
+minetest.register_tool("default:sword_stone", {
     description = "Stone Sword",
     inventory_image = "default_tool_stonesword.png",
     tool_capabilities = {
@@ -256,7 +256,7 @@ multicraft.register_tool("default:sword_stone", {
     },
     groups = {combat=1},
 })
-multicraft.register_tool("default:sword_steel", {
+minetest.register_tool("default:sword_steel", {
     description = "Steel Sword",
     inventory_image = "default_tool_steelsword.png",
     tool_capabilities = {
@@ -269,7 +269,7 @@ multicraft.register_tool("default:sword_steel", {
     },
     groups = {combat=1},
 })
-multicraft.register_tool("default:sword_gold", {
+minetest.register_tool("default:sword_gold", {
     description = "Gold Sword",
     inventory_image = "default_tool_goldsword.png",
     tool_capabilities = {
@@ -282,7 +282,7 @@ multicraft.register_tool("default:sword_gold", {
     },
     groups = {combat=1},
 })
-multicraft.register_tool("default:sword_diamond", {
+minetest.register_tool("default:sword_diamond", {
     description = "Diamond Sword",
     inventory_image = "default_tool_diamondsword.png",
     tool_capabilities = {
@@ -297,7 +297,7 @@ multicraft.register_tool("default:sword_diamond", {
 })
 
 -- Flint and Steel
-multicraft.register_tool("default:flint_and_steel", {
+minetest.register_tool("default:flint_and_steel", {
     description = "Flint and Steel",
     inventory_image = "default_tool_flint_and_steel.png",
     liquids_pointable = false,
@@ -321,7 +321,7 @@ multicraft.register_tool("default:flint_and_steel", {
 })
 
 -- Fishing Pole
-multicraft.register_tool("default:pole", {
+minetest.register_tool("default:pole", {
     description = "Fishing Rod",
     groups = {},
     inventory_image = "default_tool_fishing_pole.png",
@@ -330,7 +330,7 @@ multicraft.register_tool("default:pole", {
     liquids_pointable = true,
     on_use = function (itemstack, user, pointed_thing)
         if pointed_thing and pointed_thing.under then
-            local node = multicraft.get_node(pointed_thing.under)
+            local node = minetest.get_node(pointed_thing.under)
             if string.find(node.name, "default:water") then
                 if math.random(1, 100) > 50 then
                     local inv = user:get_inventory()
@@ -347,7 +347,7 @@ multicraft.register_tool("default:pole", {
 })
 
 --Shears
-multicraft.register_tool("default:shears", {
+minetest.register_tool("default:shears", {
     description = "Shears",
     inventory_image = "default_tool_shears.png",
     wield_image = "default_tool_shears.png",

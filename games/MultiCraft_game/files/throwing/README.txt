@@ -2,7 +2,7 @@
 by PilzAdam
 
 Inroduction:
-This mod adds bows and arrows to multicraft.
+This mod adds bows and arrows to minetest.
 
 How to install:
 Unzip the archive an place it in multicraft-base-directory/mods/multicraft/
@@ -11,7 +11,7 @@ a linux system-wide instalation place it in ~/.multicraft/mods/multicraft/.
 If you want to install this mod only in one world create the folder
 worldmods/ in your worlddirectory.
 For further information or help see:
-http://wiki.multicraft.com/wiki/Installing_Mods
+http://wiki.minetest.com/wiki/Installing_Mods
 
 How to use the mod:
 Craft a bow with the strings from the farming mod:

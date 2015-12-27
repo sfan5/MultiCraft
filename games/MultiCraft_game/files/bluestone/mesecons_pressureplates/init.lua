@@ -1,5 +1,5 @@
-if not multicraft.get_modpath("check") then os.exit() end
-if not default.multicraft_is_variable_is_a_part_of_multicraft_subgame_and_copying_it_means_you_use_our_code_so_we_become_contributors_of_your_project then exit() end
+
+
 local pp_box_off = {
     type = "fixed",
     fixed = { -7/16, -8/16, -7/16, 7/16, -7/16, 7/16 },
@@ -11,18 +11,18 @@ local pp_box_on = {
 }
 
 pp_on_timer = function (pos, elapsed)
-    local node   = multicraft.get_node(pos)
-    local ppspec = multicraft.registered_nodes[node.name].pressureplate
+    local node   = minetest.get_node(pos)
+    local ppspec = minetest.registered_nodes[node.name].pressureplate
 
     -- This is a workaround for a strange bug that occurs when the server is started
     -- For some reason the first time on_timer is called, the pos is wrong
     if not ppspec then return end
 
-    local objs   = multicraft.get_objects_inside_radius(pos, 1)
+    local objs   = minetest.get_objects_inside_radius(pos, 1)
     local two_below = mesecon:addPosRule(pos, {x = 0, y = -2, z = 0})
 
     if objs[1] == nil and node.name == ppspec.onstate then
-        multicraft.add_node(pos, {name = ppspec.offstate})
+        minetest.add_node(pos, {name = ppspec.offstate})
         mesecon:receptor_off(pos)
         -- force deactivation of mesecon two blocks below (hacky)
         if not mesecon:connected_to_receptor(two_below) then
@@ -32,7 +32,7 @@ pp_on_timer = function (pos, elapsed)
         for k, obj in pairs(objs) do
             local objpos = obj:getpos()
             if objpos.y > pos.y-1 and objpos.y < pos.y then
-                multicraft.add_node(pos, {name=ppspec.onstate})
+                minetest.add_node(pos, {name=ppspec.onstate})
                 mesecon:receptor_on(pos)
                 -- force activation of mesecon two blocks below (hacky)
                 mesecon:turnon(two_below)
@@ -57,7 +57,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
         onstate  = onstate
     }
 
-    multicraft.register_node(offstate, {
+    minetest.register_node(offstate, {
         drawtype = "nodebox",
         tiles = {texture_off},
         wield_image = texture_off,
@@ -72,11 +72,11 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
             state = mesecon.state.off
         }},
         on_construct = function(pos)
-            multicraft.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
+            minetest.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
         end,
     })
 
-    multicraft.register_node(onstate, {
+    minetest.register_node(onstate, {
         drawtype = "nodebox",
         tiles = {texture_on},
         paramtype = "light",
@@ -91,7 +91,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
             state = mesecon.state.on
         }},
         on_construct = function(pos)
-            multicraft.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
+            minetest.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
         end,
         after_dig_node = function(pos)
             local two_below = mesecon:addPosRule(pos, {x = 0, y = -2, z = 0})
@@ -101,7 +101,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
         end
     })
 
-    multicraft.register_craft({
+    minetest.register_craft({
         output = offstate,
         recipe = recipe,
     })
