@@ -9,7 +9,7 @@ if minetest.setting_getbool("creative_mode") then
 		wield_scale = {x=0.7,y=2,z=0.0001}, 
 		range = 10,
 		tool_capabilities = {
-			full_punch_interval = 0.5,
+			full_punch_interval = 0.9,
 			max_drop_level = 3,
 			groupcaps = {
 				crumbly = {times={[1]=digtime, [2]=digtime, [3]=digtime}, uses=0, maxlevel=3},

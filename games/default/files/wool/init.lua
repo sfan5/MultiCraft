@@ -57,5 +57,3 @@ for _, row in pairs(wool_dyes) do
 	})
 
 end
-
-print ("[MOD] Wool mod loaded")
