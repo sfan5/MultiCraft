@@ -1,6 +1,3 @@
-creative = {}
-local player_inventory = {}
-
 if minetest.setting_getbool("creative_mode") then
 	local digtime = 1
 	minetest.register_item(":", {
