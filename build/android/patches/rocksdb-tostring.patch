@@ -1,0 +1,32 @@
+--- rocksdb/utilities/simulator_cache/sim_cache.cc.old	2016-10-18 16:39:55.804355707 +0200
++++ rocksdb/utilities/simulator_cache/sim_cache.cc	2016-10-18 16:39:59.577585819 +0200
+@@ -6,6 +6,7 @@
+ #include "rocksdb/utilities/sim_cache.h"
+ #include <atomic>
+ #include "port/port.h"
++#include <sstream>
+ 
+ namespace rocksdb {
+ 
+@@ -129,15 +130,15 @@
+   }
+ 
+   virtual std::string ToString() const override {
+-    std::string res;
+-    res.append("SimCache LOOKUPs: " + std::to_string(get_lookup_counter()) +
+-               "\n");
+-    res.append("SimCache HITs:    " + std::to_string(get_hit_counter()) + "\n");
++    std::ostringstream res;
++    res << "SimCache LOOKUPs: " << get_lookup_counter() <<
++               "\n";
++    res << "SimCache HITs:    " << get_hit_counter() << "\n";
+     char buff[100];
+     snprintf(buff, sizeof(buff), "SimCache HITRATE: %.2f%%\n",
+              get_hit_rate() * 100);
+-    res.append(buff);
+-    return res;
++    res << buff;
++    return res.str();
+   }
+ 
+  private:

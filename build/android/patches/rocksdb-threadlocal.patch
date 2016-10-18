@@ -1,0 +1,26 @@
+--- rocksdb/util/perf_level.cc.old	2016-10-18 18:28:29.124934995 +0200
++++ rocksdb/util/perf_level.cc	2016-10-18 18:30:42.884543081 +0200
+@@ -11,7 +11,7 @@
+ 
+ namespace rocksdb {
+ 
+-#if defined(IOS_CROSS_COMPILE)
++#if !ROCKSDB_SUPPORT_THREAD_LOCAL
+ PerfLevel perf_level = kEnableCount;
+ #else
+ __thread PerfLevel perf_level = kEnableCount;
+--- rocksdb/util/perf_level_imp.h.old	2016-10-18 18:30:39.931292109 +0200
++++ rocksdb/util/perf_level_imp.h	2016-10-18 18:30:41.614578498 +0200
+@@ -6,10 +6,11 @@
+ #pragma once
+ #include "rocksdb/perf_level.h"
+ #include "port/port.h"
++#include "util/thread_local.h"
+ 
+ namespace rocksdb {
+ 
+-#if defined(IOS_CROSS_COMPILE)
++#if !ROCKSDB_SUPPORT_THREAD_LOCAL
+ extern PerfLevel perf_level;
+ #else
+ extern __thread PerfLevel perf_level;

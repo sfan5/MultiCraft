@@ -1,0 +1,18 @@
+--- rocksdb/util/io_posix.cc.old	2016-10-18 18:23:35.256403734 +0200
++++ rocksdb/util/io_posix.cc	2016-10-18 18:23:38.126324710 +0200
+@@ -35,6 +35,15 @@
+ #include "util/string_util.h"
+ #include "util/sync_point.h"
+ 
++static int posix_memalign(void **memptr, size_t alignment, size_t size)
++{
++	void *ret = memalign(alignment, size);
++	if(!ret)
++		return ENOMEM;
++	*memptr = ret;
++	return 0;
++}
++
+ namespace rocksdb {
+ 
+ // A wrapper for fadvise, if the platform doesn't support fadvise,

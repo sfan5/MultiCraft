@@ -59,6 +59,13 @@ LEVELDB_TIMESTAMP = $(LEVELDB_DIR)/timestamp
 LEVELDB_TIMESTAMP_INT = $(ANDR_ROOT)/deps/leveldb_timestamp
 #LEVELDB_URL_GIT = https://github.com/google/leveldb
 
+ROCKSDB_DIR = $(ANDR_ROOT)/deps/rocksdb/
+ROCKSDB_LIB = $(ROCKSDB_DIR)librocksdb.a
+ROCKSDB_TIMESTAMP = $(ROCKSDB_DIR)/timestamp
+ROCKSDB_TIMESTAMP_INT = $(ANDR_ROOT)/deps/rocksdb_timestamp
+ROCKSDB_URL_GIT = https://github.com/facebook/rocksdb
+ROCKSDB_TAG = v4.11.2
+
 #OPENAL_URL = https://github.com/MoNTE48/openal-soft/releases/download/$(OPENAL_VER)/$(OPENAL_VER).zip
 #OPENAL_VER = openal-soft-1.17.2-dev
 OPENAL_FOLDER = $(ANDR_ROOT)/deps/openal-soft
@@ -137,6 +144,7 @@ NDK_MODULE_PATH = $(ANDROID_NDK)/toolchains
 
 .PHONY : debug release reconfig delconfig \
 	leveldb_download clean_leveldb leveldb\
+	rocksdb_download clean_rocksdb rocksdb\
 	irrlicht_download clean_irrlicht irrlicht \
 	clean_assets assets sqlite3_download \
 	freetype_download clean_freetype freetype \
@@ -148,7 +156,8 @@ NDK_MODULE_PATH = $(ANDROID_NDK)/toolchains
 	$(OPENAL_TIMESTAMP) $(VORBIS_TIMESTAMP) \
 	$(IRRLICHT_TIMESTAMP) $(CURL_TIMESTAMP) \
 	$(ANDR_ROOT)/jni/src/android_version.h \
-	$(ANDR_ROOT)/jni/src/android_version_githash.h
+	$(ANDR_ROOT)/jni/src/android_version_githash.h \
+	$(ROCKSDB_TIMESTAMP)
 #	$(OPENSSL_TIMESTAMP) \
 
 debug : local.properties
@@ -382,6 +391,62 @@ $(LEVELDB_LIB): $(LEVELDB_TIMESTAMP)
 
 clean_leveldb :
 	$(RM) -rf deps/leveldb
+
+$(ROCKSDB_TIMESTAMP) : rocksdb_download
+	@LAST_MODIF=$$(find ${ROCKSDB_DIR} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" "); \
+	if [ $$(basename $$LAST_MODIF) != "timestamp" ] ; then                     \
+		touch ${ROCKSDB_TIMESTAMP};                                            \
+	fi
+
+rocksdb_download :
+	@if [ ! -d ${ROCKSDB_DIR} ] ; then                                         \
+		echo "rocksdb sources missing, downloading...";                        \
+		mkdir -p ${ANDR_ROOT}/deps;                                            \
+		cd ${ANDR_ROOT}/deps ;                                                 \
+		git clone ${ROCKSDB_URL_GIT} || exit 1;                                \
+		cd ${ROCKSDB_DIR} || exit 1;                                           \
+		git checkout ${ROCKSDB_TAG} || exit 1;                                 \
+		patch -p1 < ${ANDR_ROOT}/patches/rocksdb-tostring.patch;               \
+		patch -p1 < ${ANDR_ROOT}/patches/rocksdb-memalign.patch;               \
+		patch -p1 < ${ANDR_ROOT}/patches/rocksdb-threadlocal.patch;             \
+	fi
+
+rocksdb : $(ROCKSDB_LIB)
+
+$(ROCKSDB_LIB): $(ROCKSDB_TIMESTAMP)
+	@REFRESH=0;                                                                \
+	if [ ! -e ${ROCKSDB_TIMESTAMP_INT} ] ; then                                \
+		REFRESH=1;                                                             \
+	fi;                                                                        \
+	if [ ${ROCKSDB_TIMESTAMP} -nt ${ROCKSDB_TIMESTAMP_INT} ] ; then            \
+		REFRESH=1;                                                             \
+	fi;                                                                        \
+	if [ $$REFRESH -ne 0 ] ; then                                              \
+	echo "changed timestamp for rocksdb detected building...";                 \
+	cd deps/rocksdb;                                                           \
+	export CROSS_PREFIX=${CROSS_PREFIX};                                       \
+	export TOOLCHAIN=/tmp/ndk-${TARGET_HOST}-rocksdb;                          \
+	${ANDROID_NDK}/build/tools/make-standalone-toolchain.sh                    \
+		--toolchain=${TARGET_TOOLCHAIN}-${COMPILER_VERSION}                    \
+		--install-dir=$${TOOLCHAIN};                                           \
+	export PATH="$${TOOLCHAIN}/bin:$${PATH}";                                  \
+	export CC=${CROSS_PREFIX}gcc;                                              \
+	export CXX=${CROSS_PREFIX}g++;                                             \
+	export CFLAGS="$${CFLAGS} ${TARGET_CFLAGS_ADDON}";                         \
+	export CPPFLAGS="$${CPPFLAGS} ${TARGET_CXXFLAGS_ADDON}";                   \
+	export LDFLAGS="$${LDFLAGS} ${TARGET_LDFLAGS_ADDON}";                      \
+	export TARGET_OS=OS_ANDROID_CROSSCOMPILE;                                  \
+	sed -i 's/ -march=native/ -DROCKSDB_LITE -DROCKSDB_SUPPORT_THREAD_LOCAL=0/' build_tools/build_detect_platform; \
+	$(MAKE) static_lib || exit 1;                                              \
+	touch ${ROCKSDB_TIMESTAMP};                                                \
+	touch ${ROCKSDB_TIMESTAMP_INT};                                            \
+	$(RM) -rf $${TOOLCHAIN};                                                   \
+	else                                                                       \
+		echo "nothing to be done for rocksdb";                                 \
+	fi
+
+clean_rocksdb :
+	$(RM) -rf deps/rocksdb
 
 $(FREETYPE_TIMESTAMP) : freetype_download
 	@LAST_MODIF=$$(find ${FREETYPE_DIR} -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" "); \
@@ -801,7 +866,7 @@ clean_assets :
 	@$(RM) -r assets
 
 # $(MPIR_LIB)
-apk: local.properties $(ICONV_LIB) $(IRRLICHT_LIB) $(CURL_LIB) $(LEVELDB_LIB) $(LUAJIT_LIB) \
+apk: local.properties $(ICONV_LIB) $(IRRLICHT_LIB) $(CURL_LIB) $(LEVELDB_LIB) $(ROCKSDB_LIB) $(LUAJIT_LIB) \
 	$(OPENAL_LIB) $(VORBIS_LIB) prep_srcdir $(ANDR_ROOT)/jni/src/android_version.h      \
 	$(ANDR_ROOT)/jni/src/android_version_githash.h sqlite3_download assets
 	+ @${ANDROID_NDK}/ndk-build NDK_MODULE_PATH=${NDK_MODULE_PATH}                  \
