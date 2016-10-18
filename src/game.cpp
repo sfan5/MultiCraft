@@ -2057,7 +2057,7 @@ bool Game::createSingleplayerServer(const std::string map_dir,
 
 bool Game::autoMigrateSingleplayerWorld(const std::string map_dir)
 {
-	const std::string new_backend = "leveldb";
+	const std::string new_backend = "rocksdb";
 
 #ifndef __ANDROID__
 	infostream << "Auto-migration disabled on this platform..." << std::endl;

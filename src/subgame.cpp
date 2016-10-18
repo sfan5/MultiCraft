@@ -293,7 +293,11 @@ bool loadGameConfAndInitWorld(const std::string &path, const SubgameSpec &gamesp
 	if (!fs::PathExists(worldmt_path)) {
 		std::ostringstream ss(std::ios_base::binary);
 		ss << "gameid = " << gamespec.id
+#ifdef __ANDROID__
+			<< "\nbackend = rocksdb"
+#else
 			<< "\nbackend = leveldb"
+#endif
 			<< "\ncreative_mode = " << g_settings->get("creative_mode")
 			<< "\nenable_damage = " << g_settings->get("enable_damage")
 			<< "\n";
