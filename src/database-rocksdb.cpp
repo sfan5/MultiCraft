@@ -33,7 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #define ENSURE_STATUS_OK(s) \
 	if (!(s).ok()) { \
-		throw DatabaseException(std::string("RocksDB error: ") + \
+		throw FileNotGoodException(std::string("RocksDB error: ") + \
 				(s).ToString()); \
 	}
 
@@ -68,13 +68,13 @@ bool Database_RocksDB::saveBlock(const v3s16 &pos, const std::string &data)
 	return true;
 }
 
-void Database_RocksDB::loadBlock(const v3s16 &pos, std::string *block)
+std::string Database_RocksDB::loadBlock(const v3s16 &pos)
 {
 	std::string datastr;
 	rocksdb::Status status = m_database->Get(rocksdb::ReadOptions(),
 		i64tos(getBlockAsInteger(pos)), &datastr);
 
-	*block = (status.ok()) ? datastr : "";
+	return (status.ok()) ? datastr : "";
 }
 
 bool Database_RocksDB::deleteBlock(const v3s16 &pos)

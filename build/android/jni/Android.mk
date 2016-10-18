@@ -13,6 +13,11 @@ LOCAL_SRC_FILES := deps/leveldb/out-static/libleveldb.a
 include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := RocksDB
+LOCAL_SRC_FILES := deps/rocksdb/librocksdb.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
 LOCAL_MODULE := curl
 LOCAL_SRC_FILES := deps/curl/lib/.libs/libcurl.a
 include $(PREBUILT_STATIC_LIBRARY)
@@ -71,6 +76,7 @@ LOCAL_CFLAGS := -D_IRR_ANDROID_PLATFORM_ \
 		-DUSE_SOUND=1                    \
 		-DUSE_FREETYPE=1                 \
 		-DUSE_LEVELDB=1                  \
+		-DUSE_ROCKSDB=1                  \
 		$(GPROF_DEF)                     \
 		-pipe -fstrict-aliasing
 #		-DUSE_GETTEXT=1
@@ -112,6 +118,7 @@ LOCAL_C_INCLUDES := \
 		deps/libvorbis-android/jni/include        \
 		deps/sqlite/                              \
 		deps/leveldb/include                      \
+		deps/rocksdb/include                      \
 		deps/luajit/src                           \
 #		deps/gnuintl/jni/include                  \
 #		deps/gnuintl/jni/src
@@ -237,6 +244,7 @@ LOCAL_SRC_FILES := \
 		jni/src/util/timetaker.cpp                \
 		jni/src/touchscreengui.cpp                \
 		jni/src/database-leveldb.cpp              \
+		jni/src/database-rocksdb.cpp              \
 		jni/src/settings.cpp                      \
 		jni/src/wieldmesh.cpp                     \
 		jni/src/client/clientlauncher.cpp         \
@@ -310,7 +318,7 @@ LOCAL_SRC_FILES += \
 # JSONCPP
 LOCAL_SRC_FILES += jni/src/json/jsoncpp.cpp
 
-LOCAL_STATIC_LIBRARIES := Irrlicht LevelDB freetype curl iconv LuaJIT openal vorbis android_native_app_glue $(PROFILER_LIBS)
+LOCAL_STATIC_LIBRARIES := Irrlicht LevelDB RocksDB freetype curl iconv LuaJIT openal vorbis android_native_app_glue $(PROFILER_LIBS)
 #LOCAL_SHARED_LIBRARIES := GNUIntl
 
 LOCAL_LDLIBS := -lEGL -lGLESv1_CM -lGLESv2 -landroid -lOpenSLES

@@ -35,7 +35,7 @@ public:
 	~Database_RocksDB();
 
 	bool saveBlock(const v3s16 &pos, const std::string &data);
-	void loadBlock(const v3s16 &pos, std::string *block);
+	std::string loadBlock(const v3s16 &pos);
 	bool deleteBlock(const v3s16 &pos);
 	void listAllLoadableBlocks(std::vector<v3s16> &dst);
 
