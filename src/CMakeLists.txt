@@ -194,7 +194,7 @@ set(USE_LEVELDB FALSE)
 
 if(ENABLE_LEVELDB)
 	find_library(LEVELDB_LIBRARY leveldb)
-	find_path(LEVELDB_INCLUDE_DIR db.h PATH_SUFFIXES leveldb)
+	find_path(LEVELDB_INCLUDE_DIR leveldb/db.h)
 	if(LEVELDB_LIBRARY AND LEVELDB_INCLUDE_DIR)
 		set(USE_LEVELDB TRUE)
 		message(STATUS "LevelDB backend enabled.")
@@ -204,6 +204,20 @@ if(ENABLE_LEVELDB)
 	endif()
 endif(ENABLE_LEVELDB)
 
+option(ENABLE_ROCKSDB "Enable rocksdb backend" FALSE)
+set(USE_ROCKSDB FALSE)
+
+if(ENABLE_ROCKSDB)
+	find_library(ROCKSDB_LIBRARY rocksdb)
+	find_path(ROCKSDB_INCLUDE_DIR rocksdb/db.h)
+	if(ROCKSDB_LIBRARY AND ROCKSDB_INCLUDE_DIR)
+		set(USE_ROCKSDB TRUE)
+	message(STATUS "RocksDB backend enabled.")
+		include_directories(${ROCKSDB_INCLUDE_DIR})
+	else()
+		message(STATUS "RocksDB not found.")
+	endif()
+endif(ENABLE_ROCKSDB)
 
 OPTION(ENABLE_REDIS "Enable Redis backend" TRUE)
 set(USE_REDIS FALSE)
@@ -361,6 +375,7 @@ set(common_SRCS
 	craftdef.cpp
 	database-dummy.cpp
 	database-leveldb.cpp
+	database-rocksdb.cpp
 	database-redis.cpp
 	database-sqlite3.cpp
 	database.cpp
@@ -595,6 +610,9 @@ if(BUILD_CLIENT)
 	if (USE_LEVELDB)
 		target_link_libraries(${PROJECT_NAME} ${LEVELDB_LIBRARY})
 	endif()
+	if (USE_ROCKSDB)
+		target_link_libraries(${PROJECT_NAME} ${ROCKSDB_LIBRARY})
+	endif()
 	if (USE_REDIS)
 		target_link_libraries(${PROJECT_NAME} ${REDIS_LIBRARY})
 	endif()
@@ -624,6 +642,9 @@ if(BUILD_SERVER)
 	endif()
 	if (USE_LEVELDB)
 		target_link_libraries(${PROJECT_NAME}server ${LEVELDB_LIBRARY})
+	endif()
+	if (USE_ROCKSDB)
+		target_link_libraries(${PROJECT_NAME}server ${ROCKSDB_LIBRARY})
 	endif()
 	if (USE_REDIS)
 		target_link_libraries(${PROJECT_NAME}server ${REDIS_LIBRARY})
