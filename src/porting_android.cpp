@@ -207,7 +207,8 @@ void initializePathsAndroid()
 	path_storage = getAndroidPath(cls_Env, NULL, cls_File, mt_getAbsPath,
 			"getExternalStorageDirectory");
 	path_user    = path_storage + DIR_DELIM + "Android/data/mobi.MultiCraft/Files";
-	path_share   = path_user;
+	path_share   = getAndroidPath(cls_Env, NULL, cls_File, mt_getAbsPath,
+			"getDataDirectory") + DIR_DELIM + "data/mobi.MultiCraft/files";
 	path_locale  = path_user + DIR_DELIM + "locale";
 }
 
