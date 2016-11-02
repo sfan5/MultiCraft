@@ -431,6 +431,8 @@ void set_default_settings(Settings *settings)
     settings->setDefault("cloud_radius", "6");
     settings->setDefault("client_unload_unused_data_timeout", "120");
     settings->setDefault("viewing_range", "30");
+	settings->setDefault("hud_scaling", "0.6");
+	settings->setDefault("mouse_sensitivity", "0.15");
 #endif
 }
 
