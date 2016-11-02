@@ -169,7 +169,7 @@ public:
     }
     void logRaw(LogLevel lev, const std::string &line)
     {
-        ioswrap_NSLog(line.c_str());
+        ioswrap_log(line.c_str());
     }
 };
 

@@ -1,0 +1,6 @@
+project 'MultiCraft/MultiCraft.xcodeproj'
+platform :ios, '9.0'
+
+target 'MultiCraft' do
+  pod 'SSZipArchive'
+end
