@@ -2063,7 +2063,7 @@ bool Game::autoMigrateSingleplayerWorld(const std::string map_dir)
 {
 	const std::string new_backend = "leveldb";
 
-#ifndef __ANDROID__
+#if !defined(__ANDROID__) && !defined(__IOS__)
 	infostream << "Auto-migration disabled on this platform..." << std::endl;
 	return false;
 #endif
@@ -3142,7 +3142,7 @@ void Game::decreaseViewRange(float *statustext_time)
 
 void Game::toggleFullViewRange(float *statustext_time)
 {
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__IOS__)
 	static const wchar_t *msg[] = {
 		L"Disabled far viewing range",
 		L"Enabled far viewing range"
@@ -4038,7 +4038,7 @@ void Game::updateFrame(ProfilerGraph *graph, RunStats *stats,
 
 	if (draw_control->range_all) {
 		runData->fog_range = 100000 * BS;
-		#ifdef __ANDROID__
+		#if defined(__ANDROID__) || defined(__IOS__)
 				runData->fog_range = 0.9 * draw_control->wanted_range * 4 * BS;
 		#endif
 	} else {
@@ -4402,7 +4402,7 @@ void Game::updateGui(float *statustext_time, const RunStats &stats,
 	if (!statustext.empty()) {
 		s32 status_width  = guitext_status->getTextWidth();
 		s32 status_height = guitext_status->getTextHeight();
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__IOS__)
 		s32 status_y = screensize.Y - 320 * g_settings->getFloat("hud_scaling");
 #else
 		s32 status_y = screensize.Y - 150;
