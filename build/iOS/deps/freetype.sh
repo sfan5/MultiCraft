@@ -13,6 +13,7 @@ fi
 cd freetype-src
 
 CC=$IOS_CC CFLAGS=$IOS_FLAGS \
+PKG_CONFIG=/bin/false \
 ./configure --host=arm-apple-darwin --prefix=/ \
 	--disable-shared --enable-static \
 	--with-png=no

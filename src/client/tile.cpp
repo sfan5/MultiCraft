@@ -622,7 +622,7 @@ u32 TextureSource::generateTexture(const std::string &name)
 	video::ITexture *tex = NULL;
 
 	if (img != NULL) {
-#if defined(__ANDROID__) || defined(__IOS__)
+#if defined(__ANDROID__) || defined(__IOS__)
 		img = Align2Npot2(img, driver);
 #endif
 		// Create texture from resulting image
@@ -725,7 +725,7 @@ void TextureSource::rebuildImagesAndTextures()
 	for (u32 i=0; i<m_textureinfo_cache.size(); i++){
 		TextureInfo *ti = &m_textureinfo_cache[i];
 		video::IImage *img = generateImage(ti->name);
-#if defined(__ANDROID__) || defined(__IOS__)
+#if defined(__ANDROID__) || defined(__IOS__)
 		img = Align2Npot2(img, driver);
 		sanity_check(img->getDimension().Height == npot2(img->getDimension().Height));
 		sanity_check(img->getDimension().Width == npot2(img->getDimension().Width));
@@ -941,7 +941,7 @@ video::ITexture* TextureSource::generateTextureFromMesh(
 
 	// Unset render target
 //#if ((IRRLICHT_VERSION_MAJOR == 1) && (IRRLICHT_VERSION_MINOR < 9))
-	driver->setRenderTarget(0, false, true, 0);
+	driver->setRenderTarget(0, false, true, video::SColor(0,0,0,0));
 //#else
 //	driver->setRenderTarget(0, video::ECBF_COLOR, 0);
 //#endif
@@ -1054,7 +1054,7 @@ video::IImage* TextureSource::generateImage(const std::string &name)
 	return baseimg;
 }
 
-#if defined(__ANDROID__) || defined(__IOS__)
+#if defined(__ANDROID__) || defined(__IOS__)
 /**
  * Check and align image to npot2 if required by hardware
  * @param image image to check for npot2 alignment
@@ -1114,7 +1114,7 @@ bool TextureSource::generateImagePart(std::string part_of_name,
 	if (part_of_name.size() == 0 || part_of_name[0] != '[')
 	{
 		video::IImage *image = m_sourcecache.getOrLoad(part_of_name, m_device);
-#if defined(__ANDROID__) || defined(__IOS__)
+#if defined(__ANDROID__) || defined(__IOS__)
 		image = Align2Npot2(image, driver);
 #endif
 		if (image == NULL) {

@@ -1689,6 +1689,7 @@ private:
 
 #if defined(__ANDROID__) || defined(__IOS__)
 	bool m_cache_hold_aux1;
+#endif
 #ifdef __ANDROID__
 	bool m_android_chat_open;
 #endif

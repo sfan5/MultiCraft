@@ -33,7 +33,7 @@ void ioswrap_paths(int type, char *dest, size_t destlen)
 void ioswrap_assets()
 {
     char buf[256];
-    wrapper_paths(PATH_LIBRARY_SUPPORT, buf, sizeof(buf));
+    ioswrap_paths(PATH_LIBRARY_SUPPORT, buf, sizeof(buf));
     NSString *destpath = [NSString stringWithUTF8String:buf];
     NSString *zippath = [[NSBundle mainBundle] pathForResource:@"assets" ofType:@"zip"];
 

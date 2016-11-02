@@ -18,7 +18,7 @@ namespace porting {
     }
 
     void copyAssets() {
-        wrapper_assets();
+		ioswrap_assets();
     }
 
     float getDisplayDensity() {
