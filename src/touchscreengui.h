@@ -99,7 +99,7 @@ private:
 	ISimpleTextureSource*   m_texturesource;
 	v2u32                   m_screensize;
 	std::map<int,rect<s32> > m_hud_rects;
-	std::map<int,irr::EKEY_CODE> m_hud_ids;
+	std::map<size_t,irr::EKEY_CODE> m_hud_ids;
 	bool                    m_visible; // is the gui visible
 
 	/* value in degree */
@@ -110,7 +110,7 @@ private:
 
 	rect<s32>               m_control_pad_rect;
 
-	int                     m_move_id;
+	size_t                  m_move_id;
 	bool                    m_move_has_really_moved;
 	s32                     m_move_downtime;
 	bool                    m_move_sent_as_mouse_event;
@@ -120,7 +120,7 @@ private:
 		float            repeatcounter;
 		float            repeatdelay;
 		irr::EKEY_CODE   keycode;
-		std::vector<int> ids;
+		std::vector<size_t> ids;
 		IGUIButton*      guibutton;
 		bool             immediate_release;
 	};
@@ -131,7 +131,7 @@ private:
 	touch_gui_button_id getButtonID(s32 x, s32 y);
 
 	/* gui button by eventID */
-	touch_gui_button_id getButtonID(int eventID);
+	touch_gui_button_id getButtonID(size_t eventID);
 
 	/* check if a button has changed */
 	void handleChangedButton(const SEvent &event);
@@ -145,7 +145,7 @@ private:
 	void loadButtonTexture(button_info* btn, const char* path, rect<s32> button_rect);
 
 	struct id_status{
-		int id;
+		size_t id;
 		int X;
 		int Y;
 	};
@@ -154,19 +154,19 @@ private:
 	std::vector<id_status> m_known_ids;
 
 	/* handle a button event */
-	void handleButtonEvent(touch_gui_button_id bID, int eventID, bool action);
+	void handleButtonEvent(touch_gui_button_id bID, size_t eventID, bool action);
 
 	/* handle pressed hud buttons */
 	bool isHUDButton(const SEvent &event);
 
 	/* handle released hud buttons */
-	bool isReleaseHUDButton(int eventID);
+	bool isReleaseHUDButton(size_t eventID);
 
 	/* handle double taps */
 	bool doubleTapDetection();
 
 	/* handle release event */
-	void handleReleaseEvent(int evt_id);
+	void handleReleaseEvent(size_t evt_id);
 
 	/* get size of regular gui control button */
 	int getGuiButtonSize();
