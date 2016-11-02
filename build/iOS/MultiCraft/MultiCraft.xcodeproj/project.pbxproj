@@ -255,6 +255,8 @@
 		F8E6C7DB1DCA479200F64426 /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E6C7DA1DCA479200F64426 /* libogg.a */; };
 		F8E6C7DD1DCA47A300F64426 /* libvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E6C7DC1DCA47A300F64426 /* libvorbis.a */; };
 		F8E6C7DF1DCA47AF00F64426 /* libvorbisfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E6C7DE1DCA47AF00F64426 /* libvorbisfile.a */; };
+		F8E6C7E11DCA4EB300F64426 /* assets.zip in Resources */ = {isa = PBXBuildFile; fileRef = F8E6C7E01DCA4EB300F64426 /* assets.zip */; };
+		F8E6C7E31DCA511700F64426 /* worlds.zip in Resources */ = {isa = PBXBuildFile; fileRef = F8E6C7E21DCA511700F64426 /* worlds.zip */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -751,6 +753,8 @@
 		F8E6C7DA1DCA479200F64426 /* libogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg.a; path = ../deps/libogg/lib/libogg.a; sourceTree = "<group>"; };
 		F8E6C7DC1DCA47A300F64426 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = ../deps/libvorbis/lib/libvorbis.a; sourceTree = "<group>"; };
 		F8E6C7DE1DCA47AF00F64426 /* libvorbisfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile.a; path = ../deps/libvorbis/lib/libvorbisfile.a; sourceTree = "<group>"; };
+		F8E6C7E01DCA4EB300F64426 /* assets.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = assets.zip; path = ../../assets.zip; sourceTree = "<group>"; };
+		F8E6C7E21DCA511700F64426 /* worlds.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = worlds.zip; path = ../../worlds.zip; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -825,6 +829,8 @@
 			children = (
 				F8E6C4F31DCA3EA400F64426 /* ioswrap.h */,
 				F8E6C4F41DCA3EA400F64426 /* ioswrap.m */,
+				F8E6C7E01DCA4EB300F64426 /* assets.zip */,
+				F8E6C7E21DCA511700F64426 /* worlds.zip */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1495,7 +1501,9 @@
 			files = (
 				F8E6C4EC1DCA3B7900F64426 /* LaunchScreen.storyboard in Resources */,
 				F8E6C4E91DCA3B7900F64426 /* Assets.xcassets in Resources */,
+				F8E6C7E11DCA4EB300F64426 /* assets.zip in Resources */,
 				F8E6C4E71DCA3B7900F64426 /* Main.storyboard in Resources */,
+				F8E6C7E31DCA511700F64426 /* worlds.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -32,14 +32,21 @@ void ioswrap_paths(int type, char *dest, size_t destlen)
 
 void ioswrap_assets()
 {
-    char buf[256];
-    ioswrap_paths(PATH_LIBRARY_SUPPORT, buf, sizeof(buf));
-    NSString *destpath = [NSString stringWithUTF8String:buf];
-    NSString *zippath = [[NSBundle mainBundle] pathForResource:@"assets" ofType:@"zip"];
+	const struct { const char *name; int path; } assets[] = {
+		{ .name = "assets", .path = PATH_LIBRARY_SUPPORT },
+		{ .name = "worlds", .path = PATH_DOCUMENTS },
+		{ NULL, 0 },
+	};
+	char buf[256];
 
-    NSLog(@"Assets found in %@", zippath);
-    NSLog(@"Extracting to %@", destpath);
-    [SSZipArchive unzipFileAtPath:zippath toDestination:destpath];
+	for(int i = 0; assets[i].name != NULL; i++) {
+		ioswrap_paths(assets[i].path, buf, sizeof(buf));
+		NSString *destpath = [NSString stringWithUTF8String:buf];
+		NSString *zippath = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:assets[i].name] ofType:@"zip"];
+
+		NSLog(@"%s: extract %@ to %@", assets[i].name, zippath, destpath);
+		[SSZipArchive unzipFileAtPath:zippath toDestination:destpath];
+	}
 }
 
 void ioswrap_size(unsigned int *dest)

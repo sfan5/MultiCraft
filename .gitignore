@@ -83,4 +83,5 @@ build/iOS/Pods
 build/iOS/Podfile.lock
 build/iOS/deps/*
 !build/iOS/deps/*.sh
-build/iOS/asset.zip
+build/iOS/assets.zip
+build/iOS/worlds.zip

@@ -174,6 +174,7 @@ int main(int argc, char *argv[])
 	porting::initializePathsAndroid();
 #elif defined(__IOS__)
 	porting::initializePathsiOS();
+	porting::copyAssets();
 #else
 	porting::initializePaths();
 #endif

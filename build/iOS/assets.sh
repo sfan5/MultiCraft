@@ -5,6 +5,7 @@ if [ ! -d MultiCraft/MultiCraft.xcodeproj ]; then
 	exit 1
 fi
 
+FOLDER=$(pwd)
 DEST=$(mktemp -d)
 
 for dir in builtin client textures; do
@@ -22,8 +23,17 @@ find $DEST -type f -name '.git*' -delete
 find $DEST -type f -name '.DS_Store' -delete
 
 echo "Creating assets.zip"
-ZIPDEST=$(pwd)/assets.zip
+ZIPDEST=$FOLDER/assets.zip
 rm -f $ZIPDEST
 
 cd $DEST; zip -9r $ZIPDEST -- *
-cd /; rm -rf $DEST
+cd $FOLDER; rm -rf $DEST
+
+###########
+
+echo "Creating worlds.zip"
+ZIPDEST=$FOLDER/worlds.zip
+rm -f $ZIPDEST
+
+cd ../..; zip -9r $ZIPDEST -- worlds
+
