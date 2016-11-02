@@ -403,6 +403,34 @@ void set_default_settings(Settings *settings)
 	settings->setDefault("fallback_font_path", "/system/fonts/DroidSans.ttf");
 	
 	settings->setDefault("curl_verify_cert","false");
+#elif defined(__IOS__)
+    settings->setDefault("screenW", "0");
+    settings->setDefault("screenH", "0");
+    settings->setDefault("enable_shaders", "false");
+    settings->setDefault("fullscreen", "false");
+    settings->setDefault("video_driver", "ogles1");
+    settings->setDefault("touchtarget", "false");
+    settings->setDefault("touchscreen_threshold", "20");
+    settings->setDefault("smooth_lighting", "false");
+    settings->setDefault("emergequeue_limit_diskonly", "8");
+    settings->setDefault("emergequeue_limit_generate", "8");
+    settings->setDefault("max_block_generate_distance", "3");
+    //	settings->setDefault("enable_3d_clouds", "false");
+    settings->setDefault("fps_max", "35");
+    settings->setDefault("pause_fps_max", "5");
+    settings->setDefault("sqlite_synchronous", "0");
+    settings->setDefault("gui_scaling", "1.2");
+    settings->setDefault("doubletap_jump", "true");
+    settings->setDefault("client_mapblock_limit", "250");
+    settings->setDefault("active_block_range", "1");
+    settings->setDefault("chunksize", "3");
+    settings->setDefault("gui_scaling_filter_txr2img", "false");
+    settings->setDefault("max_simultaneous_block_sends_per_client", "5");
+    settings->setDefault("abm_interval", "2.0");
+    settings->setDefault("selectionbox_width", "6");
+    settings->setDefault("cloud_radius", "6");
+    settings->setDefault("client_unload_unused_data_timeout", "120");
+    settings->setDefault("viewing_range", "30");
 #endif
 }
 
