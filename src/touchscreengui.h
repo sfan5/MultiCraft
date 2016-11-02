@@ -63,7 +63,6 @@ typedef enum {
 } touch_gui_button_id;
 
 #define MIN_DIG_TIME_MS 500
-#define MAX_TOUCH_COUNT 64
 #define BUTTON_REPEAT_DELAY 0.2f
 
 extern const char *touchgui_button_imagenames[];
@@ -89,6 +88,9 @@ public:
 
 	void hide();
 	void show();
+
+	void storePointerPos(size_t ID, v2s32 pos);
+	v2s32 loadPointerPos(size_t ID);
 
 private:
 	IrrlichtDevice*         m_device;
@@ -177,7 +179,7 @@ private:
 	};
 
 	/* array for saving last known position of a pointer */
-	v2s32 m_pointerpos[MAX_TOUCH_COUNT];
+	std::map<size_t, v2s32> m_pointerpos;
 
 	/* array for doubletap detection */
 	key_event m_key_events[2];
