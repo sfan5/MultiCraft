@@ -8,15 +8,14 @@ fi
 FOLDER=$(pwd)
 DEST=$(mktemp -d)
 
-for dir in builtin client textures; do
+for dir in builtin textures; do
 	cp -r ../../$dir $DEST/$dir
 done
 mkdir -p $DEST/fonts
-cp ../../fonts/*.ttf $DEST/fonts/ # PNG fonts useless with freetype
+# i can’t imaging situation in which it is not enough
+cp ../../fonts/retrovillenc.ttf $DEST/fonts/ # PNG fonts useless with freetype
 mkdir -p $DEST/games
 cp -r ../../games/default $DEST/games/default
-mkdir -p $DEST/media
-cp -r deps/irrlicht/media/Shaders $DEST/media/Shaders
 
 find $DEST -type d -name '.git' -print0 | xargs -0 -- rm -r
 find $DEST -type f -name '.git*' -delete
