@@ -549,9 +549,6 @@ bool ClientLauncher::create_engine_device()
 	params.PrivateData = porting::app_global;
 	params.OGLES2ShaderPath = std::string(porting::path_user + DIR_DELIM +
 			"media" + DIR_DELIM + "Shaders" + DIR_DELIM).c_str();
-#elif defined(__IOS__)
-    params.OGLES2ShaderPath = std::string(porting::path_share + DIR_DELIM +
-            "media" + DIR_DELIM + "Shaders" + DIR_DELIM).c_str();
 #endif
 
 	device = createDeviceEx(params);
