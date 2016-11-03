@@ -1243,7 +1243,7 @@ bool TextureSource::generateImagePart(std::string part_of_name,
 					It is an image with a number of cracking stages
 					horizontally tiled.
 				*/			
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__IOS__)
 				video::IImage *img_crack = m_sourcecache.getOrLoad(
 					"crack_anylength_android.png", m_device);
 #else
@@ -1460,7 +1460,7 @@ bool TextureSource::generateImagePart(std::string part_of_name,
 				return true;
 			}
 
-#ifdef __ANDROID__
+#if defined(__ANDROID__) || defined(__IOS__)
 			assert(img_top->getDimension().Height == npot2(img_top->getDimension().Height));
 			assert(img_top->getDimension().Width == npot2(img_top->getDimension().Width));
 
