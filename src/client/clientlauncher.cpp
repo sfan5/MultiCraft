@@ -148,6 +148,9 @@ bool ClientLauncher::run(GameParams &game_params, const Settings &cmd_args)
 	skin->setColor(gui::EGDC_EDITABLE, video::SColor(255, 128, 128, 128));
 	skin->setColor(gui::EGDC_FOCUSED_EDITABLE, video::SColor(255, 96, 134, 49));
 #endif
+#ifdef __IOS__
+	skin->setColor(gui::EGDC_3D_DARK_SHADOW, video::SColor(255, 97, 97, 97));
+#endif
 
 	// Create the menu clouds
 	if (!g_menucloudsmgr)
