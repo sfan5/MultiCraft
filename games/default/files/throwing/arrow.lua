@@ -83,7 +83,7 @@ minetest.register_entity("throwing:arrow_entity", THROWING_ARROW_ENTITY)
 minetest.register_craft({
     output = 'throwing:arrow 4',
     recipe = {
-        {'default:flint'},
+        {'fire:flint_and_steel'},
         {'default:stick'},
         {'default:paper'}
     }
