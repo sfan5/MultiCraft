@@ -8,6 +8,7 @@ minetest.register_globalstep(function(dtime)
 	local now = round((minetest.env:get_timeofday() * 24) % 12)
 	if now ~= lasttime then
 		lasttime = now
+		if now == 12 then now = 0 end
 		local players  = minetest.get_connected_players()
 		for i,player in ipairs(players) do
 			if string.sub(player:get_wielded_item():get_name(), 0, 6) == "watch:" then
