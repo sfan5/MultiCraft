@@ -80,7 +80,7 @@ function pane(node, desc, dropitem, recipeitem, color)
             tiles = {"xpanes_top_"..node..""..color..".png", "xpanes_top_"..node..""..color..".png", texture},
             paramtype = "light",
             use_texture_alpha = true,
-            groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3, decorative = 1},
+            groups = {snappy = 2, cracky=3, oddly_breakable_by_hand = 3, decorative = 1},
             drop = dropitem,
             node_box = {
                 type = "fixed",
@@ -98,7 +98,6 @@ function pane(node, desc, dropitem, recipeitem, color)
         tiles = {"xpanes_pane_"..node..""..color..".png"},
         inventory_image = "xpanes_pane_"..node..""..color..".png",
         paramtype = "light",
-        stack_max = 64,
         use_texture_alpha = true,
         wield_image = "xpanes_pane_"..node..""..color..".png",
         node_placement_prediction = "",
