@@ -49,7 +49,12 @@ minetest.register_node("tnt:tnt", {
                         spawn_tnt(p, "tnt:tnt")
                         nodeupdate(p)
                 end),
-        }}
+        }},
+	on_ignite = function(pos, igniter)
+		minetest.remove_node(pos)
+		spawn_tnt(pos, "tnt:tnt")
+		nodeupdate(pos)
+	end,
 })
 
 minetest.register_on_punchnode(function(p, node)
@@ -59,6 +64,19 @@ minetest.register_on_punchnode(function(p, node)
                 nodeupdate(p)
         end
 end)
+
+minetest.register_abm({
+	label = "TNT ignition",
+	nodenames = {"tnt:tnt"},
+	neighbors = {"fire:basic_flame", "default:lava_source", "default:lava_flowing"},
+	interval = 4,
+	chance = 1,
+	action = function(pos, node)
+		minetest.remove_node(pos)
+		spawn_tnt(pos, "tnt:tnt")
+		nodeupdate(pos)
+	end,
+})
 
 local TNT_RANGE = 3
 local TNT = {
@@ -79,7 +97,7 @@ local TNT = {
 
 function TNT:on_activate(staticdata)
         self.object:setvelocity({x=0, y=4, z=0})
-        self.object:set_acceleration({x=0, y=-10, z=0})
+        self.object:setacceleration({x=0, y=-10, z=0})
         self.object:settexturemod("^[brighten")
 end
 
@@ -95,55 +113,59 @@ function TNT:on_step(dtime)
             self.blinktimer = self.blinktimer + dtime
         end
     end
-        if self.blinktimer > 0.5 then
-                self.blinktimer = self.blinktimer - 0.5
-                if self.blinkstatus then
-                        self.object:settexturemod("")
-                else
-                        self.object:settexturemod("^[brighten")
-                end
-                self.blinkstatus = not self.blinkstatus
-        end
-        if self.timer > 8 then
-                local pos = self.object:getpos()
+	if self.blinktimer > 0.5 then
+	        self.blinktimer = self.blinktimer - 0.5
+	        if self.blinkstatus then
+	                self.object:settexturemod("")
+	        else
+	                self.object:settexturemod("^[brighten")
+	        end
+	        self.blinkstatus = not self.blinkstatus
+	end
+	if self.timer > 8 then
+		local pos = self.object:getpos()
         pos.x = math.floor(pos.x+0.5)
         pos.y = math.floor(pos.y+0.5)
         pos.z = math.floor(pos.z+0.5)
         do_tnt_physics(pos, TNT_RANGE)
                 local meta = minetest.get_meta(pos)
         minetest.sound_play("tnt_explode", {pos = pos,gain = 1.0,max_hear_distance = 16,})
-        if minetest.get_node(pos).name == "default:water_source" or minetest.get_node(pos).name == "default:water_flowing" or minetest.get_node(pos).name == "default:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
+		local nn = core.get_node(pos).name
+        if nn == "default:water_source" or nn == "default:water_flowing" or
+				nn == "default:bedrock" or nn == "protector:display" or
+				nn == "ignore" or core.is_protected(pos, "tnt") then
             -- Cancel the Explosion
             self.object:remove()
             return
         end
-        for x=-TNT_RANGE,TNT_RANGE do
-                        for y=-TNT_RANGE,TNT_RANGE do
-                                for z=-TNT_RANGE,TNT_RANGE do
-                                        if x*x+y*y+z*z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
-                                                local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
-                                                local n = minetest.get_node(np)
-                                                if n.name ~= "air" and n.name ~= "default:obsidian" and n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
-                                                        activate_if_tnt(n.name, np, pos, 3)
-                                                        minetest.remove_node(np)
-                                                        nodeupdate(np)
-                                                        if n.name ~= "tnt:tnt" and math.random() > 0.9 then
-                                                                local drop = minetest.get_node_drops(n.name, "")
-                                                                        for _,item in ipairs(drop) do
-                                                                                if type(item) == "string" then
-                                                                                        if math.random(1,100) > 40 then
-                                                                                                local obj = minetest.add_item(np, item)
-                                                                                        end
-                                                                                end
-                                                                        end
-                                                        end
-                                                end
-                                        end
-                                end
-                        end
-                        self.object:remove()
-                end
-        end
+		for x=-TNT_RANGE,TNT_RANGE do
+			for y=-TNT_RANGE,TNT_RANGE do
+				for z=-TNT_RANGE,TNT_RANGE do
+					if x*x+y*y+z*z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
+						local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
+						local n = core.get_node_or_nil(np)
+						if n and n.name ~= "air" and n.name ~= "default:obsidian" and
+								n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
+							activate_if_tnt(n.name, np, pos, 3)
+							minetest.remove_node(np)
+							nodeupdate(np)
+							if n.name ~= "tnt:tnt" and math.random() > 0.9 then
+								local drop = minetest.get_node_drops(n.name, "")
+								for _,item in ipairs(drop) do
+									if type(item) == "string" then
+										if math.random(1,100) > 40 then
+											local obj = minetest.add_item(np, item)
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+			self.object:remove()
+		end
+	end
 end
 
 function TNT:on_punch(hitter)
