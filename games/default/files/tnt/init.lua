@@ -16,7 +16,7 @@ function do_tnt_physics(tnt_np,tntr)
     local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
         local oname = obj:get_entity_name()
-        local v = obj:getvelocity()
+        local v = obj:get_velocity()
         local p = obj:getpos()
         if oname == "tnt:tnt" then
             obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
@@ -79,7 +79,7 @@ local TNT = {
 
 function TNT:on_activate(staticdata)
         self.object:setvelocity({x=0, y=4, z=0})
-        self.object:setacceleration({x=0, y=-10, z=0})
+        self.object:set_acceleration({x=0, y=-10, z=0})
         self.object:settexturemod("^[brighten")
 end
 
