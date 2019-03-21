@@ -297,7 +297,7 @@ if(WIN32)
 else()
 	# Unix probably
 	if(BUILD_CLIENT)
-		find_package(X11 REQUIRED)
+		#find_package(X11 REQUIRED)
 		find_package(OpenGL REQUIRED)
 		find_package(JPEG REQUIRED)
 		find_package(BZip2 REQUIRED)
@@ -326,9 +326,9 @@ else()
 	endif(APPLE)
 
 	# This way Xxf86vm is found on OpenBSD too
-	find_library(XXF86VM_LIBRARY Xxf86vm)
-	mark_as_advanced(XXF86VM_LIBRARY)
-	set(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${XXF86VM_LIBRARY})
+	#find_library(XXF86VM_LIBRARY Xxf86vm)
+	#mark_as_advanced(XXF86VM_LIBRARY)
+	#set(CLIENT_PLATFORM_LIBS ${CLIENT_PLATFORM_LIBS} ${XXF86VM_LIBRARY})
 
 	# Prefer local iconv if installed
 	find_library(ICONV_LIBRARY iconv)
