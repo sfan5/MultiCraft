@@ -1,4 +1,4 @@
-Minetest Game mod: creative
+MultiCraft Game mod: creative
 ===========================
 See license.txt for license information.
 

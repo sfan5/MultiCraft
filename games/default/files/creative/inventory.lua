@@ -127,6 +127,7 @@ function creative.register_tab(name, title, items)
 				"field[0.3,4.0;2.2,1;creative_filter;;" .. minetest.formspec_escape(inv.filter) .. "]" ..
 				"listring[detached:creative_" .. player_name .. ";main]" ..
 				"list[detached:creative_" .. player_name .. ";main;0,0.5;9,3;" .. tostring(start_i) .. "]" ..
+				"image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
 				creative.formspec_add, false, "size[9,9.75]")
 		end,
 		on_enter = function(self, player, context)
