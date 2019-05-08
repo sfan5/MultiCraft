@@ -31,7 +31,7 @@ hoch["brew"] = "^[transformfy"
 hoch["matr"] = "^[transformfy"
 hoch["inv"] = "^[transformfy"
 
-local dark_bg = "crafting_creative_bg_dark.png"
+local dark_bg = "creative_bg_dark.png"
 
 local function reset_menu_item_bg()
     bg["blocks"] = dark_bg
@@ -161,10 +161,10 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		";main;0,1.75;9,5;"..tostring(start_i).."]"
     local name = "all"
     if page ~= nil then name = page end
-    bg[name] = "crafting_creative_bg.png"
+    bg[name] = "creative_bg.png"
     if name == "inv" then
-        main_list = "image[-0.2,1.7;11.35,2.33;crafting_creative_bg.png]"..
-            "image[-0.3,0.15;3,4.3;crafting_inventory_armor2.png]"..
+        main_list = "image[-0.2,1.7;11.35,2.33;creative_bg.png]"..
+            "image[-0.3,0.15;3,4.3;inventory_armor.png]"..
             "list[current_player;main;0,3.75;9,3;9]"..
             "list[detached:"..player_name.."_armor;armor;0.02,1.7;1,1;]"..
             "list[detached:"..player_name.."_armor;armor;0.02,2.7;1,1;1]"..
@@ -172,31 +172,30 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
             "list[detached:"..player_name.."_armor;armor;0.98,2.7;1,1;3]"
     end
     local formspec = "image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
-        "background[-0.19,-0.25;10.5,9.87;crafting_inventory_creative.png]"..
+        "background[-0.19,-0.25;10.5,9.87;inventory_creative.png]"..
         "bgcolor[#080808BB;true]"..
         "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
         "label[-5,-5;"..name.."]"..
-        "image[" .. offset[name] .. ";1.5,1.44;crafting_creative_active.png"..hoch[name].."]"..
-        "image_button[-0.1,0;1,1;"..bg["blocks"].."^crafting_creative_build.png;build;]"..  --build blocks
-        "image_button[1.15,0;1,1;"..bg["deco"].."^crafting_creative_deko.png;deco;]"..  --decoration blocks
-        "image_button[2.415,0;1,1;"..bg["mese"].."^crafting_creative_mese.png;mese;]".. --bluestone
-        "image_button[3.693,0;1,1;"..bg["rail"].."^crafting_creative_rail.png;rail;]".. --transportation
-        "image_button[4.93,0;1,1;"..bg["misc"].."^crafting_creative_misc.png;misc;]"..  --miscellaneous
-        "image_button[9.19,0;1,1;"..bg["all"].."^crafting_creative_all.png;default;]".. --search
+        "image[" .. offset[name] .. ";1.5,1.44;creative_active.png"..hoch[name].."]"..
+        "image_button[-0.1,0;1,1;"..bg["blocks"].."^default_grass_side.png;build;]".. --build blocks
+        "image_button[1.15,0;1,1;"..bg["deco"].."^creative_deko.png;deco;]"..  --decoration blocks
+        "image_button[2.415,0;1,1;"..bg["mese"].."^creative_mese.png;mese;]".. --bluestone
+        "image_button[3.693,0;1,1;"..bg["rail"].."^rowboat_inventory.png;rail;]".. --transportation
+        "image_button[4.93,0;1,1;"..bg["misc"].."^bucket_water.png;misc;]"..   --miscellaneous
+        "image_button[9.19,0;1,1;"..bg["all"].."^creative_all.png;default;]".. --search
         "image[0,1;5,0.75;fnt_"..name..".png]"..
         "list[current_player;main;0,7;9,1;]"..
         main_list..
-        "image_button[9.03,1.74;0.85,0.6;crafting_creative_up.png;creative_prev;]"..
-        "image_button[9.03,6.15;0.85,0.6;crafting_creative_down.png;creative_next;]"..
-        "image_button[-0.1,8.28;1,1;"..bg["food"].."^crafting_food.png;food;]"..    --foodstuff
-        "image_button[1.15,8.28;1,1;"..bg["tools"].."^crafting_creative_tool.png;tools;]".. --tools
-        "image_button[2.415,8.28;1,1;"..bg["combat"].."^crafting_creative_sword.png;combat;]".. --combat
-        "image_button[3.693,8.28;1,1;"..bg["matr"].."^crafting_creative_matr.png;matr;]"..  --brewing
-        "image_button[4.93,8.28;1,1;"..bg["brew"].."^crafting_inventory_brew.png;brew;]".. --materials^
-        "image_button[9.19,8.28;1,1;"..bg["inv"].."^crafting_creative_inv.png;inv;]"..          --inventory
-        "list[detached:creative_trash;main;9,7;1,1;]"..
-        "image[9,7;1,1;crafting_creative_trash.png]"..
-        "image[9.04," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";crafting_slider.png]"
+        "image_button[9.03,1.74;0.85,0.6;creative_up.png;creative_prev;]"..
+        "image_button[9.03,6.15;0.85,0.6;creative_down.png;creative_next;]"..
+        "image_button[-0.1,8.28;1,1;"..bg["food"].."^creative_food.png;food;]"..   --foodstuff
+        "image_button[1.15,8.28;1,1;"..bg["tools"].."^creative_tool.png;tools;]".. --tools
+        "image_button[2.415,8.28;1,1;"..bg["combat"].."^creative_sword.png;combat;]".. --combat
+        "image_button[3.693,8.28;1,1;"..bg["matr"].."^default_emerald.png;matr;]"..  --brewing
+        "image_button[4.93,8.28;1,1;"..bg["brew"].."^creative_brew.png;brew;]"..   --materials
+        "image_button[9.19,8.28;1,1;"..bg["inv"].."^creative_inv.png;inv;]"..      --inventory
+        "list[detached:creative_trash;main;9.02,7.02;1,1;]"..
+        "image[9.04," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";creative_slider.png]"
 
 	if name == "all" then
 		formspec = formspec .. "field_close_on_enter[suche;false]" ..

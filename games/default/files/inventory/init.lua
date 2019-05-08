@@ -28,11 +28,11 @@ local function drop_fields(player, name)
     end
 end
 
-sfinv.override_page("sfinv:crafting", {
-	title = "Crafting",
+sfinv.override_page("sfinv:inventory", {
+	title = "Inventory",
 	get = function(self, player, context)
 		local form = [[
-				background[-0.19,-0.25;9.41,9.49;crafting_gui_formbg.png]
+				background[-0.19,-0.25;9.41,9.49;formspec_inventory.png]
 				listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]
 				list[current_player;craft;4,1;2,1;1]
 				list[current_player;craft;4,2;2,1;4]
