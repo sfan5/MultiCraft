@@ -28,6 +28,13 @@ local function drop_fields(player, name)
     end
 end
 
+minetest.register_on_joinplayer(function(player)
+	local inv = player:get_inventory()
+	if inv then
+		inv:set_size("main", 9*4)
+	end
+end)
+
 sfinv.override_page("sfinv:inventory", {
 	title = "Inventory",
 	get = function(self, player, context)
