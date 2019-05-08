@@ -180,7 +180,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
         "image_button[-0.1,0;1,1;"..bg["blocks"].."^default_grass_side.png;build;]".. --build blocks
         "image_button[1.15,0;1,1;"..bg["deco"].."^creative_deko.png;deco;]"..  --decoration blocks
         "image_button[2.415,0;1,1;"..bg["mese"].."^creative_mese.png;mese;]".. --bluestone
-        "image_button[3.693,0;1,1;"..bg["rail"].."^rowboat_inventory.png;rail;]".. --transportation
+        "image_button[3.693,0;1,1;"..bg["rail"].."^boats_inventory.png;rail;]".. --transportation
         "image_button[4.93,0;1,1;"..bg["misc"].."^bucket_water.png;misc;]"..   --miscellaneous
         "image_button[9.19,0;1,1;"..bg["all"].."^creative_all.png;default;]".. --search
         "image[0,1;5,0.75;fnt_"..name..".png]"..
