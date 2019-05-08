@@ -43,7 +43,7 @@ function signs.generate_sign_texture(string)
 		row = row + 1
 	end
 	return texture
-end		
+end
 
 minetest.register_entity("signs:sign_text", {
 	initial_properties = {
@@ -83,6 +83,7 @@ local function check_text(pos, wall)
                 end
 		if not found then
 			local p2 = minetest.get_node(pos).param2
+			if not p2 then return end
 			if wall then
 				local obj = minetest.add_entity(vector.add(pos,
 					signs.wall_sign_positions[p2][1]), "signs:sign_text")
@@ -191,7 +192,7 @@ minetest.register_node("signs:sign", {
 			end
 		end
 		if not found then
-			local obj = minetest.add_entity(vector.add(pos, 
+			local obj = minetest.add_entity(vector.add(pos,
 				signs.sign_positions[p2][1]), "signs:sign_text")
 			obj:set_properties({
 				textures = {signs.generate_sign_texture(fields.text), "blank.png"}
@@ -254,7 +255,7 @@ minetest.register_node("signs:wall_sign", {
 			end
 		end
 		if not found then
-			local obj = minetest.add_entity(vector.add(pos, 
+			local obj = minetest.add_entity(vector.add(pos,
 				signs.wall_sign_positions[p2][1]), "signs:sign_text")
 			obj:set_properties({
 				textures = {signs.generate_sign_texture(fields.text), "blank.png"}
@@ -269,4 +270,3 @@ minetest.register_node("signs:wall_sign", {
 })
 
 dofile(minetest.get_modpath("signs") .. "/legacy.lua")
-

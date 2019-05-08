@@ -1,5 +1,5 @@
-function round(num) 
-	return math.floor(num + 0.5) 
+function round(num)
+	return math.floor(num + 0.5)
 end
 
 local lasttime = "default"

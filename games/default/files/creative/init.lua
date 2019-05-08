@@ -21,7 +21,7 @@ if creative_mode_cache then
 	minetest.register_item(":", {
 		type = "none",
 		wield_image = "wieldhand.png",
-		wield_scale = {x = 0.7, y = 2, z = 0}, 
+		wield_scale = {x = 0.7, y = 2, z = 0},
 		range = 10,
 		tool_capabilities = {
 			full_punch_interval = 0.9,
