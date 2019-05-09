@@ -1,22 +1,22 @@
 local player_inventory = {}
 local inventory_cache = {}
 
-local offset = {}
+local ofs = {}
 local hoch = {}
 local bg = {}
 
-offset["blocks"] = "-0.29,-0.25"
-offset["deco"] = "0.98,-0.25"
-offset["mese"] = "2.23,-0.25"
-offset["rail"] = "3.495,-0.25"
-offset["misc"] = "4.75,-0.25"
-offset["all"] = "8.99,-0.25"
-offset["food"] = "-0.29,8.12"
-offset["tools"] = "0.98,8.12"
-offset["combat"] = "2.23,8.12"
-offset["brew"] = "4.78,8.12"
-offset["matr"] = "3.495,8.12"
-offset["inv"] = "8.99,8.12"
+ofs["blocks"] = {x=-0.29, y=-0.25}
+ofs["deco"] = {x=0.98, y=-0.25}
+ofs["mese"] = {x=2.23, y=-0.25}
+ofs["rail"] = {x=3.495, y=-0.25}
+ofs["misc"] = {x=4.75, y=-0.25}
+ofs["all"] = {x=8.99, y=-0.25}
+ofs["food"] = {x=-0.29, y=8.12}
+ofs["tools"] = {x=0.98, y=8.12}
+ofs["combat"] = {x=2.23, y=8.12}
+ofs["brew"] = {x=4.78, y=8.12}
+ofs["matr"] = {x=3.495, y=8.12}
+ofs["inv"] = {x=8.99, y=8.12}
 
 hoch["blocks"] = ""
 hoch["deco"] = ""
@@ -46,14 +46,18 @@ bg["inv"] = "creative_inv.png"
 
 local function get_item_list(group)
 	local item_list = {}
-    for name, def in pairs(minetest.registered_items) do
-        if (not def.groups.not_in_creative_inventory or
-				def.groups.not_in_creative_inventory == 0) and
-				def.description and def.description ~= "" then
-            if minetest.get_item_group(name, group) > 0 then
+	local input = io.open(minetest.get_modpath("creative")..
+		"/categories/"..group..".lua", "r")
+	if input then
+		local data = input:read('*all')
+		local list = data and minetest.deserialize(data) or {}
+		for _, name in pairs(list) do
+			local def = minetest.registered_items[name]
+			if def then
 				item_list[name] = def
-            end
+			end
 		end
+		io.close(input)
 	end
 	return item_list
 end
@@ -170,8 +174,6 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
         "bgcolor[#080808BB;true]"..
         "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
         "label[-5,-5;"..name.."]"..
-        "image[" .. offset[name] .. ";1.5,1.44;creative_active.png"..hoch[name]..
-		"^[combine:107x98:21,17="..bg[name].."]"..
         "image_button[-0.1,0;1,1;"..bg["blocks"]..";build;;;false]".. --build blocks
         "image_button[1.15,0;1,1;"..bg["deco"]..";deco;;;false]"..    --decoration blocks
         "image_button[2.415,0;1,1;"..bg["mese"]..";mese;;;false]"..   --bluestone
@@ -190,6 +192,8 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
         "image_button[4.93,8.28;1,1;"..bg["brew"]..";brew;;;false]"..   --materials
         "image_button[9.19,8.28;1,1;"..bg["inv"]..";inv;;;false]"..     --inventory
         "list[detached:creative_trash;main;9.02,7.02;1,1;]"..
+        "image["..ofs[name].x..", "..ofs[name].y..";1.5,1.44;creative_active.png"..hoch[name].."]"..
+        "image["..(ofs[name].x + 0.17)..", "..(ofs[name].y + 0.14)..";1,1;"..bg[name].."]"..
         "image[9.04," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";creative_slider.png]"
 
 	if name == "all" then
