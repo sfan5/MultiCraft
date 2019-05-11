@@ -2,6 +2,7 @@ local player_inventory = {}
 local inventory_cache = {}
 
 local ofs = {}
+local ofy = {}
 local hoch = {}
 local bg = {}
 
@@ -18,6 +19,19 @@ ofs["brew"] = {x=4.78, y=8.12}
 ofs["matr"] = {x=3.495, y=8.12}
 ofs["inv"] = {x=8.99, y=8.12}
 
+ofy["blocks"] = 0.24
+ofy["deco"] = 0.24
+ofy["mese"] = 0.24
+ofy["rail"] = 0.24
+ofy["misc"] = 0.24
+ofy["all"] = 0.24
+ofy["food"] = 0.14
+ofy["tools"] = 0.14
+ofy["combat"] = 0.14
+ofy["brew"] = 0.14
+ofy["matr"] = 0.14
+ofy["inv"] = 0.14
+
 hoch["blocks"] = ""
 hoch["deco"] = ""
 hoch["mese"] = ""
@@ -32,15 +46,15 @@ hoch["matr"] = "^[transformfy"
 hoch["inv"] = "^[transformfy"
 
 bg["blocks"] = "default_grass_side.png"
-bg["deco"] = "default_sapling.png"
-bg["mese"] = "jeija_lightstone_gray_on.png"
+bg["deco"] = "creative_deko.png"
+bg["mese"] = "creative_mese.png"
 bg["rail"] = "boats_inventory.png"
 bg["misc"] = "bucket_water.png"
 bg["all"] = "creative_all.png"
 bg["food"] = "creative_food.png"
-bg["tools"] = "default_tool_diamondpick.png"
-bg["combat"] = "default_tool_steelsword.png"
-bg["brew"] = "potions_bottle.png"
+bg["tools"] = "creative_tool.png"
+bg["combat"] = "creative_sword.png"
+bg["brew"] = "creative_brew.png"
 bg["matr"] = "default_emerald.png"
 bg["inv"] = "creative_inv.png"
 
@@ -153,6 +167,7 @@ creative.formspec_add = ""
 
 local function get_creative_formspec(player_name, start_i, pagenum, page, pagemax)
     pagenum = math.floor(pagenum) or 1
+	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
     local slider_height = 4 / pagemax
     local slider_pos = slider_height * (pagenum - 1) + 2.2
     local formspec = ""
@@ -193,7 +208,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
         "image_button[9.19,8.28;1,1;"..bg["inv"]..";inv;;;false]"..     --inventory
         "list[detached:creative_trash;main;9.02,7.02;1,1;]"..
         "image["..ofs[name].x..", "..ofs[name].y..";1.5,1.44;creative_active.png"..hoch[name].."]"..
-        "image["..(ofs[name].x + 0.17)..", "..(ofs[name].y + 0.14)..";1,1;"..bg[name].."]"..
+        "image["..(ofs[name].x + 0.17)..", "..(ofs[name].y + ofy[name])..";1,1;"..bg[name].."]"..
         "image[9.04," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";creative_slider.png]"
 
 	if name == "all" then
