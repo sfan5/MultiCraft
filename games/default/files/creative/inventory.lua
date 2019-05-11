@@ -46,15 +46,15 @@ hoch["matr"] = "^[transformfy"
 hoch["inv"] = "^[transformfy"
 
 bg["blocks"] = "default_grass_side.png"
-bg["deco"] = "creative_deko.png"
-bg["mese"] = "creative_mese.png"
+bg["deco"] = "default_sapling.png"
+bg["mese"] = "jeija_lightstone_gray_on.png"
 bg["rail"] = "boats_inventory.png"
 bg["misc"] = "bucket_water.png"
 bg["all"] = "creative_all.png"
 bg["food"] = "creative_food.png"
-bg["tools"] = "creative_tool.png"
-bg["combat"] = "creative_sword.png"
-bg["brew"] = "creative_brew.png"
+bg["tools"] = "default_tool_diamondpick.png"
+bg["combat"] = "default_tool_steelsword.png"
+bg["brew"] = "potions_bottle.png"
 bg["matr"] = "default_emerald.png"
 bg["inv"] = "creative_inv.png"
 
@@ -166,50 +166,50 @@ trash:set_size("main", 1)
 creative.formspec_add = ""
 
 local function get_creative_formspec(player_name, start_i, pagenum, page, pagemax)
-    pagenum = math.floor(pagenum) or 1
+	pagenum = math.floor(pagenum) or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
-    local slider_height = 4 / pagemax
-    local slider_pos = slider_height * (pagenum - 1) + 2.2
-    local formspec = ""
-    local main_list = "list[detached:creative_" .. player_name ..
+	local slider_height = 4 / pagemax
+	local slider_pos = slider_height * (pagenum - 1) + 2.2
+	local formspec = ""
+	local main_list = "list[detached:creative_" .. player_name ..
 		";main;0,1.75;9,5;"..tostring(start_i).."]"
-    local name = "all"
-    if page ~= nil then name = page end
-    if name == "inv" then
-        main_list = "image[-0.2,1.7;11.35,2.33;creative_bg.png]"..
-            "image[-0.3,0.15;3,4.3;inventory_armor.png]"..
-            "list[current_player;main;0,3.75;9,3;9]"..
-            "list[detached:"..player_name.."_armor;armor;0.02,1.7;1,1;]"..
-            "list[detached:"..player_name.."_armor;armor;0.02,2.7;1,1;1]"..
-            "list[detached:"..player_name.."_armor;armor;0.98,1.7;1,1;2]"..
-            "list[detached:"..player_name.."_armor;armor;0.98,2.7;1,1;3]"
-    end
-    local formspec = "image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
-        "background[-0.19,-0.25;10.5,9.87;inventory_creative.png]"..
-        "bgcolor[#080808BB;true]"..
-        "listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
-        "label[-5,-5;"..name.."]"..
-        "image_button[-0.1,0;1,1;"..bg["blocks"]..";build;;;false]".. --build blocks
-        "image_button[1.15,0;1,1;"..bg["deco"]..";deco;;;false]"..    --decoration blocks
-        "image_button[2.415,0;1,1;"..bg["mese"]..";mese;;;false]"..   --bluestone
-        "image_button[3.693,0;1,1;"..bg["rail"]..";rail;;;false]"..   --transportation
-        "image_button[4.93,0;1,1;"..bg["misc"]..";misc;;;false]"..    --miscellaneous
-        "image_button[9.19,0;1,1;"..bg["all"]..";default;;;false]"..  --search
-        "image[0,1;5,0.75;fnt_"..name..".png]"..
-        "list[current_player;main;0,7;9,1;]"..
-        main_list..
-        "image_button[9.03,1.74;0.85,0.6;creative_up.png;creative_prev;]"..
-        "image_button[9.03,6.15;0.85,0.6;creative_down.png;creative_next;]"..
-        "image_button[-0.1,8.28;1,1;"..bg["food"]..";food;;;false]"..   --foodstuff
-        "image_button[1.15,8.28;1,1;"..bg["tools"]..";tools;;;false]".. --tools
-        "image_button[2.415,8.28;1,1;"..bg["combat"]..";combat;;;false]".. --combat
-        "image_button[3.693,8.28;1,1;"..bg["matr"]..";matr;;;false]"..  --brewing
-        "image_button[4.93,8.28;1,1;"..bg["brew"]..";brew;;;false]"..   --materials
-        "image_button[9.19,8.28;1,1;"..bg["inv"]..";inv;;;false]"..     --inventory
-        "list[detached:creative_trash;main;9.02,7.02;1,1;]"..
-        "image["..ofs[name].x..", "..ofs[name].y..";1.5,1.44;creative_active.png"..hoch[name].."]"..
-        "image["..(ofs[name].x + 0.17)..", "..(ofs[name].y + ofy[name])..";1,1;"..bg[name].."]"..
-        "image[9.04," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";creative_slider.png]"
+	local name = "all"
+	if page ~= nil then name = page end
+	if name == "inv" then
+		main_list = "image[-0.2,1.7;11.35,2.33;creative_bg.png]"..
+			"image[-0.3,0.15;3,4.3;inventory_armor.png]"..
+			"list[current_player;main;0,3.75;9,3;9]"..
+			"list[detached:"..player_name.."_armor;armor;0.02,1.7;1,1;]"..
+			"list[detached:"..player_name.."_armor;armor;0.02,2.7;1,1;1]"..
+			"list[detached:"..player_name.."_armor;armor;0.98,1.7;1,1;2]"..
+			"list[detached:"..player_name.."_armor;armor;0.98,2.7;1,1;3]"
+	end
+	local formspec = "image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
+		"background[-0.19,-0.25;10.5,9.87;inventory_creative.png]"..
+		"bgcolor[#080808BB;true]"..
+		"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+		"label[-5,-5;"..name.."]"..
+		"image_button[-0.1,0;1,1;"..bg["blocks"]..";build;;;false]"..	--build blocks
+		"image_button[1.15,0;1,1;"..bg["deco"]..";deco;;;false]"..		--decoration blocks
+		"image_button[2.415,0;1,1;"..bg["mese"]..";mese;;;false]"..		--bluestone
+		"image_button[3.693,0;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
+		"image_button[4.93,0;1,1;"..bg["misc"]..";misc;;;false]"..		--miscellaneous
+		"image_button[9.19,0;1,1;"..bg["all"]..";default;;;false]"..	--search
+		"image[0,1;5,0.75;fnt_"..name..".png]"..
+		"list[current_player;main;0,7;9,1;]"..
+		main_list..
+		"image_button[9.03,1.74;0.85,0.6;creative_up.png;creative_prev;]"..
+		"image_button[9.03,6.15;0.85,0.6;creative_down.png;creative_next;]"..
+		"image_button[-0.1,8.28;1,1;"..bg["food"]..";food;;;false]"..	--foodstuff
+		"image_button[1.15,8.28;1,1;"..bg["tools"]..";tools;;;false]".. --tools
+		"image_button[2.415,8.28;1,1;"..bg["combat"]..";combat;;;false]".. --combat
+		"image_button[3.693,8.28;1,1;"..bg["matr"]..";matr;;;false]"..	--brewing
+		"image_button[4.93,8.28;1,1;"..bg["brew"]..";brew;;;false]"..   --materials
+		"image_button[9.19,8.28;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
+		"list[detached:creative_trash;main;9.02,7.02;1,1;]"..
+		"image["..ofs[name].x..", "..ofs[name].y..";1.5,1.44;creative_active.png"..hoch[name].."]"..
+		"image["..(ofs[name].x + 0.17)..", "..(ofs[name].y + ofy[name])..";1,1;"..bg[name].."]"..
+		"image[9.04," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";creative_slider.png]"
 
 	if name == "all" then
 		formspec = formspec .. "field_close_on_enter[suche;false]" ..
