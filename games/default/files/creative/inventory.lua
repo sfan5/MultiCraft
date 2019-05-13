@@ -1,62 +1,62 @@
 local player_inventory = {}
 local inventory_cache = {}
 
-local ofs = {}
-local ofy = {}
-local hoch = {}
+local ofs_tab = {}
+local ofs_img = {}
 local bg = {}
+local rot = {}
 
-ofs["blocks"] = {x=-0.29, y=-0.25}
-ofs["deco"] = {x=0.98, y=-0.25}
-ofs["mese"] = {x=2.23, y=-0.25}
-ofs["rail"] = {x=3.495, y=-0.25}
-ofs["misc"] = {x=4.75, y=-0.25}
-ofs["all"] = {x=8.99, y=-0.25}
-ofs["food"] = {x=-0.29, y=8.12}
-ofs["tools"] = {x=0.98, y=8.12}
-ofs["combat"] = {x=2.23, y=8.12}
-ofs["brew"] = {x=4.78, y=8.12}
-ofs["matr"] = {x=3.495, y=8.12}
-ofs["inv"] = {x=8.99, y=8.12}
+rot["all"] = "^[transformR270"
+rot["inv"] = "^[transformR270"
+rot["blocks"] = ""
+rot["deco"] = ""
+rot["mese"] = ""
+rot["rail"] = ""
+rot["misc"] = ""
+rot["food"] = ""
+rot["tools"] = ""
+rot["combat"] = ""
+rot["matr"] = ""
+rot["brew"] = ""
 
-ofy["blocks"] = 0.24
-ofy["deco"] = 0.24
-ofy["mese"] = 0.24
-ofy["rail"] = 0.24
-ofy["misc"] = 0.24
-ofy["all"] = 0.24
-ofy["food"] = 0.14
-ofy["tools"] = 0.14
-ofy["combat"] = 0.14
-ofy["brew"] = 0.14
-ofy["matr"] = 0.14
-ofy["inv"] = 0.14
+ofs_tab["all"] = "10.05,0.84"
+ofs_tab["inv"] = "10.05,6.93"
+ofs_tab["blocks"] = "-0.29,-0.32"
+ofs_tab["deco"] = "0.74,-0.32"
+ofs_tab["mese"] = "1.78,-0.32"
+ofs_tab["rail"] = "2.81,-0.32"
+ofs_tab["misc"] = "3.84,-0.32"
+ofs_tab["food"] = "4.88,-0.32"
+ofs_tab["tools"] = "5.91,-0.32"
+ofs_tab["combat"] = "6.94,-0.32"
+ofs_tab["matr"] = "7.98,-0.32"
+ofs_tab["brew"] = "9.01,-0.32"
 
-hoch["blocks"] = ""
-hoch["deco"] = ""
-hoch["mese"] = ""
-hoch["rail"] = ""
-hoch["misc"] = ""
-hoch["all"] = ""
-hoch["food"] = "^[transformfy"
-hoch["tools"] = "^[transformfy"
-hoch["combat"] = "^[transformfy"
-hoch["brew"] = "^[transformfy"
-hoch["matr"] = "^[transformfy"
-hoch["inv"] = "^[transformfy"
+ofs_img["all"] = "10.27,1"
+ofs_img["inv"] = "10.27,7.15"
+ofs_img["blocks"] = "-0.15,-0.15"
+ofs_img["deco"] = "0.88,-0.15"
+ofs_img["mese"] = "1.92,-0.15"
+ofs_img["rail"] = "2.96,-0.15"
+ofs_img["misc"] = "4,-0.15"
+ofs_img["food"] = "5.05,-0.15"
+ofs_img["tools"] = "6.11,-0.15"
+ofs_img["combat"] = "7.14,-0.15"
+ofs_img["matr"] = "8.18,-0.15"
+ofs_img["brew"] = "9.21,-0.15"
 
+bg["inv"] = "creative_inv.png"
 bg["blocks"] = "default_grass_side.png"
 bg["deco"] = "default_sapling.png"
 bg["mese"] = "jeija_lightstone_gray_on.png"
 bg["rail"] = "boats_inventory.png"
 bg["misc"] = "bucket_water.png"
-bg["all"] = "creative_all.png"
 bg["food"] = "creative_food.png"
 bg["tools"] = "default_tool_diamondpick.png"
 bg["combat"] = "default_tool_steelsword.png"
-bg["brew"] = "potions_bottle.png"
 bg["matr"] = "default_emerald.png"
-bg["inv"] = "creative_inv.png"
+bg["brew"] = "potions_bottle.png"
+bg["all"] = "creative_all.png"
 
 local function get_item_list(group)
 	local item_list = {}
@@ -121,7 +121,8 @@ function creative.init_creative_inventory(player)
 		end,
 		on_take = function(inv, listname, index, stack, player2)
 			if stack and stack:get_count() > 0 then
-				minetest.log("action", player_name .. " takes " .. stack:get_name().. " from creative inventory")
+				minetest.log("action", player_name.." takes "..
+					stack:get_name().." from creative inventory")
 			end
 		end,
 	}, player_name)
@@ -133,8 +134,8 @@ function creative.update_creative_inventory(player_name, tab_content)
 	local creative_list = {}
 	local inv = player_inventory[player_name] or
 			creative.init_creative_inventory(minetest.get_player_by_name(player_name))
-	local player_inv = minetest.get_inventory({type = "detached", name = "creative_" .. player_name})
-
+	local player_inv = minetest.get_inventory({type="detached",
+			name="creative_"..player_name})
 	local items = inventory_cache[tab_content] or init_creative_cache(tab_content)
 
 	for name, def in pairs(items) do
@@ -169,51 +170,51 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	pagenum = math.floor(pagenum) or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
 	local slider_height = 4 / pagemax
-	local slider_pos = slider_height * (pagenum - 1) + 2.2
+	local slider_pos = slider_height * (pagenum - 1) + 2.15
 	local formspec = ""
 	local main_list = "list[detached:creative_" .. player_name ..
-		";main;0,1.75;9,5;"..tostring(start_i).."]"
+		";main;0,1.69;9,5;"..tostring(start_i).."]"
 	local name = "all"
 	if page ~= nil then name = page end
 	if name == "inv" then
-		main_list = "image[-0.2,1.7;11.35,2.33;creative_bg.png]"..
+		main_list = "image[-0.2,1.6;11.35,2.33;creative_bg.png]"..
 			"image[-0.3,0.15;3,4.3;inventory_armor.png]"..
-			"list[current_player;main;0,3.75;9,3;9]"..
+			"list[current_player;main;0,3.68;9,3;9]"..
 			"list[detached:"..player_name.."_armor;armor;0.02,1.7;1,1;]"..
 			"list[detached:"..player_name.."_armor;armor;0.02,2.7;1,1;1]"..
 			"list[detached:"..player_name.."_armor;armor;0.98,1.7;1,1;2]"..
 			"list[detached:"..player_name.."_armor;armor;0.98,2.7;1,1;3]"
 	end
-	local formspec = "image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
-		"background[-0.19,-0.25;10.5,9.87;inventory_creative.png]"..
+	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
+		"background[-0.19,-0.25;11.5,8.5;inventory_creative.png]"..
 		"bgcolor[#080808BB;true]"..
 		"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
 		"label[-5,-5;"..name.."]"..
-		"image_button[-0.1,0;1,1;"..bg["blocks"]..";build;;;false]"..	--build blocks
-		"image_button[1.15,0;1,1;"..bg["deco"]..";deco;;;false]"..		--decoration blocks
-		"image_button[2.415,0;1,1;"..bg["mese"]..";mese;;;false]"..		--bluestone
-		"image_button[3.693,0;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
-		"image_button[4.93,0;1,1;"..bg["misc"]..";misc;;;false]"..		--miscellaneous
-		"image_button[9.19,0;1,1;"..bg["all"]..";default;;;false]"..	--search
-		"image[0,1;5,0.75;fnt_"..name..".png]"..
-		"list[current_player;main;0,7;9,1;]"..
-		main_list..
-		"image_button[9.03,1.74;0.85,0.6;creative_up.png;creative_prev;]"..
-		"image_button[9.03,6.15;0.85,0.6;creative_down.png;creative_next;]"..
-		"image_button[-0.1,8.28;1,1;"..bg["food"]..";food;;;false]"..	--foodstuff
-		"image_button[1.15,8.28;1,1;"..bg["tools"]..";tools;;;false]".. --tools
-		"image_button[2.415,8.28;1,1;"..bg["combat"]..";combat;;;false]".. --combat
-		"image_button[3.693,8.28;1,1;"..bg["matr"]..";matr;;;false]"..	--brewing
-		"image_button[4.93,8.28;1,1;"..bg["brew"]..";brew;;;false]"..   --materials
-		"image_button[9.19,8.28;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
-		"list[detached:creative_trash;main;9.02,7.02;1,1;]"..
-		"image["..ofs[name].x..", "..ofs[name].y..";1.5,1.44;creative_active.png"..hoch[name].."]"..
-		"image["..(ofs[name].x + 0.17)..", "..(ofs[name].y + ofy[name])..";1,1;"..bg[name].."]"..
-		"image[9.04," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";creative_slider.png]"
+		"image_button[-0.16,-0.15;1,1;"..bg["blocks"]..";build;;;false]"..	--build blocks
+		"image_button[0.87,-0.15;1,1;"..bg["deco"]..";deco;;;false]"..	--decoration blocks
+		"image_button[1.92,-0.15;1,1;"..bg["mese"]..";mese;;;false]"..	--bluestone
+		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..	--transportation
+		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..	--miscellaneous
+		"image[0,0.95;5,0.75;fnt_"..name..".png]"..
+		"list[current_player;main;0,6.955;9,1;]"..main_list..
+		"image_button[9.02,1.69;0.98,0.6;creative_up.png;creative_prev;]"..
+		"image_button[9.02,6.08;0.98,0.6;creative_down.png;creative_next;]"..
+		"image_button[5.05,-0.15;1,1;"..bg["food"]..";food;;;false]"..	--foodstuff
+		"image_button[6.1,-0.15;1,1;"..bg["tools"]..";tools;;;false]"..	--tools
+		"image_button[7.15,-0.15;1,1;"..bg["combat"]..";combat;;;false]"..	--combat
+		"image_button[8.17,-0.15;1,1;"..bg["matr"]..";matr;;;false]"..	--materials
+		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..	--brewing
+		"image_button[10.27,1;1,1;"..bg["all"]..";default;;;false]"..	--all items
+		"image_button[10.27,7.15;1,1;"..bg["inv"]..";inv;;;false]"..	--inventory
+		"list[detached:creative_trash;main;9.02,6.955;1,1;]"..
+		"image["..ofs_tab[name]..";1.45,1.45;creative_active.png"..rot[name].."]"..
+		"image["..ofs_img[name]..";1,1;"..bg[name].."]"..
+		"image[9.04," .. tostring(slider_pos) .. ";0.93,"..tostring(slider_height) .. 			";creative_slider.png]"
 
 	if name == "all" then
-		formspec = formspec .. "field_close_on_enter[suche;false]" ..
-			"field[5.3,1.3;4,0.75;suche;;]"
+		formspec = formspec .. "field_close_on_enter[search;false]"..
+			"field[5.3,1.27;4,0.75;search;;]"..
+			"image_button[9.02,0.93;1,0.8;creative_search.png;creative_search;;;false]"
 	end
 	if pagenum ~= nil then
 		formspec = formspec .. "p"..tostring(pagenum)
@@ -236,7 +237,7 @@ function creative.register_tab(name, title, items)
 			local pagemax = math.ceil(inv.size / (5*9))
 			local formspec =  get_creative_formspec(player_name, start_i,
 					pagenum, name, pagemax)
-			return sfinv.make_formspec(player, context, formspec, false, "size[10,9.3]")
+			return sfinv.make_formspec(player, context, formspec, false, "size[11,9]")
 		end,
 		on_enter = function(self, player, context)
 			local player_name = player:get_player_name()
@@ -275,10 +276,11 @@ function creative.register_tab(name, title, items)
 				sfinv.set_page(player, "creative:inv")
 			elseif fields.brew then
 				sfinv.set_page(player, "creative:brew")
-			elseif fields.suche and
-					fields.key_enter_field == "suche" then
+			elseif fields.search and
+					(fields.creative_search or
+					fields.key_enter_field == "search") then
 				inv.start_i = 0
-				inv.filter = fields.suche:lower()
+				inv.filter = fields.search:lower()
 				creative.update_creative_inventory(player_name, items)
 				sfinv.set_player_inventory_formspec(player, context)
 			elseif not fields.quit then
@@ -297,7 +299,6 @@ function creative.register_tab(name, title, items)
 						start_i = 0
 					end
 				end
-
 				inv.start_i = start_i
 				sfinv.set_player_inventory_formspec(player, context)
 			end
