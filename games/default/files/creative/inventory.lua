@@ -19,8 +19,8 @@ rot["combat"] = ""
 rot["matr"] = ""
 rot["brew"] = ""
 
-ofs_tab["all"] = "10.05,0.84"
-ofs_tab["inv"] = "10.05,6.93"
+ofs_tab["all"] = "10.08,0.84"
+ofs_tab["inv"] = "10.08,6.93"
 ofs_tab["blocks"] = "-0.29,-0.32"
 ofs_tab["deco"] = "0.74,-0.32"
 ofs_tab["mese"] = "1.78,-0.32"
@@ -169,8 +169,8 @@ creative.formspec_add = ""
 local function get_creative_formspec(player_name, start_i, pagenum, page, pagemax)
 	pagenum = math.floor(pagenum) or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
-	local slider_height = 4 / pagemax
-	local slider_pos = slider_height * (pagenum - 1) + 2.15
+	local slider_height = 4 / pagemax - 0.03
+	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.17
 	local formspec = ""
 	local main_list = "list[detached:creative_" .. player_name ..
 		";main;0,1.69;9,5;"..tostring(start_i).."]"
@@ -187,34 +187,34 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	end
 	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
 		"background[-0.19,-0.25;11.5,8.5;inventory_creative.png]"..
-		"bgcolor[#080808BB;true]"..
+		sfinv.gui_bg..
 		"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
 		"label[-5,-5;"..name.."]"..
 		"image_button[-0.16,-0.15;1,1;"..bg["blocks"]..";build;;;false]"..	--build blocks
-		"image_button[0.87,-0.15;1,1;"..bg["deco"]..";deco;;;false]"..	--decoration blocks
-		"image_button[1.92,-0.15;1,1;"..bg["mese"]..";mese;;;false]"..	--bluestone
-		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..	--transportation
-		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..	--miscellaneous
+		"image_button[0.87,-0.15;1,1;"..bg["deco"]..";deco;;;false]"..		--decoration blocks
+		"image_button[1.92,-0.15;1,1;"..bg["mese"]..";mese;;;false]"..		--bluestone
+		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
+		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..			--miscellaneous
 		"image[0,0.95;5,0.75;fnt_"..name..".png]"..
 		"list[current_player;main;0,6.955;9,1;]"..main_list..
-		"image_button[9.02,1.69;0.98,0.6;creative_up.png;creative_prev;]"..
-		"image_button[9.02,6.08;0.98,0.6;creative_down.png;creative_next;]"..
-		"image_button[5.05,-0.15;1,1;"..bg["food"]..";food;;;false]"..	--foodstuff
-		"image_button[6.1,-0.15;1,1;"..bg["tools"]..";tools;;;false]"..	--tools
+		"image_button[9.13,1.69;0.8,0.6;creative_up.png;creative_prev;]"..
+		"image_button[9.13,6.11;0.8,0.6;creative_down.png;creative_next;]"..
+		"image_button[5.05,-0.15;1,1;"..bg["food"]..";food;;;false]"..		--foodstuff
+		"image_button[6.1,-0.15;1,1;"..bg["tools"]..";tools;;;false]"..		--tools
 		"image_button[7.15,-0.15;1,1;"..bg["combat"]..";combat;;;false]"..	--combat
-		"image_button[8.17,-0.15;1,1;"..bg["matr"]..";matr;;;false]"..	--materials
-		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..	--brewing
-		"image_button[10.27,1;1,1;"..bg["all"]..";default;;;false]"..	--all items
-		"image_button[10.27,7.15;1,1;"..bg["inv"]..";inv;;;false]"..	--inventory
+		"image_button[8.17,-0.15;1,1;"..bg["matr"]..";matr;;;false]"..		--materials
+		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..		--brewing
+		"image_button[10.27,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
+		"image_button[10.27,7.15;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
 		"list[detached:creative_trash;main;9.02,6.955;1,1;]"..
 		"image["..ofs_tab[name]..";1.45,1.45;creative_active.png"..rot[name].."]"..
 		"image["..ofs_img[name]..";1,1;"..bg[name].."]"..
-		"image[9.04," .. tostring(slider_pos) .. ";0.93,"..tostring(slider_height) .. 			";creative_slider.png]"
+		"image[9.15," .. tostring(slider_pos) .. ";0.69,"..tostring(slider_height) .. ";creative_slider.png]"
 
 	if name == "all" then
 		formspec = formspec .. "field_close_on_enter[search;false]"..
 			"field[5.3,1.27;4,0.75;search;;]"..
-			"image_button[9.02,0.93;1,0.8;creative_search.png;creative_search;;;false]"
+			"image_button[9.13,0.94;0.8,0.8;creative_search.png;creative_search;;;false]"
 	end
 	if pagenum ~= nil then
 		formspec = formspec .. "p"..tostring(pagenum)

@@ -83,7 +83,7 @@ local function check_text(pos, wall)
                 end
 		if not found then
 			local p2 = minetest.get_node(pos).param2
-			if not p2 then return end
+			if not p2 or p2 > 3 or p2 < 0 then return end
 			if wall then
 				local obj = minetest.add_entity(vector.add(pos,
 					signs.wall_sign_positions[p2][1]), "signs:sign_text")
