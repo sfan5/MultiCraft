@@ -173,13 +173,13 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.17
 	local formspec = ""
 	local main_list = "list[detached:creative_" .. player_name ..
-		";main;0,1.69;9,5;"..tostring(start_i).."]"
+		";main;0.02,1.69;9,5;"..tostring(start_i).."]"
 	local name = "all"
 	if page ~= nil then name = page end
 	if name == "inv" then
 		main_list = "image[-0.2,1.6;11.35,2.33;creative_bg.png]"..
 			"image[-0.3,0.15;3,4.3;inventory_armor.png]"..
-			"list[current_player;main;0,3.68;9,3;9]"..
+			"list[current_player;main;0.02,3.69;9,3;9]"..
 			"list[detached:"..player_name.."_armor;armor;0.02,1.7;1,1;]"..
 			"list[detached:"..player_name.."_armor;armor;0.02,2.7;1,1;1]"..
 			"list[detached:"..player_name.."_armor;armor;0.98,1.7;1,1;2]"..
@@ -196,7 +196,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
 		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..			--miscellaneous
 		"image[0,0.95;5,0.75;fnt_"..name..".png]"..
-		"list[current_player;main;0,6.955;9,1;]"..main_list..
+		"list[current_player;main;0.02,6.96;9,1;]"..main_list..
 		"image_button[9.13,1.69;0.8,0.6;creative_up.png;creative_prev;]"..
 		"image_button[9.13,6.11;0.8,0.6;creative_down.png;creative_next;]"..
 		"image_button[5.05,-0.15;1,1;"..bg["food"]..";food;;;false]"..		--foodstuff
