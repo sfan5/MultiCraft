@@ -12,7 +12,7 @@ return {
 	"default:emerald",
 	"default:quartz_crystal",
 	"default:sugar",
-	"default:reeds",
+	"default:sugarcane",
 	"default:stick",
 	"default:gunpowder",
 }

@@ -188,7 +188,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
 		"background[-0.19,-0.25;11.5,8.5;inventory_creative.png]"..
 		sfinv.gui_bg..
-		"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+		sfinv.listcolors..
 		"label[-5,-5;"..name.."]"..
 		"image_button[-0.16,-0.15;1,1;"..bg["blocks"]..";build;;;false]"..	--build blocks
 		"image_button[0.87,-0.15;1,1;"..bg["deco"]..";deco;;;false]"..		--decoration blocks

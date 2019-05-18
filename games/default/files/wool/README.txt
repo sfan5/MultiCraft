@@ -1,4 +1,4 @@
-MultiCraft mod: wool
+MultiCraft game mod: wool
 =======================
 See license.txt for license information.
 Authors of source code

@@ -15,4 +15,10 @@ return {
 	"default:shovel_stone",
 	"default:axe_wood",
 	"default:pick_steel",
+	"farming:hoe_wood",
+	"farming:hoe_stone",
+	"farming:hoe_steel",
+	"farming:hoe_gold",
+	"farming:hoe_diamond",
+	"default:pole",
 }

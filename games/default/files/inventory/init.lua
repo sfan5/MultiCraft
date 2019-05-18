@@ -39,14 +39,15 @@ sfinv.override_page("sfinv:inventory", {
 	title = "Inventory",
 	get = function(self, player, context)
 		local form = [[
-				background[-0.19,-0.25;9.41,9.49;formspec_inventory.png]
+				background[-0.2,-0.26;9.41,9.49;formspec_inventory.png]
+				background[-0.2,-0.26;9.41,9.49;formspec_inventory_inventory.png]
+				image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;true;]
 				listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]
 				list[current_player;craft;4,1;2,1;1]
 				list[current_player;craft;4,2;2,1;4]
-				list[current_player;craftpreview;7.05,1.54;1,1;]
-				list[detached:split;main;7.99,3.15;1,1;]
+				list[current_player;craftpreview;7.05,1.53;1,1;]
+				list[detached:split;main;8,3.14;1,1;]
 				image[1.5,0;2,4;default_player2d.png]
-				image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;true]
 			]]
 		if show_armor then
 			local player_name = player:get_player_name()
