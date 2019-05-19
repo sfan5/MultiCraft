@@ -16,7 +16,7 @@ if creative_mode_cache then
 	-- increased such that nodes of differing levels have an insignificant
 	-- effect on digtime.
 	local digtime = 128
-	local caps = {times = {digtime, digtime, digtime}, uses = 0, maxlevel = 256}
+	local caps = {times = {digtime, digtime, digtime}, uses = 0, maxlevel = 192}
 
 	minetest.register_item(":", {
 		type = "none",

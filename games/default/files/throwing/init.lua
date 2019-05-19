@@ -27,6 +27,7 @@ local throwing_shoot_arrow = function(itemstack, player)
     return false
 end
 
+local wear
 minetest.register_tool("throwing:bow", {
     description = "Bow",
     inventory_image = "throwing_bow.png",
