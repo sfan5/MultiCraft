@@ -1,5 +1,3 @@
-
-
 -- xPanes mod by xyz  custom by davedevils
 function pane(node, desc, dropitem, recipeitem, color)
     local function rshift(x, by)
@@ -82,7 +80,7 @@ function pane(node, desc, dropitem, recipeitem, color)
             use_texture_alpha = true,
             groups = {snappy = 2, crack = 3, oddly_breakable_by_hand = 3},
             drop = dropitem,
-            sounds = default.node_sound_glass_defaults(),
+			sounds = default.node_sound_glass_defaults(),
             node_box = {
                 type = "fixed",
                 fixed = take
@@ -105,8 +103,7 @@ function pane(node, desc, dropitem, recipeitem, color)
         on_construct = update_pane,
         groups = {snappy = 2, crack = 3, oddly_breakable_by_hand = 3},
         drop = "",
-        sounds = default.node_sound_glass_defaults()
-
+		sounds = default.node_sound_glass_defaults()
     })
 
     minetest.register_on_placenode(update_nearby)
