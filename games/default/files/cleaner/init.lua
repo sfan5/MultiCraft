@@ -9,7 +9,7 @@ minetest.register_on_joinplayer(function(player)
 		local itemname = stack:get_name()
 
 		if not minetest.registered_items[itemname] then
-			stack:clear()
+			inv:set_stack("main", i, "")
 		end
 	end
 end)

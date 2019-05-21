@@ -1,6 +1,5 @@
 return {
 	"mesecons_lightstone:lightstone_off",
-	"mesecons_solarpanel:solar_panel_inverted_off",
 	"mesecons_button:button_wood_off",
 	"mesecons_solarpanel:solar_panel_off",
 	"mesecons_walllever:wall_lever_off",
