@@ -21,42 +21,42 @@ rot["brew"] = ""
 
 ofs_tab["all"] = "10.08,0.84"
 ofs_tab["inv"] = "10.08,6.93"
-ofs_tab["blocks"] = "-0.29,-0.32"
-ofs_tab["deco"] = "0.74,-0.32"
-ofs_tab["mese"] = "1.78,-0.32"
-ofs_tab["rail"] = "2.81,-0.32"
-ofs_tab["misc"] = "3.84,-0.32"
-ofs_tab["food"] = "4.88,-0.32"
-ofs_tab["tools"] = "5.91,-0.32"
-ofs_tab["combat"] = "6.94,-0.32"
-ofs_tab["matr"] = "7.98,-0.32"
-ofs_tab["brew"] = "9.01,-0.32"
+ofs_tab["blocks"] = "-0.31,-0.35"
+ofs_tab["deco"] = "0.72,-0.35"
+ofs_tab["mese"] = "1.78,-0.35"
+ofs_tab["rail"] = "2.81,-0.35"
+ofs_tab["misc"] = "3.85,-0.35"
+ofs_tab["food"] = "4.9,-0.35"
+ofs_tab["tools"] = "5.93,-0.35"
+ofs_tab["combat"] = "6.96,-0.35"
+ofs_tab["matr"] = "8,-0.35"
+ofs_tab["brew"] = "9.01,-0.35"
 
-ofs_img["all"] = "10.27,1"
-ofs_img["inv"] = "10.27,7.15"
-ofs_img["blocks"] = "-0.15,-0.15"
-ofs_img["deco"] = "0.88,-0.15"
+ofs_img["all"] = "10.24,1"
+ofs_img["inv"] = "10.24,7.13"
+ofs_img["blocks"] = "-0.16,-0.15"
+ofs_img["deco"] = "0.87,-0.15"
 ofs_img["mese"] = "1.92,-0.15"
 ofs_img["rail"] = "2.96,-0.15"
 ofs_img["misc"] = "4,-0.15"
 ofs_img["food"] = "5.05,-0.15"
-ofs_img["tools"] = "6.11,-0.15"
-ofs_img["combat"] = "7.14,-0.15"
-ofs_img["matr"] = "8.18,-0.15"
-ofs_img["brew"] = "9.21,-0.15"
+ofs_img["tools"] = "6.1,-0.15"
+ofs_img["combat"] = "7.15,-0.15"
+ofs_img["matr"] = "8.17,-0.15"
+ofs_img["brew"] = "9.2,-0.15"
 
-bg["inv"] = "creative_inv.png"
+bg["inv"] = "default_chest_front.png"
 bg["blocks"] = "default_grass_side.png"
 bg["deco"] = "default_sapling.png"
 bg["mese"] = "jeija_lightstone_gray_on.png"
 bg["rail"] = "boats_inventory.png"
 bg["misc"] = "bucket_water.png"
-bg["food"] = "creative_food.png"
+bg["food"] = "default_apple.png"
 bg["tools"] = "default_tool_diamondpick.png"
 bg["combat"] = "default_tool_steelsword.png"
 bg["matr"] = "default_emerald.png"
 bg["brew"] = "potions_bottle.png"
-bg["all"] = "creative_all.png"
+bg["all"] = "default_paper.png"
 
 local function get_item_list(group)
 	local item_list = {}
@@ -169,24 +169,24 @@ creative.formspec_add = ""
 local function get_creative_formspec(player_name, start_i, pagenum, page, pagemax)
 	pagenum = math.floor(pagenum) or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
-	local slider_height = 4 / pagemax - 0.03
-	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.17
+	local slider_height = 4 / pagemax - 0.04
+	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.15
 	local formspec = ""
 	local main_list = "list[detached:creative_" .. player_name ..
-		";main;0.02,1.69;9,5;"..tostring(start_i).."]"
+		";main;0.01,1.69;9,5;"..tostring(start_i).."]"
 	local name = "all"
 	if page ~= nil then name = page end
 	if name == "inv" then
 		main_list = "image[-0.2,1.6;11.35,2.33;creative_bg.png]"..
 			"image[-0.3,0.15;3,4.3;inventory_armor.png]"..
-			"list[current_player;main;0.02,3.69;9,3;9]"..
-			"list[detached:"..player_name.."_armor;armor;0.02,1.7;1,1;]"..
-			"list[detached:"..player_name.."_armor;armor;0.02,2.7;1,1;1]"..
-			"list[detached:"..player_name.."_armor;armor;0.98,1.7;1,1;2]"..
-			"list[detached:"..player_name.."_armor;armor;0.98,2.7;1,1;3]"
+			"list[current_player;main;0.01,3.69;9,3;9]"..
+			"list[detached:"..player_name.."_armor;armor;0.03,1.69;1,1;]"..
+			"list[detached:"..player_name.."_armor;armor;0.03,2.69;1,1;1]"..
+			"list[detached:"..player_name.."_armor;armor;0.98,1.69;1,1;2]"..
+			"list[detached:"..player_name.."_armor;armor;0.98,2.69;1,1;3]"
 	end
 	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
-		"background[-0.19,-0.25;11.5,8.5;inventory_creative.png]"..
+		"background[-0.2,-0.26;11.49,8.49;inventory_creative.png]"..
 		sfinv.gui_bg..
 		sfinv.listcolors..
 		"label[-5,-5;"..name.."]"..
@@ -196,25 +196,25 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
 		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..			--miscellaneous
 		"image[0,0.95;5,0.75;fnt_"..name..".png]"..
-		"list[current_player;main;0.02,6.96;9,1;]"..main_list..
-		"image_button[9.13,1.69;0.8,0.6;creative_up.png;creative_prev;]"..
-		"image_button[9.13,6.11;0.8,0.6;creative_down.png;creative_next;]"..
+		"list[current_player;main;0.01,6.94;9,1;]"..main_list..
+		"image_button[9.10,1.69;0.8,0.6;creative_up.png;creative_prev;]"..
+		"image_button[9.10,6.1;0.8,0.6;creative_down.png;creative_next;]"..
 		"image_button[5.05,-0.15;1,1;"..bg["food"]..";food;;;false]"..		--foodstuff
 		"image_button[6.1,-0.15;1,1;"..bg["tools"]..";tools;;;false]"..		--tools
 		"image_button[7.15,-0.15;1,1;"..bg["combat"]..";combat;;;false]"..	--combat
 		"image_button[8.17,-0.15;1,1;"..bg["matr"]..";matr;;;false]"..		--materials
 		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..		--brewing
-		"image_button[10.27,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
-		"image_button[10.27,7.15;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
-		"list[detached:creative_trash;main;9.02,6.955;1,1;]"..
+		"image_button[10.24,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
+		"image_button[10.24,7.13;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
+		"list[detached:creative_trash;main;9.01,6.94;1,1;]"..
 		"image["..ofs_tab[name]..";1.45,1.45;creative_active.png"..rot[name].."]"..
 		"image["..ofs_img[name]..";1,1;"..bg[name].."]"..
-		"image[9.15," .. tostring(slider_pos) .. ";0.69,"..tostring(slider_height) .. ";creative_slider.png]"
+		"image[9.13," .. tostring(slider_pos) .. ";0.69,"..tostring(slider_height) .. ";creative_slider.png]"
 
 	if name == "all" then
 		formspec = formspec .. "field_close_on_enter[search;false]"..
 			"field[5.3,1.27;4,0.75;search;;]"..
-			"image_button[9.13,0.94;0.8,0.8;creative_search.png;creative_search;;;false]"
+			"image_button[9.09,0.93;0.82,0.82;creative_search.png;creative_search;;;false]"
 	end
 	if pagenum ~= nil then
 		formspec = formspec .. "p"..tostring(pagenum)
@@ -237,7 +237,7 @@ function creative.register_tab(name, title, items)
 			local pagemax = math.ceil(inv.size / (5*9))
 			local formspec =  get_creative_formspec(player_name, start_i,
 					pagenum, name, pagemax)
-			return sfinv.make_formspec(player, context, formspec, false, "size[11,9]")
+			return sfinv.make_formspec(player, context, formspec, false, "size[11,7.7]")
 		end,
 		on_enter = function(self, player, context)
 			local player_name = player:get_player_name()
