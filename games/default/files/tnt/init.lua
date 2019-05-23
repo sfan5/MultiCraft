@@ -15,7 +15,7 @@ end
 function do_tnt_physics(tnt_np,tntr)
     local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
-        local oname = obj:get_entity_name()
+        local oname = obj:get_luaentity()
         local v = obj:get_velocity()
         local p = obj:getpos()
         if oname == "tnt:tnt" then

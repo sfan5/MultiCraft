@@ -19,8 +19,8 @@ rot["combat"] = ""
 rot["matr"] = ""
 rot["brew"] = ""
 
-ofs_tab["all"] = "10.08,0.84"
-ofs_tab["inv"] = "10.08,6.93"
+ofs_tab["all"] = "10.11,0.84"
+ofs_tab["inv"] = "10.11,6.93"
 ofs_tab["blocks"] = "-0.31,-0.35"
 ofs_tab["deco"] = "0.72,-0.35"
 ofs_tab["mese"] = "1.78,-0.35"
@@ -170,23 +170,23 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	pagenum = math.floor(pagenum) or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
 	local slider_height = 4 / pagemax - 0.04
-	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.15
+	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.14
 	local formspec = ""
 	local main_list = "list[detached:creative_" .. player_name ..
-		";main;0.01,1.69;9,5;"..tostring(start_i).."]"
+		";main;0.02,1.68;9,5;"..tostring(start_i).."]"
 	local name = "all"
 	if page ~= nil then name = page end
 	if name == "inv" then
 		main_list = "image[-0.2,1.6;11.35,2.33;creative_bg.png]"..
 			"image[-0.3,0.15;3,4.3;inventory_armor.png]"..
-			"list[current_player;main;0.01,3.69;9,3;9]"..
+			"list[current_player;main;0.02,3.68;9,3;9]"..
 			"list[detached:"..player_name.."_armor;armor;0.03,1.69;1,1;]"..
 			"list[detached:"..player_name.."_armor;armor;0.03,2.69;1,1;1]"..
-			"list[detached:"..player_name.."_armor;armor;0.98,1.69;1,1;2]"..
-			"list[detached:"..player_name.."_armor;armor;0.98,2.69;1,1;3]"
+			"list[detached:"..player_name.."_armor;armor;0.99,1.69;1,1;2]"..
+			"list[detached:"..player_name.."_armor;armor;0.99,2.69;1,1;3]"
 	end
 	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
-		"background[-0.2,-0.26;11.49,8.49;inventory_creative.png]"..
+		"background[-0.2,-0.26;11.55,8.49;inventory_creative.png]"..
 		sfinv.gui_bg..
 		sfinv.listcolors..
 		"label[-5,-5;"..name.."]"..
@@ -195,10 +195,6 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button[1.92,-0.15;1,1;"..bg["mese"]..";mese;;;false]"..		--bluestone
 		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
 		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..			--miscellaneous
-		"image[0,0.95;5,0.75;fnt_"..name..".png]"..
-		"list[current_player;main;0.01,6.94;9,1;]"..main_list..
-		"image_button[9.10,1.69;0.8,0.6;creative_up.png;creative_prev;]"..
-		"image_button[9.10,6.1;0.8,0.6;creative_down.png;creative_next;]"..
 		"image_button[5.05,-0.15;1,1;"..bg["food"]..";food;;;false]"..		--foodstuff
 		"image_button[6.1,-0.15;1,1;"..bg["tools"]..";tools;;;false]"..		--tools
 		"image_button[7.15,-0.15;1,1;"..bg["combat"]..";combat;;;false]"..	--combat
@@ -206,15 +202,19 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..		--brewing
 		"image_button[10.24,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
 		"image_button[10.24,7.13;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
-		"list[detached:creative_trash;main;9.01,6.94;1,1;]"..
+		"image[0,0.95;5,0.75;fnt_"..name..".png]"..
+		"image_button[9.145,1.65;0.81,0.6;creative_up.png;creative_prev;]"..
+		"image_button[9.145,6.08;0.81,0.6;creative_down.png;creative_next;]"..
+		"list[current_player;main;0.02,6.93;9,1;]"..main_list..
+		"list[detached:creative_trash;main;9.03,6.94;1,1;]"..
 		"image["..ofs_tab[name]..";1.45,1.45;creative_active.png"..rot[name].."]"..
 		"image["..ofs_img[name]..";1,1;"..bg[name].."]"..
-		"image[9.13," .. tostring(slider_pos) .. ";0.69,"..tostring(slider_height) .. ";creative_slider.png]"
+		"image[9.165," .. tostring(slider_pos) .. ";0.7,"..tostring(slider_height) .. ";creative_slider.png]"
 
 	if name == "all" then
 		formspec = formspec .. "field_close_on_enter[search;false]"..
-			"field[5.3,1.27;4,0.75;search;;]"..
-			"image_button[9.09,0.93;0.82,0.82;creative_search.png;creative_search;;;false]"
+			"field[5.31,1.27;4.0,0.75;search;;]"..
+			"image_button[9.14,0.93;0.81,0.82;creative_search.png;creative_search;;;false]"
 	end
 	if pagenum ~= nil then
 		formspec = formspec .. "p"..tostring(pagenum)
