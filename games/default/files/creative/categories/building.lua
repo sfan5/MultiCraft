@@ -32,7 +32,7 @@ return {
 	"default:stone_with_gold",
 	"default:goldblock",
 	"default:quartz_ore",
-	"default:sponge",
+	"sponge:sponge",
 	"default:glass_white",
 	"default:glass_purple",
 	"default:glass_gray",
