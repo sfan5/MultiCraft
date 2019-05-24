@@ -90,8 +90,7 @@ local function init_creative_cache(items)
 	return i_cache
 end
 
-function creative.init_creative_inventory(player)
-	local player_name = player:get_player_name()
+function creative.init_creative_inventory(player_name)
 	player_inventory[player_name] = {
 		size = 0,
 		filter = "",
@@ -99,27 +98,27 @@ function creative.init_creative_inventory(player)
 	}
 
 	minetest.create_detached_inventory("creative_" .. player_name, {
-		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player2)
-			local name = player2 and player2:get_player_name() or ""
+		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+			local name = player and player:get_player_name() or ""
 			if not creative.is_enabled_for(name) or
 					to_list == "main" then
 				return 0
 			end
 			return count
 		end,
-		allow_put = function(inv, listname, index, stack, player2)
+		allow_put = function(inv, listname, index, stack, player)
 			return 0
 		end,
-		allow_take = function(inv, listname, index, stack, player2)
-			local name = player2 and player2:get_player_name() or ""
+		allow_take = function(inv, listname, index, stack, player)
+			local name = player and player:get_player_name() or ""
 			if not creative.is_enabled_for(name) then
 				return 0
 			end
 			return -1
 		end,
-		on_move = function(inv, from_list, from_index, to_list, to_index, count, player2)
+		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 		end,
-		on_take = function(inv, listname, index, stack, player2)
+		on_take = function(inv, listname, index, stack, player)
 			if stack and stack:get_count() > 0 then
 				minetest.log("action", player_name.." takes "..
 					stack:get_name().." from creative inventory")
@@ -131,13 +130,21 @@ function creative.init_creative_inventory(player)
 end
 
 function creative.update_creative_inventory(player_name, tab_content)
+	local player = minetest.get_player_by_name(player_name)
+	if not player or not player:is_player() then
+		return
+	end
 	local creative_list = {}
 	local inv = player_inventory[player_name] or
-			creative.init_creative_inventory(minetest.get_player_by_name(player_name))
+			creative.init_creative_inventory(player_name)
 	local player_inv = minetest.get_inventory({type="detached",
 			name="creative_"..player_name})
-	local items = inventory_cache[tab_content] or init_creative_cache(tab_content)
+	if not player_inv then
+		player_inventory[player_name] = nil
+		return
+	end
 
+	local items = inventory_cache[tab_content] or init_creative_cache(tab_content)
 	for name, def in pairs(items) do
 		if def.name:find(inv.filter, 1, true) or
 				def.description:lower():find(inv.filter, 1, true) then
@@ -171,7 +178,6 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
 	local slider_height = 4 / pagemax - 0.04
 	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.14
-	local formspec = ""
 	local main_list = "list[detached:creative_" .. player_name ..
 		";main;0.02,1.68;9,5;"..tostring(start_i).."]"
 	local name = "all"
