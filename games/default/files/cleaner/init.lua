@@ -1,5 +1,6 @@
 local radius = 16
 local freq = 1
+local kpos = {}
 
 minetest.register_on_joinplayer(function(player)
 	local inv = player:get_inventory()
@@ -24,10 +25,16 @@ local function clean()
 		for z = -radius, radius do
 		for y = -radius, radius do
 			local pos_scan = vector.new(pos.x + x, pos.y + y, pos.z + z)
-			local nodename = minetest.get_node(pos_scan).name
+			local hash = minetest.hash_node_position(pos_scan)
 
-			if not minetest.registered_nodes[nodename] then
-				minetest.remove_node(pos_scan)
+			if not kpos[hash] then
+				local nodename = minetest.get_node(pos_scan).name
+
+				if not minetest.registered_nodes[nodename] then
+					minetest.remove_node(pos_scan)
+				end
+
+				kpos[hash] = true
 			end
 
 			local objs = minetest.get_objects_inside_radius(pos_scan, 0.5)
