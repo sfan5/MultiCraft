@@ -7,7 +7,6 @@ return {
 	"default:pick_gold",
 	"default:shovel_gold",
 	"default:axe_steel",
-	"default:pole",
 	"default:shovel_steel",
 	"default:pick_diamond",
 	"default:pick_stone",

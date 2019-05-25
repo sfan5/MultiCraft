@@ -95,5 +95,5 @@ minetest.register_decoration({  -- sponges are found deep in the sea
 })
 
 -- Aliases
-minetest.register_alias("default:sponge", "sponge:sponges")
+minetest.register_alias("default:sponge", "sponge:sponge")
 minetest.register_alias("default:sponge_wet", "sponge:wet_sponge")
