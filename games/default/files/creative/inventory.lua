@@ -1,3 +1,4 @@
+local has_armor = minetest.get_modpath("3d_armor")
 local player_inventory = {}
 local inventory_cache = {}
 
@@ -58,39 +59,34 @@ bg["matr"] = "default_emerald.png"
 bg["brew"] = "potions_bottle.png"
 bg["all"] = "default_paper.png"
 
-local function get_item_list(group)
+local function init_creative_cache(tab_name, group)
+	inventory_cache[tab_name] = {}
+	local i_cache = inventory_cache[tab_name]
 	local item_list = {}
-	local input = io.open(minetest.get_modpath("creative")..
-		"/categories/"..group..".lua", "r")
-	if input then
-		local data = input:read('*all')
-		local list = data and minetest.deserialize(data) or {}
-		for _, name in pairs(list) do
-			local def = minetest.registered_items[name]
-			if def then
-				item_list[name] = def
-			end
+	if group == "all" then
+		for name, _ in pairs(minetest.registered_items) do
+			table.insert(item_list, name)
 		end
-		io.close(input)
+	elseif group then
+		local input = io.open(minetest.get_modpath("creative")..
+			"/categories/"..group..".lua", "r")
+		if input then
+			local data = input:read('*all')
+			item_list = data and minetest.deserialize(data) or {}
+			io.close(input)
+		end
 	end
-	return item_list
-end
-
-local function init_creative_cache(items)
-	inventory_cache[items] = {}
-	local i_cache = inventory_cache[items]
-
-	for name, def in pairs(items) do
-		if def.groups.not_in_creative_inventory ~= 1 and
-				def.description and def.description ~= "" then
-			i_cache[name] = def
+	for _, name in pairs(item_list) do
+		local def = minetest.registered_items[name]
+		if def and def.description and def.description ~= "" and
+				(not def.groups or def.groups.not_in_creative_inventory ~= 1) then
+			i_cache[name] = def.description
 		end
 	end
 	table.sort(i_cache)
-	return i_cache
 end
 
-function creative.init_creative_inventory(player_name)
+local function init_creative_inventory(player_name)
 	player_inventory[player_name] = {
 		size = 0,
 		filter = "",
@@ -129,14 +125,14 @@ function creative.init_creative_inventory(player_name)
 	return player_inventory[player_name]
 end
 
-function creative.update_creative_inventory(player_name, tab_content)
+local function update_creative_inventory(player_name, tab_name)
 	local player = minetest.get_player_by_name(player_name)
 	if not player or not player:is_player() then
 		return
 	end
 	local creative_list = {}
 	local inv = player_inventory[player_name] or
-			creative.init_creative_inventory(player_name)
+			init_creative_inventory(player_name)
 	local player_inv = minetest.get_inventory({type="detached",
 			name="creative_"..player_name})
 	if not player_inv then
@@ -144,10 +140,10 @@ function creative.update_creative_inventory(player_name, tab_content)
 		return
 	end
 
-	local items = inventory_cache[tab_content] or init_creative_cache(tab_content)
-	for name, def in pairs(items) do
-		if def.name:find(inv.filter, 1, true) or
-				def.description:lower():find(inv.filter, 1, true) then
+	local items = inventory_cache[tab_name] or {}
+	for name, description in pairs(items) do
+		if name:find(inv.filter, 1, true) or
+				description:lower():find(inv.filter, 1, true) then
 			creative_list[#creative_list+1] = name
 		end
 	end
@@ -171,8 +167,6 @@ local trash = minetest.create_detached_inventory("creative_trash", {
 })
 trash:set_size("main", 1)
 
-creative.formspec_add = ""
-
 local function get_creative_formspec(player_name, start_i, pagenum, page, pagemax)
 	pagenum = math.floor(pagenum) or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
@@ -184,12 +178,14 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	if page ~= nil then name = page end
 	if name == "inv" then
 		main_list = "image[-0.2,1.6;11.35,2.33;creative_bg.png]"..
-			"image[-0.3,0.15;3,4.3;inventory_armor.png]"..
-			"list[current_player;main;0.02,3.68;9,3;9]"..
+			"list[current_player;main;0.02,3.68;9,3;9]"
+		if has_armor then
+			main_list = main_list.."image[-0.3,0.15;3,4.3;inventory_armor.png]"..
 			"list[detached:"..player_name.."_armor;armor;0.03,1.69;1,1;]"..
 			"list[detached:"..player_name.."_armor;armor;0.03,2.69;1,1;1]"..
 			"list[detached:"..player_name.."_armor;armor;0.99,1.69;1,1;2]"..
 			"list[detached:"..player_name.."_armor;armor;0.99,2.69;1,1;3]"
+		end
 	end
 	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
 		"background[-0.2,-0.26;11.55,8.49;inventory_creative.png]"..
@@ -228,7 +224,8 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	return formspec
 end
 
-function creative.register_tab(name, title, items)
+local function register_tab(name, title, group)
+	init_creative_cache(name, group)
 	sfinv.register_page("creative:" .. name, {
 		title = title,
 		is_in_nav = function(self, player, context)
@@ -236,12 +233,12 @@ function creative.register_tab(name, title, items)
 		end,
 		get = function(self, player, context)
 			local player_name = player:get_player_name()
-			creative.update_creative_inventory(player_name, items)
+			update_creative_inventory(player_name, name)
 			local inv = player_inventory[player_name]
 			local start_i = inv.start_i or 0
 			local pagenum = math.floor(start_i / (5*9) + 1)
 			local pagemax = math.ceil(inv.size / (5*9))
-			local formspec =  get_creative_formspec(player_name, start_i,
+			local formspec = get_creative_formspec(player_name, start_i,
 					pagenum, name, pagemax)
 			return sfinv.make_formspec(player, context, formspec, false, "size[11,7.7]")
 		end,
@@ -255,7 +252,9 @@ function creative.register_tab(name, title, items)
 		on_player_receive_fields = function(self, player, context, fields)
 			local player_name = player:get_player_name()
 			local inv = player_inventory[player_name]
-			assert(inv)
+			if not inv then
+				return
+			end
 			inv.filter = ""
 
 			if fields.build then
@@ -287,7 +286,7 @@ function creative.register_tab(name, title, items)
 					fields.key_enter_field == "search") then
 				inv.start_i = 0
 				inv.filter = fields.search:lower()
-				creative.update_creative_inventory(player_name, items)
+				update_creative_inventory(player_name, name)
 				sfinv.set_player_inventory_formspec(player, context)
 			elseif not fields.quit then
 				local start_i = inv.start_i or 0
@@ -312,19 +311,19 @@ function creative.register_tab(name, title, items)
 	})
 end
 
-creative.register_tab("all", "All", minetest.registered_items)
-creative.register_tab("inv", "Inv", {})
+register_tab("inv", "Inv")
 minetest.after(0, function()
-	creative.register_tab("blocks", "1", get_item_list("building"))
-	creative.register_tab("deco", "2", get_item_list("decorative"))
-	creative.register_tab("mese", "3", get_item_list("mese"))
-	creative.register_tab("rail", "4", get_item_list("rail"))
-	creative.register_tab("misc", "5", get_item_list("misc"))
-	creative.register_tab("food", "6", get_item_list("foodstuffs"))
-	creative.register_tab("tools", "7", get_item_list("tools"))
-	creative.register_tab("combat", "8", get_item_list("combat"))
-	creative.register_tab("matr", "9", get_item_list("materials"))
-	creative.register_tab("brew", "10", get_item_list("brewing"))
+	register_tab("all", "All", "all")
+	register_tab("blocks", "1", "building")
+	register_tab("deco", "2", "decorative")
+	register_tab("mese", "3", "mese")
+	register_tab("rail", "4", "rail")
+	register_tab("misc", "5", "misc")
+	register_tab("food", "6", "foodstuffs")
+	register_tab("tools", "7", "tools")
+	register_tab("combat", "8", "combat")
+	register_tab("matr", "9", "materials")
+	register_tab("brew", "10", "brewing")
 end)
 
 local old_homepage_name = sfinv.get_homepage_name
