@@ -33,8 +33,8 @@ ofs_tab["combat"] = "6.96,-0.35"
 ofs_tab["matr"] = "8,-0.35"
 ofs_tab["brew"] = "9.01,-0.35"
 
-ofs_img["all"] = "10.24,1"
-ofs_img["inv"] = "10.24,7.13"
+ofs_img["all"] = "10.25,1"
+ofs_img["inv"] = "10.25,7.11"
 ofs_img["blocks"] = "-0.16,-0.15"
 ofs_img["deco"] = "0.87,-0.15"
 ofs_img["mese"] = "1.92,-0.15"
@@ -202,8 +202,10 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button[7.15,-0.15;1,1;"..bg["combat"]..";combat;;;false]"..	--combat
 		"image_button[8.17,-0.15;1,1;"..bg["matr"]..";matr;;;false]"..		--materials
 		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..		--brewing
-		"image_button[10.24,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
-		"image_button[10.24,7.13;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
+		"image_button[10.25,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
+		"image_button[10.25,7.11;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
+		"image_button_exit[10.3,2.5;1,1;creative_home_set.png;sethome_set;;true;true;]"..
+		"image_button_exit[10.3,3.5;1,1;creative_home_go.png;sethome_go;;true;true;]"..
 		"image[0,0.95;5,0.75;fnt_"..name..".png]"..
 		"image_button[9.145,1.65;0.81,0.6;creative_up.png;creative_prev;]"..
 		"image_button[9.145,6.08;0.81,0.6;creative_down.png;creative_next;]"..

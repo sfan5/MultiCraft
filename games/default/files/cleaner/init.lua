@@ -26,16 +26,19 @@ local function clean()
 		for y = -height, height do
 		for z = -radius, radius do
 			local pos_scan = vector.new(pos.x + x, pos.y + y, pos.z + z)
-			local hash = minetest.hash_node_position(pos_scan)
+			--local hash = minetest.hash_node_position(pos_scan)
+			local nodename = minetest.get_node(pos_scan).name
 
-			if not kpos[hash] then
+			--[[if not kpos[hash] then
 				local nodename = minetest.get_node(pos_scan).name
 
 				if not minetest.registered_nodes[nodename] then
 					minetest.remove_node(pos_scan)
 				end
 
-				kpos[hash] = true
+				kpos[hash] = true]]
+			if not minetest.registered_nodes[nodename] then
+				minetest.remove_node(pos_scan)
 			end
 
 			local objs = minetest.get_objects_inside_radius(pos_scan, 0.5)
@@ -43,8 +46,7 @@ local function clean()
 				for j = 1, #objs do
 					local obj = objs[j]
 					if not obj:is_player() then
-						-- new API is too heavy
-						local entname = obj:get_entity_name()
+						local entname = obj:get_luaentity().name
 						if not minetest.registered_entities[entname] then
 							obj:remove()
 						end
