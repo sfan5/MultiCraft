@@ -1,5 +1,6 @@
 local radius = 16
-local freq = 1
+local height = 4
+local freq = 2
 local kpos = {}
 
 minetest.register_on_joinplayer(function(player)
@@ -22,8 +23,8 @@ local function clean()
 		local pos = player:get_pos()
 
 		for x = -radius, radius do
+		for y = -height, height do
 		for z = -radius, radius do
-		for y = -radius, radius do
 			local pos_scan = vector.new(pos.x + x, pos.y + y, pos.z + z)
 			local hash = minetest.hash_node_position(pos_scan)
 
@@ -42,7 +43,8 @@ local function clean()
 				for j = 1, #objs do
 					local obj = objs[j]
 					if not obj:is_player() then
-						local entname = obj:get_luaentity().name
+						-- new API is too heavy
+						local entname = obj:get_entity_name()
 						if not minetest.registered_entities[entname] then
 							obj:remove()
 						end
