@@ -1,6 +1,6 @@
-local radius = 16
-local height = 4
-local freq = 2
+local radius = 4
+local height = 2
+local freq = 3
 local kpos = {}
 
 minetest.register_on_joinplayer(function(player)
