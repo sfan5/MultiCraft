@@ -15,4 +15,7 @@ return {
 	"default:sugarcane",
 	"default:stick",
 	"default:gunpowder",
+	"default:book",
+	"default:paper",
+	"workbench:hammer",
 }

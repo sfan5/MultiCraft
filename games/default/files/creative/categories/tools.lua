@@ -20,4 +20,7 @@ return {
 	"farming:hoe_gold",
 	"farming:hoe_diamond",
 	"default:pole",
+	"mobs:shears",
+	"watch:0",
+	"fire:flint_and_steel",
 }

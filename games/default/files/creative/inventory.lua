@@ -56,7 +56,7 @@ bg["food"] = "default_apple.png"
 bg["tools"] = "default_tool_diamondpick.png"
 bg["combat"] = "default_tool_steelsword.png"
 bg["matr"] = "default_emerald.png"
-bg["brew"] = "potions_bottle.png"
+bg["brew"] = "vessels_glass_bottle.png"
 bg["all"] = "default_paper.png"
 
 local function init_creative_cache(tab_name, group)
@@ -132,8 +132,9 @@ local function get_button_formspec(player_name, start_i)
 			if not item then
 				return buttons
 			end
-			buttons = buttons.."item_image_button["..
-				(x + 0.01)..","..(y + 1.67)..";1,1;"..item..";"..item..";]"
+			buttons = buttons.."item_image["..
+				(x + 0.01)..","..(y + 1.67)..";1,1;"..item.."]image_button["..
+				(x + 0.01)..","..(y + 1.67)..";1,1;blank.png;"..item..";;;false]"
 			i = i + 1
 		end
 	end
