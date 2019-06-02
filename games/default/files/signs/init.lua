@@ -268,5 +268,3 @@ minetest.register_node("signs:wall_sign", {
 	groups = {oddly_breakable_by_hand = 1, choppy = 3,
 		not_in_creative_inventory = 1, attached_node = 1},
 })
-
-dofile(minetest.get_modpath("signs") .. "/legacy.lua")

@@ -18,7 +18,3 @@ for i = 1, #dyes do
 		recipe = {"group:dye,color_" .. name, "group:wool"},
 	}
 end
-
--- Legacy
-minetest.register_alias("wool:dark_blue", "wool:blue")
-minetest.register_alias("wool:gold", "wool:yellow")
