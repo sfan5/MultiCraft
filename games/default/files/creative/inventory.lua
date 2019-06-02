@@ -132,9 +132,14 @@ local function get_button_formspec(player_name, start_i)
 			if not item then
 				return buttons
 			end
+			local def = minetest.registered_items[item]
+			local tooltip = def and def.description or ""
 			buttons = buttons.."item_image["..
-				(x + 0.01)..","..(y + 1.67)..";1,1;"..item.."]image_button["..
-				(x + 0.01)..","..(y + 1.67)..";1,1;blank.png;"..item..";;;false]"
+				(x + 0.02)..","..(y + 1.68)..";1,1;"..item.."]image_button["..
+				(x + 0.02)..","..(y + 1.68)..";1,1;blank.png;"..item..
+				";;;false;button_pressed.png]"..
+				"tooltip["..item..";"..tooltip..";#000;#FFF]"
+
 			i = i + 1
 		end
 	end

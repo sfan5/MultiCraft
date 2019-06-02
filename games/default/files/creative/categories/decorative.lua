@@ -8,7 +8,6 @@ return {
 	"default:stonebrick",
 	"default:vine",
 	"default:dry_grass",
-	"fences:fence_wood",
 	"default:stonebrickmossy",
 	"default:stonebrickcarved",
 	"default:stone",

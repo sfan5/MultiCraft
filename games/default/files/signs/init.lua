@@ -254,7 +254,7 @@ minetest.register_node("signs:wall_sign", {
 				found = true
 			end
 		end
-		if not found then
+		if not found and signs.wall_sign_positions[p2] then
 			local obj = minetest.add_entity(vector.add(pos,
 				signs.wall_sign_positions[p2][1]), "signs:sign_text")
 			obj:set_properties({
