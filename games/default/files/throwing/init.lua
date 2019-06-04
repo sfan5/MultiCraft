@@ -5,6 +5,17 @@ arrows = {
 local creative = minetest.settings:get_bool("creative_mode")
 local wear
 
+local function valid_pos(pos)
+	if pos then
+		for _, v in pairs({"x", "y", "z"}) do
+			if not pos[v] or pos[v] < -32000 or pos[v] > 32000 then
+				return
+			end
+		end
+		return true
+	end
+end
+
 local throwing_shoot_arrow = function(itemstack, player)
 	for _,arrow in ipairs(arrows) do
 		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow[1] then
@@ -12,6 +23,9 @@ local throwing_shoot_arrow = function(itemstack, player)
 				player:get_inventory():remove_item("main", arrow[1])
 			end
 			local playerpos = player:get_pos()
+			if not valid_pos(playerpos) then
+				return
+			end
 			local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])
 			local dir = player:get_look_dir()
 			obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
