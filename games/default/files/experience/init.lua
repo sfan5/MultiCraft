@@ -5,7 +5,7 @@ local modpath = minetest.get_modpath(modname)
 
 dofile(modpath .. "/override.lua")
 
-local MAX_HUD_XP = 44
+local MAX_HUD_XP = 32
 local MAX_LEVEL = 40
 local ORB_SOUND_INTERVAL = 0.01
 local ORB_COLLECT_RADIUS = 3
@@ -43,7 +43,7 @@ minetest.register_on_joinplayer(function(player)
 		hud = player:hud_add({
 			hud_elem_type = "statbar",
 			position  = {x = 0.5, y = 0.97},
-			offset    = {x = -252, y = -48},
+			offset    = {x = -191, y = -29},
 			scale     = {x = 1,   y = 1},
 			alignment = {x = -1,  y = -1},
 			text      = "expbar_empty.png",
@@ -54,7 +54,7 @@ minetest.register_on_joinplayer(function(player)
 		hud2 = player:hud_add({
 			hud_elem_type = "statbar",
 			position  = {x = 0.5,  y = 0.97},
-			offset    = {x = -252, y = -48},
+			offset    = {x = -191, y = -29},
 			scale     = {x = 1,    y = 1},
 			alignment = {x = -1,   y = -1},
 			text      = "expbar_full.png",
@@ -64,9 +64,9 @@ minetest.register_on_joinplayer(function(player)
 		hud3 = player:hud_add({
 			hud_elem_type = "text",
 			texture   = ("xp_blank"),
-			position  = {x = 0.5, y = 0.97},
+			position  = {x = 0.495, y = 0.976},
 			offset    = {x = 6, y = -42},
-			alignment = {x = -1, y = -1},
+			alignment = {x = -0.5, y = -1},
 			number    = 0x3cff00,
 			text      = "",
 		})
@@ -168,7 +168,7 @@ minetest.register_entity("experience:orb", {
 	glow         = 12,
 	physical     = true,
 	textures     = {"orb.png"},
-	visual_size  = {x = 0.15, y = 0.15},
+	visual_size  = {x = 0.1, y = 0.1},
 	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
 	collide_with_objects = false,
 	
@@ -185,7 +185,7 @@ minetest.register_entity("experience:orb", {
 		self.last_color_change = self.last_color_change or 0
 		self.color_ratio = self.color_ratio or 0
 
-		if self.timer > 300 then
+		if self.timer > 60 then
 			obj:remove()
 		elseif self.timer >= self.last_color_change + 0.001 then
 			if self.color_ratio >= 120 then
