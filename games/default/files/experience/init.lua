@@ -5,12 +5,14 @@ local modpath = minetest.get_modpath(modname)
 
 dofile(modpath .. "/override.lua")
 
+local MAX_LEVEL  = 40
 local MAX_HUD_XP = 32
-local MAX_LEVEL = 40
+
+local ORB_LIFETIME       = 60
 local ORB_SOUND_INTERVAL = 0.01
 local ORB_COLLECT_RADIUS = 3
 
-local xp, hud = {}, {}
+local xp, _hud = {}, {}
 
 local get_objs_rad = minetest.get_objects_inside_radius
 local get_players  = minetest.get_connected_players
@@ -34,39 +36,28 @@ local function init_data(player, reset)
 	end
 end
 
+hud.register("xp_bar", {
+	hud_elem_type = "statbar",
+	position      = {x = 0.5,  y = 1},
+	size          = {x = 31,   y = 13},
+	alignment     = {x = -1,   y = -1},
+	offset        = {x = -249, y = -79},
+	text          = "expbar_full.png",
+	background    = "expbar_empty.png",
+	number        = MAX_HUD_XP, 
+})
+
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	init_data(player)
 
-	hud[name] = {
-		-- background (empty bar)
-		hud = player:hud_add({
-			hud_elem_type = "statbar",
-			position  = {x = 0.5, y = 0.97},
-			offset    = {x = -191, y = -29},
-			scale     = {x = 1,   y = 1},
-			alignment = {x = -1,  y = -1},
-			text      = "expbar_empty.png",
-			number    = MAX_HUD_XP,
-		}),
-
-		-- foreground (filling bar)
-		hud2 = player:hud_add({
-			hud_elem_type = "statbar",
-			position  = {x = 0.5,  y = 0.97},
-			offset    = {x = -191, y = -29},
-			scale     = {x = 1,    y = 1},
-			alignment = {x = -1,   y = -1},
-			text      = "expbar_full.png",
-		}),
-
+	_hud[name] = {
 		-- level number
-		hud3 = player:hud_add({
+		lvl = player:hud_add({
 			hud_elem_type = "text",
-			texture   = ("xp_blank"),
-			position  = {x = 0.495, y = 0.976},
-			offset    = {x = 6, y = -42},
-			alignment = {x = -0.5, y = -1},
+			position  = {x = 0.5, y = 0.91},
+			offset    = {x = 0, y = -25},
+			alignment = {x = 0, y = 0},
 			number    = 0x3cff00,
 			text      = "",
 		})
@@ -155,11 +146,11 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		player:hud_change(hud[name].hud2, "number", xp[name].xp_bar)
-		player:hud_change(hud[name].hud3, "text",   xp[name].level)
+		hud.change_item(player, "xp_bar", {number = xp[name].xp_bar})
 
-		player:hud_change(hud[name].hud3, "offset",
-			{x = (xp[name].level >= 10 and 13 or 6), y = -42})
+		player:hud_change(_hud[name].lvl, "text", xp[name].level)
+		--player:hud_change(_hud[name].lvl, "offset",
+		--	{x = (xp[name].level >= 10 and 13 or 6), y = -202})
 	end
 end)
 
@@ -185,7 +176,7 @@ minetest.register_entity("experience:orb", {
 		self.last_color_change = self.last_color_change or 0
 		self.color_ratio = self.color_ratio or 0
 
-		if self.timer > 60 then
+		if self.timer > ORB_LIFETIME then
 			obj:remove()
 		elseif self.timer >= self.last_color_change + 0.001 then
 			if self.color_ratio >= 120 then
