@@ -1,140 +1,227 @@
--- xPanes mod by xyz  custom by davedevils
-function pane(node, desc, dropitem, recipeitem, color)
-    local function rshift(x, by)
-      return math.floor(x / 2 ^ by)
-    end
-
-    local directions = {
-        {x = 1, y = 0, z = 0},
-        {x = 0, y = 0, z = 1},
-        {x = -1, y = 0, z = 0},
-        {x = 0, y = 0, z = -1},
-    }
-
-    local function update_pane(pos)
-        if minetest.get_node(pos).name:find("xpanes:pane_"..node..""..color) == nil then
-            return
-        end
-        local sum = 0
-        for i = 1, 4 do
-            local node = minetest.get_node({x = pos.x + directions[i].x, y = pos.y + directions[i].y, z = pos.z + directions[i].z})
-            if minetest.registered_nodes[node.name].walkable ~= false then
-                sum = sum + 2 ^ (i - 1)
-            end
-        end
-        if sum == 0 then
-            sum = 15
-        end
-        minetest.add_node(pos, {name = "xpanes:pane_"..node..""..color.."_"..sum})
-    end
-
-    local function update_nearby(pos)
-        for i = 1,4 do
-            update_pane({x = pos.x + directions[i].x, y = pos.y + directions[i].y, z = pos.z + directions[i].z})
-        end
-    end
-
-    local half_blocks = {
-        {0, -0.5, -0.06, 0.5, 0.5, 0.06},
-        {-0.06, -0.5, 0, 0.06, 0.5, 0.5},
-        {-0.5, -0.5, -0.06, 0, 0.5, 0.06},
-        {-0.06, -0.5, -0.5, 0.06, 0.5, 0}
-    }
-
-    local full_blocks = {
-        {-0.5, -0.5, -0.06, 0.5, 0.5, 0.06},
-        {-0.06, -0.5, -0.5, 0.06, 0.5, 0.5}
-    }
-
-    for i = 1, 15 do
-        local need = {}
-        local cnt = 0
-        for j = 1, 4 do
-            if rshift(i, j - 1) % 2 == 1 then
-                need[j] = true
-                cnt = cnt + 1
-            end
-        end
-        local take = {}
-        if need[1] == true and need[3] == true then
-            need[1] = nil
-            need[3] = nil
-            table.insert(take, full_blocks[1])
-        end
-        if need[2] == true and need[4] == true then
-            need[2] = nil
-            need[4] = nil
-            table.insert(take, full_blocks[2])
-        end
-        for k in pairs(need) do
-            table.insert(take, half_blocks[k])
-        end
-        local texture = "xpanes_pane_"..node..""..color..".png"
-        if cnt == 1 then
-            texture = "xpanes_pane_half_"..node..""..color..".png"
-        end
-        minetest.register_node("xpanes:pane_"..node..""..color.."_"..i, {
-            drawtype = "nodebox",
-            tiles = {"xpanes_top_"..node..""..color..".png", "xpanes_top_"..node..""..color..".png", texture},
-            paramtype = "light",
-            use_texture_alpha = true,
-            groups = {snappy = 2, crack = 3, oddly_breakable_by_hand = 3},
-            drop = dropitem,
-			sounds = default.node_sound_glass_defaults(),
-            node_box = {
-                type = "fixed",
-                fixed = take
-            },
-            selection_box = {
-                type = "fixed",
-                fixed = take
-            }
-        })
-    end
-
-    minetest.register_node("xpanes:pane_"..node..""..color, {
-        description = desc,
-        tiles = {"xpanes_pane_"..node..""..color..".png"},
-        inventory_image = "xpanes_pane_"..node..""..color..".png",
-        paramtype = "light",
-        use_texture_alpha = true,
-        wield_image = "xpanes_pane_"..node..""..color..".png",
-        node_placement_prediction = "",
-        on_construct = update_pane,
-        groups = {snappy = 2, crack = 3, oddly_breakable_by_hand = 3},
-        drop = "",
-		sounds = default.node_sound_glass_defaults()
-    })
-
-    minetest.register_on_placenode(update_nearby)
-    minetest.register_on_dignode(update_nearby)
-
-    minetest.register_craft({
-        output = 'xpanes:pane_'..node..''..color..' 16',
-        recipe = {
-            {recipeitem, recipeitem, recipeitem},
-            {recipeitem, recipeitem, recipeitem}
-        }
-    })
+local function is_pane(pos)
+	return minetest.get_item_group(minetest.get_node(pos).name, "pane") > 0
 end
--- Glass
-pane("glass", "Glass Pane", "", "default:glass", "_natural")
-pane("glass", "Glass Pane Red", "", "default:glass_red", "_red")
-pane("glass", "Glass Pane Green", "", "default:glass_green", "_green")
-pane("glass", "Glass Pane Blue", "", "default:glass_blue", "_blue")
-pane("glass", "Glass Pane Light Blue", "", "default:glass_light_blue", "_light_blue")
-pane("glass", "Glass Pane Black", "", "default:glass_black", "_black")
-pane("glass", "Glass Pane White", "", "default:glass_white", "_white")
-pane("glass", "Glass Pane Yellow", "", "default:glass_yellow", "_yellow")
-pane("glass", "Glass Pane Brown", "", "default:glass_brown", "_brown")
-pane("glass", "Glass Pane Orange", "", "default:glass_orange", "_orange")
-pane("glass", "Glass Pane Pink", "", "default:glass_pink", "_pink")
-pane("glass", "Glass Pane Gray", "", "default:glass_gray", "_gray")
-pane("glass", "Glass Pane Lime", "", "default:glass_lime", "_lime")
-pane("glass", "Glass Pane Silver", "", "default:glass_silver", "_silver")
-pane("glass", "Glass Pane Magenta", "", "default:glass_magenta", "_magenta")
-pane("glass", "Glass Pane Purple", "", "default:glass_purple", "_purple")
 
+local function connects_dir(pos, name, dir)
+	local aside = vector.add(pos, minetest.facedir_to_dir(dir))
+	if is_pane(aside) then
+		return true
+	end
 
--- Iron
-pane("iron", "Iron Fence", "xpanes:pane_iron", "default:steel_ingot", "")
+	local connects_to = minetest.registered_nodes[name].connects_to
+	if not connects_to then
+		return false
+	end
+	local list = minetest.find_nodes_in_area(aside, aside, connects_to)
+
+	if #list > 0 then
+		return true
+	end
+
+	return false
+end
+
+local function swap(pos, node, name, param2)
+	if node.name == name and node.param2 == param2 then
+		return
+	end
+
+	minetest.set_node(pos, {name = name, param2 = param2})
+end
+
+local function update_pane(pos)
+	if not is_pane(pos) then
+		return
+	end
+	local node = minetest.get_node(pos)
+	local name = node.name
+	if name:sub(-5) == "_flat" then
+		name = name:sub(1, -6)
+	end
+
+	local any = node.param2
+	local c = {}
+	local count = 0
+	for dir = 0, 3 do
+		c[dir] = connects_dir(pos, name, dir)
+		if c[dir] then
+			any = dir
+			count = count + 1
+		end
+	end
+
+	if count == 0 then
+		swap(pos, node, name .. "_flat", any)
+	elseif count == 1 then
+		swap(pos, node, name .. "_flat", (any + 1) % 4)
+	elseif count == 2 then
+		if (c[0] and c[2]) or (c[1] and c[3]) then
+			swap(pos, node, name .. "_flat", (any + 1) % 4)
+		else
+			swap(pos, node, name, 0)
+		end
+	else
+		swap(pos, node, name, 0)
+	end
+end
+
+minetest.register_on_placenode(function(pos, node)
+	if minetest.get_item_group(node, "pane") then
+		update_pane(pos)
+	end
+	for i = 0, 3 do
+		local dir = minetest.facedir_to_dir(i)
+		update_pane(vector.add(pos, dir))
+	end
+end)
+
+minetest.register_on_dignode(function(pos)
+	for i = 0, 3 do
+		local dir = minetest.facedir_to_dir(i)
+		update_pane(vector.add(pos, dir))
+	end
+end)
+
+xpanes = {}
+function xpanes.register_pane(name, def)
+	for i = 1, 15 do
+		minetest.register_alias("xpanes:" .. name .. "_" .. i, "xpanes:" .. name .. "_flat")
+	end
+
+	local flatgroups = table.copy(def.groups)
+	flatgroups.pane = 1
+	minetest.register_node(":xpanes:" .. name .. "_flat", {
+		description = def.description,
+		drawtype = "nodebox",
+		paramtype = "light",
+		is_ground_content = false,
+		sunlight_propagates = true,
+		inventory_image = def.inventory_image,
+		wield_image = def.wield_image,
+		paramtype2 = "facedir",
+		tiles = {def.textures[2], def.textures[2], def.textures[2], def.textures[2], def.textures[1], def.textures[1]},
+		groups = flatgroups,
+		drop = "xpanes:" .. name .. "_flat",
+		sounds = def.sounds,
+		use_texture_alpha = def.use_texture_alpha or false,
+		node_box = {
+			type = "fixed",
+			fixed = {{-1/2, -1/2, -1/32, 1/2, 1/2, 1/32}},
+		},
+		selection_box = {
+			type = "fixed",
+			fixed = {{-1/2, -1/2, -1/32, 1/2, 1/2, 1/32}},
+		},
+		connect_sides = { "left", "right" },
+	})
+
+	local groups = table.copy(def.groups)
+	groups.pane = 1
+	groups.not_in_creative_inventory = 1
+	minetest.register_node(":xpanes:" .. name, {
+		drawtype = "nodebox",
+		paramtype = "light",
+		is_ground_content = false,
+		sunlight_propagates = true,
+		description = def.description,
+		tiles = {def.textures[2], def.textures[2], def.textures[1], def.textures[1], def.textures[1], def.textures[1]},
+		groups = groups,
+		drop = "xpanes:" .. name .. "_flat",
+		sounds = def.sounds,
+		use_texture_alpha = def.use_texture_alpha or false,
+		node_box = {
+			type = "connected",
+			fixed = {{-1/32, -1/2, -1/32, 1/32, 1/2, 1/32}},
+			connect_front = {{-1/32, -1/2, -1/2, 1/32, 1/2, -1/32}},
+			connect_left = {{-1/2, -1/2, -1/32, -1/32, 1/2, 1/32}},
+			connect_back = {{-1/32, -1/2, 1/32, 1/32, 1/2, 1/2}},
+			connect_right = {{1/32, -1/2, -1/32, 1/2, 1/2, 1/32}},
+		},
+		connects_to = {"group:pane", "group:stone", "group:glass", "group:wood", "group:tree"},
+	})
+
+	minetest.register_craft({
+		output = "xpanes:" .. name .. "_flat " .. def.recipe_items,
+		recipe = def.recipe
+	})
+end
+
+xpanes.register_pane("pane", {
+	description = "Glass Pane",
+	textures = {"default_glass.png","xpanes_top_glass.png"},
+	wield_image = {"xpanes_glass.png","xpanes_top_glass.png"},
+	sounds = default.node_sound_glass_defaults(),
+	groups = {snappy = 2, cracky = 3, oddly_breakable_by_hand = 3, glasspane = 1},
+	recipe = {
+		{"default:glass", "default:glass", "default:glass"},
+		{"default:glass", "default:glass", "default:glass"}
+	},
+	recipe_items = "16"
+})
+
+local dyes = dye.dyes
+
+for i = 1, #dyes do
+	local name, desc = unpack(dyes[i])
+
+	xpanes.register_pane("pane_" .. name, {
+		description = desc .. " Glass Pane",
+		textures = {"glass_" .. name .. ".png","xpanes_top_glass_" .. name .. ".png"},
+		wield_image = {"glass_" .. name .. ".png","xpanes_top_glass_" .. name .. ".png","xpanes_top_glass_" .. name .. ".png"},
+		sounds = default.node_sound_glass_defaults(),
+		groups = {snappy = 2, cracky = 3, oddly_breakable_by_hand = 3, glasspane = 1},
+		recipe = {
+			{"group:glasspane", "group:glasspane", "group:glasspane"},
+			{"group:glasspane", "group:dye,color_" .. name, "group:glasspane"},
+			{"group:glasspane", "group:glasspane", "group:glasspane"}
+		},
+		recipe_items = "8"
+	})
+	
+	for i = 1, 15 do
+		minetest.register_alias("xpanes:pane_glass_" .. name .. "_" .. i, "xpanes:pane_" .. name .. "_flat")
+	end
+	minetest.register_alias("xpanes:pane_glass_" .. name, "xpanes:pane_" .. name .. "_flat")
+	minetest.register_alias("xpanes:pane_glass_natural_" .. i, "xpanes:pane_flat")
+	minetest.register_alias("xpanes:pane_glass_purple_" .. i, "xpanes:pane_violet_flat")
+	minetest.register_alias("xpanes:pane_glass_light_blue_" .. i, "xpanes:pane_blue_flat")
+	minetest.register_alias("xpanes:pane_glass_lime_" .. i, "xpanes:pane_green_flat")
+	minetest.register_alias("xpanes:pane_glass_gray_" .. i, "xpanes:pane_grey_flat")
+	minetest.register_alias("xpanes:pane_glass_silver_" .. i, "xpanes:pane_grey_flat")
+	minetest.register_alias("xpanes:pane_iron_" .. i, "xpanes:bar_flat")
+
+end
+
+minetest.register_alias("xpanes:pane_glass_natural", "xpanes:pane_flat")
+minetest.register_alias("xpanes:pane_glass_purple", "xpanes:pane_violet_flat")
+minetest.register_alias("xpanes:pane_glass_light_blue", "xpanes:pane_blue_flat")
+minetest.register_alias("xpanes:pane_glass_lime", "xpanes:pane_green_flat")
+minetest.register_alias("xpanes:pane_glass_gray", "xpanes:pane_grey_flat")
+minetest.register_alias("xpanes:pane_glass_silver", "xpanes:pane_grey_flat")
+minetest.register_alias("xpanes:pane_iron", "xpanes:bar_flat")
+
+xpanes.register_pane("bar", {
+	description = "Steel Bars",
+	textures = {"xpanes_bar.png","xpanes_bar_top.png"},
+	inventory_image = "xpanes_bar.png",
+	wield_image = "xpanes_bar.png",
+	groups = {cracky = 2},
+	sounds = default.node_sound_metal_defaults(),
+	recipe = {
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
+	},
+	recipe_items = "16"
+})
+
+minetest.register_lbm({
+	name = "xpanes:gen2",
+	nodenames = {"group:pane"},
+	action = function(pos, node)
+		update_pane(pos)
+		for i = 0, 3 do
+			local dir = minetest.facedir_to_dir(i)
+			update_pane(vector.add(pos, dir))
+		end
+	end
+})
