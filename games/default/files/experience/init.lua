@@ -39,9 +39,8 @@ end
 hud.register("xp_bar", {
 	hud_elem_type = "statbar",
 	position      = {x = 0.5,  y = 1},
-	size          = {x = 31,   y = 13},
 	alignment     = {x = -1,   y = -1},
-	offset        = {x = -249, y = -79},
+	offset        = {x = -184, y = -59},
 	text          = "expbar_full.png",
 	background    = "expbar_empty.png",
 	number        = MAX_HUD_XP, 
