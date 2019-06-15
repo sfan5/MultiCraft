@@ -1,17 +1,31 @@
--- global values
-hud.registered_items = {}
-hud.damage_events = {}
-hud.breath_events = {}
+--From Better HUD mod
+--Copyright (C) BlockMen (2013-2016)
+
+--This program is free software; you can redistribute it and/or modify
+--it under the terms of the GNU Lesser General Public License as published by
+--the Free Software Foundation; either version 3.0 of the License, or
+--(at your option) any later version.
+--
+--This program is distributed in the hope that it will be useful,
+--but WITHOUT ANY WARRANTY; without even the implied warranty of
+--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+--GNU Lesser General Public License for more details.
+--
+--You should have received a copy of the GNU Lesser General Public License along
+--with this program; if not, write to the Free Software Foundation, Inc.,
+--51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+hud = {}
 
 -- keep id handling internal
 local hud_id = {} -- hud item ids
 local sb_bg = {} -- statbar background ids
 
 -- localize often used table
-local items = hud.registered_items
+local items = {}
 
 local function throw_error(msg)
-	minetest.log("error", "Better HUD[error]: " .. msg)
+	minetest.log("error", "HUD[error]: " .. msg)
 end
 
 --
@@ -45,21 +59,6 @@ function hud.register(name, def)
 	end
 	-- add item itself
 	items[name] = def
-
-	-- register events
-	if def.events then
-		for _,v in pairs(def.events) do
-			if v and v.type and v.func then
-				if v.type == "damage" then
-					table.insert(hud.damage_events, v)
-				end
-
-				if v.type == "breath" then
-					table.insert(hud.breath_events, v)
-				end
-			end
-		end
-	end
 
 	-- no error so far, return success
 	return true
@@ -148,36 +147,6 @@ function hud.remove_item(player, name)
 	return true
 end
 
--- Armor
-
-
-if hud.show_armor then
-	local armor_org_func = armor.set_player_armor
-
-	local function get_armor_lvl(def)
-		-- items/protection based display
-		local lvl = def.level or 0
-		local max = 63 -- full diamond armor
-		-- TODO: is there a sane way to read out max values?
-		local ret = lvl/max
-		if ret > 1 then
-			ret = 1
-		end
-		return tonumber(20 * ret)
-	end
-
-	function armor.set_player_armor(self, player)
-		armor_org_func(self, player)
-		local name = player:get_player_name()
-		local def = self.def
-		local armor_lvl = 0
-		if def[name] and def[name].level then
-			armor_lvl = get_armor_lvl(def[name])
-		end
-		hud.change_item(player, "armor", {number = armor_lvl})
-	end
-end
-
 --
 -- Add registered HUD items to joining players
 --
@@ -194,14 +163,7 @@ local function add_hud_item(player, name, def)
 end
 
 minetest.register_on_joinplayer(function(player)
-
-	-- first: hide the default statbars
-	--[[local hud_flags = player:hud_get_flags()
-	hud_flags.healthbar = false
-	hud_flags.breathbar = false
-	player:hud_set_flags(hud_flags)]]
-
-	-- now add the backgrounds for statbars
+	-- add the backgrounds for statbars
 	for _,item in pairs(sb_bg) do
 		add_hud_item(player, _.."_bg", item)
 	end
@@ -209,34 +171,4 @@ minetest.register_on_joinplayer(function(player)
 	for _,item in pairs(items) do
 		add_hud_item(player, _, item)
 	end
-
 end)
-
-function hud.player_event(player, event)
-	if not player then return end
-
-	--needed for first update called by on_join
-	minetest.after(0.1, function(player)
-		if event == "health_changed" then
-			for _,v in pairs(hud.damage_events) do
-				if v.func then
-					v.func(player)
-				end
-			end
-		end
-
-		if event == "breath_changed" then
-			for _,v in pairs(hud.breath_events) do
-				if v.func then
-					v.func(player)
-				end
-			end
-		end
-
-		if event == "hud_changed" then--called when flags changed
-
-		end
-	end, player)
-end
-
-core.register_playerevent(hud.player_event)

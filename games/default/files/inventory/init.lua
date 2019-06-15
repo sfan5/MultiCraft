@@ -1,5 +1,3 @@
-local show_armor = minetest.get_modpath("3d_armor")
-
 local function drop_fields(player, name)
 	local inv = player:get_inventory()
 	for i,stack in ipairs(inv:get_list(name)) do
@@ -24,7 +22,7 @@ local function set_inventory(player)
 	"list[detached:split;main;8,3.14;1,1;]"..
 	"image[1.5,0;2,4;default_player2d.png]"
 	-- Armor
-	if show_armor then
+	if minetest.get_modpath("3d_armor") then
 		local player_name = player:get_player_name()
 		form = form ..
 		"list[detached:"..player_name.."_armor;armor;0,0;1,1;]"..
