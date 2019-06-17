@@ -38,29 +38,39 @@ end
 
 hud.register("xp_bar", {
 	hud_elem_type = "statbar",
-	position      = {x = 0.5,  y = 1},
+	position      = {x =  0.5, y =  1},
 	alignment     = {x = -1,   y = -1},
-	offset        = {x = -184, y = -59},
+	offset        = {x = -246, y = -79},
+	size          = {x =  31,  y =  14},
 	text          = "expbar_full.png",
 	background    = "expbar_empty.png",
-	number        = MAX_HUD_XP, 
+	number        = 0,
+	max           = MAX_HUD_XP, 
+})
+
+hud.register("zlvl", {
+	hud_elem_type = "text",
+	position      = {x = 0.5,  y =  0.966},
+	alignment     = {x = 0,    y = -1},
+	offset        = {x = 0,    y = -50},
+	number        = 0x3cff00,
+	text          = "0",
 })
 
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	init_data(player)
 
-	_hud[name] = {
+	_hud[name] = {}
 		-- level number
-		lvl = player:hud_add({
+--[[		lvl = player:hud_add({
 			hud_elem_type = "text",
 			position  = {x = 0.5, y = 0.91},
 			offset    = {x = 0, y = -25},
 			alignment = {x = 0, y = 0},
 			number    = 0x3cff00,
 			text      = "",
-		})
-	}
+		}) 	]]
 end)
 
 function experience.add_orb(amount, pos)
@@ -147,9 +157,10 @@ minetest.register_globalstep(function(dtime)
 
 		hud.change_item(player, "xp_bar", {number = xp[name].xp_bar})
 
-		player:hud_change(_hud[name].lvl, "text", xp[name].level)
-		--player:hud_change(_hud[name].lvl, "offset",
-		--	{x = (xp[name].level >= 10 and 13 or 6), y = -202})
+--		player:hud_change(_hud[name].lvl, "text", xp[name].level)
+		hud.change_item(player, "zlvl", {text = xp[name].level})
+--		player:hud_change(_hud[name].lvl, "offset",
+--			{x = (xp[name].level >= 10 and 13 or 6), y = -202})
 	end
 end)
 
