@@ -126,7 +126,6 @@ minetest.register_lbm({
 minetest.register_node("signs:sign", {
 	description = "Sign",
 	tiles = {"default_wood.png"},
-	inventory_image = "signs_inventory.png",
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",

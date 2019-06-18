@@ -1,10 +1,8 @@
-MultiCraft Game mod: Colored Blocks
-
-Include Colored Glass, Hardened Clay
+MultiCraft Game mod: signs
 
 License of source code:
 -----------------------
-Copyright (C) 2019 MultiCraft Development Team
+Copyright (C) 2018-2019 MultiCraft Development Team
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
