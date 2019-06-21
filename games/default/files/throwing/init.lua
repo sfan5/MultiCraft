@@ -1,42 +1,42 @@
-arrows = {
+local arrows = {
 	{"throwing:arrow", "throwing:arrow_entity"},
 }
-
 local creative = minetest.settings:get_bool("creative_mode")
-local wear
 
-local function valid_pos(pos)
-	if pos then
-		for _, v in pairs({"x", "y", "z"}) do
-			if not pos[v] or pos[v] < -32000 or pos[v] > 32000 then
-				return
-			end
-		end
-		return true
+local function arrow_impact(thrower, pos, dir, hit_object)
+	if hit_object then
+		local punch_damage = {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy=5},
+		}
+		hit_object:punch(thrower, 1.0, punch_damage, dir)
 	end
+	minetest.add_item(pos, "throwing:arrow")
 end
 
 local throwing_shoot_arrow = function(itemstack, player)
 	for _,arrow in ipairs(arrows) do
-		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow[1] then
+		if player:get_inventory():get_stack("main",
+				player:get_wield_index() + 1):get_name() == arrow[1] then
 			if not creative or not minetest.is_singleplayer()then
 				player:get_inventory():remove_item("main", arrow[1])
 			end
 			local playerpos = player:get_pos()
-			if not valid_pos(playerpos) then
+			if not minetest.is_valid_pos(playerpos) then
 				return
 			end
-			local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])
-			local dir = player:get_look_dir()
-			obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
-			obj:set_acceleration({x=dir.x*-3, y=-10, z=dir.z*-3})
-			obj:setyaw(player:get_look_yaw()+math.pi)
-			minetest.sound_play("throwing_sound", {pos=playerpos})
-			if obj:get_luaentity().player == "" then
-				obj:get_luaentity().player = player
+			local obj = minetest.item_throw("throwing:arrow_box", player,
+				19, -3, arrow_impact)
+			if obj then
+				local ent = obj:get_luaentity()
+				if ent then
+					minetest.sound_play("throwing_sound", {pos=playerpos})
+					obj:set_yaw(player:get_look_yaw() + math.pi)
+					return true
+				else
+					obj:remove()
+				end
 			end
-			obj:get_luaentity().node = player:get_inventory():get_stack("main", 1):get_name()
-			return true
 		end
 	end
 	return false
@@ -56,7 +56,7 @@ minetest.register_tool("throwing:bow_arrow", {
 	inventory_image = "throwing_bow_arrow.png",
 	groups = {not_in_creative_inventory=1},
 	on_place = function(itemstack, user, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:replace("throwing:bow")
 		itemstack:add_wear(wear)
 		if throwing_shoot_arrow(itemstack, user, pointed_thing) then
@@ -67,7 +67,7 @@ minetest.register_tool("throwing:bow_arrow", {
 	return itemstack
 	end,
 	on_use = function(itemstack, user, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:replace("throwing:bow")
 		itemstack:add_wear(wear)
 		if throwing_shoot_arrow(itemstack, user, pointed_thing) then
@@ -75,8 +75,37 @@ minetest.register_tool("throwing:bow_arrow", {
 				itemstack:add_wear(65535/385)
 			end
 		end
-	return itemstack
+		return itemstack
 	end,
+})
+
+minetest.register_node("throwing:arrow_box", {
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			-- Shaft
+			{-6.5/17, -1.5/17, -1.5/17, 6.5/17, 1.5/17, 1.5/17},
+			--Spitze
+			{-4.5/17, 2.5/17, 2.5/17, -3.5/17, -2.5/17, -2.5/17},
+			{-8.5/17, 0.5/17, 0.5/17, -6.5/17, -0.5/17, -0.5/17},
+			--Federn
+			{6.5/17, 1.5/17, 1.5/17, 7.5/17, 2.5/17, 2.5/17},
+			{7.5/17, -2.5/17, 2.5/17, 6.5/17, -1.5/17, 1.5/17},
+			{7.5/17, 2.5/17, -2.5/17, 6.5/17, 1.5/17, -1.5/17},
+			{6.5/17, -1.5/17, -1.5/17, 7.5/17, -2.5/17, -2.5/17},
+
+			{7.5/17, 2.5/17, 2.5/17, 8.5/17, 3.5/17, 3.5/17},
+			{8.5/17, -3.5/17, 3.5/17, 7.5/17, -2.5/17, 2.5/17},
+			{8.5/17, 3.5/17, -3.5/17, 7.5/17, 2.5/17, -2.5/17},
+			{7.5/17, -2.5/17, -2.5/17, 8.5/17, -3.5/17, -3.5/17},
+		}
+	},
+	tiles = {
+		"throwing_arrow.png", "throwing_arrow.png", "throwing_arrow_back.png",
+		"throwing_arrow_front.png", "throwing_arrow_2.png", "throwing_arrow.png"
+	},
+	groups = {not_in_creative_inventory=1},
 })
 
 minetest.register_craft({
@@ -88,8 +117,29 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craftitem("throwing:arrow", {
+	description = "Arrow",
+	inventory_image = "throwing_arrow_inv.png",
+})
+
+minetest.register_craft({
+	output = 'throwing:arrow 4',
+	recipe = {
+		{'fire:flint_and_steel'},
+		{'default:stick'},
+		{'default:paper'}
+	}
+})
+
+-- Legacy support
+
+minetest.register_entity("throwing:arrow_entity", {
+	is_visible = false,
+	on_activate = function(self)
+		self.object:remove()
+	end
+})
+
 minetest.register_alias("throwing:bow_0", "throwing:bow_arrow")
 minetest.register_alias("throwing:bow_1", "throwing:bow_arrow")
 minetest.register_alias("throwing:bow_2", "throwing:bow_arrow")
-
-dofile(minetest.get_modpath("throwing").."/arrow.lua")
