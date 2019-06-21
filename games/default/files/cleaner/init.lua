@@ -22,17 +22,6 @@ minetest.register_on_joinplayer(function(player)
 	end
 end)
 
-local function valid_pos(pos)
-	if pos then
-		for _, v in pairs({"x", "y", "z"}) do
-			if not pos[v] or pos[v] < -32000 or pos[v] > 32000 then
-				return
-			end
-		end
-		return true
-	end
-end
-
 local function clean()
 	local players = minetest.get_connected_players()
 	for i = 1, #players do
@@ -43,7 +32,7 @@ local function clean()
 		for y = -height, height do
 		for z = -radius, radius do
 			local pos_scan = vector.new(pos.x + x, pos.y + y, pos.z + z)
-			if not valid_pos(pos_scan) then
+			if not minetest.is_valid_pos(pos_scan) then
 				return
 			end
 			--local hash = minetest.hash_node_position(pos_scan)
