@@ -6,6 +6,7 @@ return {
 	"farming:bread",
 	"flowers:mushroom_red",
 	"flowers:mushroom_brown",
+	"mobs:chicken_egg",
 	"mobs:chicken_egg_fried",
 	"mobs:chicken_raw",
 	"mobs:chicken_cooked",
@@ -16,4 +17,6 @@ return {
 	"mobs:meat",
 	"mobs:pork_raw",
 	"mobs:pork",
+	"mobs:rabbit_raw",
+	"mobs:rabbit_cooked",
 }

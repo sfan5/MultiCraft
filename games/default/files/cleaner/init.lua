@@ -16,7 +16,8 @@ minetest.register_on_joinplayer(function(player)
 		local stack = inv:get_stack("main", i)
 		local itemname = stack:get_name()
 
-		if not minetest.registered_items[itemname] then
+		if not minetest.registered_items[itemname] or
+		minetest.registered_items[itemname].description == "Air" then
 			inv:set_stack("main", i, "")
 		end
 	end
@@ -35,20 +36,18 @@ local function clean()
 			if not minetest.is_valid_pos(pos_scan) then
 				return
 			end
-			--local hash = minetest.hash_node_position(pos_scan)
+		--	local hash = minetest.hash_node_position(pos_scan)
 			local nodename = minetest.get_node(pos_scan).name
 
-			--[[if not kpos[hash] then
-				local nodename = minetest.get_node(pos_scan).name
+		--	if not kpos[hash] then
+		--		local nodename = minetest.get_node(pos_scan).name
 
 				if not minetest.registered_nodes[nodename] then
 					minetest.remove_node(pos_scan)
 				end
 
-				kpos[hash] = true]]
-			if not minetest.registered_nodes[nodename] then
-				minetest.remove_node(pos_scan)
-			end
+		--		kpos[hash] = true
+		--	end
 
 			local objs = minetest.get_objects_inside_radius(pos_scan, 0.5)
 			if #objs > 0 then
