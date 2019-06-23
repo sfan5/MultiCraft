@@ -48,7 +48,6 @@ for i,img in ipairs(images) do
 	minetest.register_tool("watch:"..(i-1), {
 		description = "Watch",
 		inventory_image = img,
-		wield_image = img,
 		groups = {not_in_creative_inventory=inv}
 	})
 end
