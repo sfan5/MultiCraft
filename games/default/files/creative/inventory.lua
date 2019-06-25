@@ -10,7 +10,7 @@ local rot = {}
 rot["all"] = "^[transformR270"
 rot["inv"] = "^[transformR270"
 rot["blocks"] = ""
-rot["deco"] = ""
+rot["stairs"] = ""
 rot["mese"] = ""
 rot["rail"] = ""
 rot["misc"] = ""
@@ -23,7 +23,7 @@ rot["brew"] = ""
 ofs_tab["all"] = "10.11,0.84"
 ofs_tab["inv"] = "10.11,6.93"
 ofs_tab["blocks"] = "-0.31,-0.35"
-ofs_tab["deco"] = "0.72,-0.35"
+ofs_tab["stairs"] = "0.72,-0.35"
 ofs_tab["mese"] = "1.78,-0.35"
 ofs_tab["rail"] = "2.81,-0.35"
 ofs_tab["misc"] = "3.85,-0.35"
@@ -36,7 +36,7 @@ ofs_tab["brew"] = "9.01,-0.35"
 ofs_img["all"] = "10.25,1"
 ofs_img["inv"] = "10.25,7.11"
 ofs_img["blocks"] = "-0.16,-0.15"
-ofs_img["deco"] = "0.87,-0.15"
+ofs_img["stairs"] = "0.87,-0.15"
 ofs_img["mese"] = "1.92,-0.15"
 ofs_img["rail"] = "2.96,-0.15"
 ofs_img["misc"] = "4,-0.15"
@@ -48,7 +48,7 @@ ofs_img["brew"] = "9.2,-0.15"
 
 bg["inv"] = "default_chest_front.png"
 bg["blocks"] = "default_grass_side.png"
-bg["deco"] = "default_sapling.png"
+bg["stairs"] = "default_sapling.png"
 bg["mese"] = "jeija_lightstone_gray_on.png"
 bg["rail"] = "boats_inventory.png"
 bg["misc"] = "bucket_water.png"
@@ -68,51 +68,42 @@ local function found_in_list(name, list)
 end
 
 local filters = {
-	["all"] = function()
-		return true
+	["all"] = function(name, def, groups)
+		return true --[[and not def.groups.stairs]]
 	end,
 	["blocks"] = function(name, def, groups)
-		return def.drawtype and
-			(def.drawtype == "normal" or def.drawtype:sub(1,5) == "glass") and
-			(groups.cracky or groups.snappy or groups.choppy) and
-			not def.on_construct and
-			not def.after_place_node and
-			not def.on_rightclick and
-			not def.on_blast and
-			not def.allow_metadata_inventory_take and
-			not (def.groups.not_cuttable == 1) and
-			not groups.colorglass and
-			(def.tiles and type(def.tiles[1]) == "string" and
-			not def.tiles[1]:find("default_mineral")) and
-			not def.mesecons and
-			def.light_source == 0
+	return minetest.registered_nodes[name] and
+		not def.mesecons and not def.groups.stairs and
+		(def.drawtype == "normal" or def.drawtype:sub(1,5) == "glass" or def.drawtype:sub(1,8) == "allfaces") or
+		found_in_list(name, {"cactus", "slimeblock"})
 	end,
-	["deco"] = function(name)
-		return found_in_list(name, {
-				"^ts_furniture:", "^xpanes:", "^stairs:", "^colored:",
-				"glass", "mossy", "cracked", "carved", "chest$", "bed",
-			})
+	["stairs"] = function(name, def, groups)
+		return def.groups.stairs
 	end,
-	["mese"] = function(name, def)
-		return name:find("mese") or def.mesecons
+	["mese"] = function(name)
+		return name:find("mese") or found_in_list(name, {"^tnt:", "^doors:"})
 	end,
 	["rail"] = function(name, _, groups)
-		return found_in_list(name, {"^carts:", "^boost_cart:"}) or groups.rail
+		return found_in_list(name, {"^boats:", "^carts:"}) or groups.rail
 	end,
-	["food"] = function(name)
-		return found_in_list(name, {
+	["food"] = function(name, def, groups)
+		return def.on_use
+		--[[return found_in_list(name, {
 				"fish", "apple", "bread", "chicken_", "meat", "sugar",
 				"mushroom", "pork", "rabbit", "cheese", "milk",
-			})
+			})]]
 	end,
 	["tools"] = function(name)
-		return minetest.registered_tools[name] and not name:find("armor")
+		return minetest.registered_tools[name] or
+		found_in_list(name, {"arrow",})
 	end,
 	["combat"] = function(name, def)
-		return found_in_list(name, {"^3d_armor:", "sword"})
+		return -- remove!
 	end,
-	["matr"] = function(name)
-		return minetest.registered_craftitems[name]
+	["matr"] = function(name, def, groups)
+		return minetest.registered_craftitems[name] and
+		not found_in_list(name, {"^boats:", "^carts:", "^boats:", "^vessels:", "^pep:", "^bucket:", "^doors:"}) and
+		not def.on_use
 	end,
 	["brew"] = function(name)
 		return found_in_list(name, {"^vessels:", "^pep:"})
@@ -238,7 +229,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		sfinv.listcolors..
 		"label[-5,-5;"..page.."]"..
 		"image_button[-0.16,-0.15;1,1;"..bg["blocks"]..";build;;;false]"..	--build blocks
-		"image_button[0.87,-0.15;1,1;"..bg["deco"]..";deco;;;false]"..		--decoration blocks
+		"image_button[0.87,-0.15;1,1;"..bg["stairs"]..";stairs;;;false]"..	--stairs blocks
 		"image_button[1.92,-0.15;1,1;"..bg["mese"]..";mese;;;false]"..		--bluestone
 		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
 		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..			--miscellaneous
@@ -350,8 +341,8 @@ local function register_tab(name, title, group)
 			inv.filter = fields.search and fields.search:lower() or ""
 			if fields.build then
 				sfinv.set_page(player, "creative:blocks")
-			elseif fields.deco then
-				sfinv.set_page(player, "creative:deco")
+			elseif fields.stairs then
+				sfinv.set_page(player, "creative:stairs")
 			elseif fields.mese then
 				sfinv.set_page(player, "creative:mese")
 			elseif fields.rail then
@@ -406,7 +397,7 @@ register_tab("inv", "Inv")
 minetest.after(0, function()
 	register_tab("all", "All", "all")
 	register_tab("blocks", "1", "blocks")
-	register_tab("deco", "2", "deco")
+	register_tab("stairs", "2", "stairs")
 	register_tab("mese", "3", "mese")
 	register_tab("rail", "4", "rail")
 	register_tab("misc", "5", "misc")
