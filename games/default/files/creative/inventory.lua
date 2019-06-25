@@ -59,29 +59,97 @@ bg["matr"] = "default_emerald.png"
 bg["brew"] = "vessels_glass_bottle.png"
 bg["all"] = "default_paper.png"
 
-local function init_creative_cache(tab_name, group)
-	inventory_cache[tab_name] = {}
-	local i_cache = inventory_cache[tab_name]
-	local item_list = {}
-	if group == "all" then
-		for name, _ in pairs(minetest.registered_items) do
-			table.insert(item_list, name)
-		end
-	elseif group then
-		local input = io.open(minetest.get_modpath("creative")..
-			"/categories/"..group..".lua", "r")
-		if input then
-			local data = input:read('*all')
-			item_list = data and minetest.deserialize(data) or {}
-			io.close(input)
+local function found_in_list(name, list)
+	for _, v in pairs(list) do
+		if name:find(v) then
+			return true
 		end
 	end
+end
+
+local filters = {
+	["all"] = function()
+		return true
+	end,
+	["blocks"] = function(name, def, groups)
+		return def.drawtype and
+			(def.drawtype == "normal" or def.drawtype:sub(1,5) == "glass") and
+			(groups.cracky or groups.snappy or groups.choppy) and
+			not def.on_construct and
+			not def.after_place_node and
+			not def.on_rightclick and
+			not def.on_blast and
+			not def.allow_metadata_inventory_take and
+			not (def.groups.not_cuttable == 1) and
+			not groups.colorglass and
+			(def.tiles and type(def.tiles[1]) == "string" and
+			not def.tiles[1]:find("default_mineral")) and
+			not def.mesecons and
+			def.light_source == 0
+	end,
+	["deco"] = function(name)
+		return found_in_list(name, {
+				"^ts_furniture:", "^xpanes:", "^stairs:", "^colored:",
+				"glass", "mossy", "cracked", "carved", "chest$", "bed",
+			})
+	end,
+	["mese"] = function(name, def)
+		return name:find("mese") or def.mesecons
+	end,
+	["rail"] = function(name, _, groups)
+		return found_in_list(name, {"^carts:", "^boost_cart:"}) or groups.rail
+	end,
+	["food"] = function(name)
+		return found_in_list(name, {
+				"fish", "apple", "bread", "chicken_", "meat", "sugar",
+				"mushroom", "pork", "rabbit", "cheese", "milk",
+			})
+	end,
+	["tools"] = function(name)
+		return minetest.registered_tools[name] and not name:find("armor")
+	end,
+	["combat"] = function(name, def)
+		return found_in_list(name, {"^3d_armor:", "sword"})
+	end,
+	["matr"] = function(name)
+		return minetest.registered_craftitems[name]
+	end,
+	["brew"] = function(name)
+		return found_in_list(name, {"^vessels:", "^pep:"})
+	end,
+}
+
+-- Not found in any other category except all
+filters["misc"] = function(name, def, groups)
+	for filter, func in pairs(filters) do
+		if filter ~= "misc" and filter ~= "all" and func(name, def, groups) then
+			return
+		end
+	end
+	return true
+end
+
+local function get_item_list(category)
+	local filter = filters[category] or function() return true end
+	local item_list = {}
+	for name, def in pairs(minetest.registered_items) do
+		local groups = def.groups or {}
+		if def.description and def.description ~= "" and
+				groups.not_in_creative_inventory ~= 1 and
+				filter(name, def, groups) then
+			table.insert(item_list, name)
+		end
+	end
+	return item_list
+end
+
+local function init_creative_cache(tab_name, category)
+	inventory_cache[tab_name] = {}
+	local i_cache = inventory_cache[tab_name]
+	local item_list = get_item_list(category)
 	for _, name in pairs(item_list) do
 		local def = minetest.registered_items[name]
-		if def and def.description and def.description ~= "" and
-				(not def.groups or def.groups.not_in_creative_inventory ~= 1) then
-			i_cache[name] = def.description
-		end
+		i_cache[name] = def.description
 	end
 	table.sort(i_cache)
 end
@@ -337,16 +405,16 @@ end
 register_tab("inv", "Inv")
 minetest.after(0, function()
 	register_tab("all", "All", "all")
-	register_tab("blocks", "1", "building")
-	register_tab("deco", "2", "decorative")
+	register_tab("blocks", "1", "blocks")
+	register_tab("deco", "2", "deco")
 	register_tab("mese", "3", "mese")
 	register_tab("rail", "4", "rail")
 	register_tab("misc", "5", "misc")
-	register_tab("food", "6", "foodstuffs")
+	register_tab("food", "6", "food")
 	register_tab("tools", "7", "tools")
 	register_tab("combat", "8", "combat")
-	register_tab("matr", "9", "materials")
-	register_tab("brew", "10", "brewing")
+	register_tab("matr", "9", "matr")
+	register_tab("brew", "10", "brew")
 end)
 
 local old_homepage_name = sfinv.get_homepage_name
