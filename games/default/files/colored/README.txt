@@ -1,4 +1,5 @@
-MultiCraft Game mod: Colored Blocks
+MultiCraft Game mod: colored
+============================
 
 Include Colored Glass, Hardened Clay
 

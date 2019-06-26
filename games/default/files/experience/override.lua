@@ -3,5 +3,5 @@ minetest.override_item("default:stone_with_coal", {
 })
 
 minetest.override_item("default:wood", {
-	groups = {dig_immediate = 3, xp_min = 4, xp_max = 6},
+	groups = {dig_immediate = 3, xp_min = 4, xp_max = 6, flammable = 2, wood = 1},
 })

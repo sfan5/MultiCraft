@@ -40,26 +40,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-local split_inv = minetest.create_detached_inventory("split", {
-	allow_move = function(_, _, _, _, _, count, _)
-		return count
-	end,
-	allow_put = function(_, _, _, stack, _)
-		return stack:get_count() / 2
-	end,
-	allow_take = function(_, _, _, stack, _)
-		return stack:get_count()
-	end,
-})
-
 minetest.register_on_joinplayer(function(player)
 	if not minetest.settings:get_bool("creative_mode") then
 		local inv = player:get_inventory()
 		if inv then
 			inv:set_size("main", 9*4)
-		end
-		if split_inv then
-			split_inv:set_size("main", 1)
 		end
 		set_inventory(player)
 	end
