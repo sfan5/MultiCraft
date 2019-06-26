@@ -30,7 +30,11 @@ local throwing_shoot_arrow = function(itemstack, player)
 			if obj then
 				local ent = obj:get_luaentity()
 				if ent then
-					minetest.sound_play("throwing_sound", {pos=playerpos})
+					minetest.sound_play("throwing_sound", {
+						pos = playerpos,
+						gain = 0.7,
+						max_hear_distance = 10,
+					})
 					obj:set_yaw(player:get_look_yaw() + math.pi)
 					return true
 				else

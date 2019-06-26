@@ -69,7 +69,7 @@ end
 
 local filters = {
 	["all"] = function(name, def, groups)
-		return true --[[and not def.groups.stairs]]
+		return true and not def.groups.stairs
 	end,
 	["blocks"] = function(name, def, groups)
 	return minetest.registered_nodes[name] and
@@ -120,27 +120,17 @@ filters["misc"] = function(name, def, groups)
 	return true
 end
 
-local function get_item_list(category)
-	local filter = filters[category] or function() return true end
-	local item_list = {}
+local function init_creative_cache(tab_name, category)
+	inventory_cache[tab_name] = {}
+	local i_cache = inventory_cache[tab_name]
+	local filter = filters[category] or function() return end
 	for name, def in pairs(minetest.registered_items) do
 		local groups = def.groups or {}
 		if def.description and def.description ~= "" and
 				groups.not_in_creative_inventory ~= 1 and
 				filter(name, def, groups) then
-			table.insert(item_list, name)
+			i_cache[name] = def.description
 		end
-	end
-	return item_list
-end
-
-local function init_creative_cache(tab_name, category)
-	inventory_cache[tab_name] = {}
-	local i_cache = inventory_cache[tab_name]
-	local item_list = get_item_list(category)
-	for _, name in pairs(item_list) do
-		local def = minetest.registered_items[name]
-		i_cache[name] = def.description
 	end
 	table.sort(i_cache)
 end
@@ -209,7 +199,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	page = page or "all"
 	pagenum = math.floor(pagenum) or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
-	local slider_height = 4 / pagemax - 0.04
+	local slider_height = 4.46 / pagemax
 	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.14
 	local main_list = get_button_formspec(player_name, start_i)
 	if page == "inv" then
@@ -223,7 +213,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 			"list[detached:"..player_name.."_armor;armor;0.99,2.69;1,1;3]"
 		end
 	end
-	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;true;]"..
+	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;false;close_pressed.png]"..
 		"background[-0.2,-0.26;11.55,8.49;inventory_creative.png]"..
 		sfinv.gui_bg..
 		sfinv.listcolors..
@@ -240,11 +230,13 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..		--brewing
 		"image_button[10.25,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
 		"image_button[10.25,7.11;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
-		"image_button_exit[10.3,2.5;1,1;creative_home_set.png;sethome_set;;true;true;]"..
-		"image_button_exit[10.3,3.5;1,1;creative_home_go.png;sethome_go;;true;true;]"..
+		"image_button_exit[10.3,2.5;1,1;creative_home_set.png;sethome_set;;true;false]"..
+		"tooltip[sethome_set;Set Home;#000;#FFF]"..
+		"image_button_exit[10.3,3.5;1,1;creative_home_go.png;sethome_go;;true;false]"..
+		"tooltip[sethome_go;Go Home;#000;#FFF]"..
 		"image[0,0.95;5,0.75;fnt_"..page..".png]"..
-		"image_button[9.145,1.65;0.81,0.6;creative_up.png;creative_prev;]"..
-		"image_button[9.145,6.08;0.81,0.6;creative_down.png;creative_next;]"..
+		"image_button[9.145,1.65;0.81,0.6;blank.png;creative_prev;;;false]" ..
+		"image_button[9.145,6.08;0.81,0.6;blank.png;creative_next;;;false]" ..
 		"list[current_player;main;0.02,6.93;9,1;]"..main_list..
 		"list[detached:creative_trash;main;9.03,6.94;1,1;]"..
 		"image["..ofs_tab[page]..";1.45,1.45;creative_active.png"..rot[page].."]"..
