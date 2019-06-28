@@ -1,4 +1,4 @@
-local area = 2
+local area = 3
 
 local destruct = function(pos)  -- removing the air-like nodes
 	for x = pos.x-area, pos.x+area do
@@ -15,7 +15,6 @@ end
 
 
 minetest.register_node("sponge:liquid_stop", {  -- air-like node
-	description = "liquid blocker for sponges",
 	drawtype = "airlike",
 	drop = "",
 	groups = {not_in_creative_inventory = 1},
@@ -31,7 +30,6 @@ minetest.register_node("sponge:sponge", {  -- dry sponge
 	description = "Sponge",
 	tiles = {"sponge_sponge.png"},
 	groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 3, flammable = 3},
-	sounds = default.node_sound_dirt_defaults(),
 	
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		local name = placer:get_player_name()
@@ -56,7 +54,7 @@ minetest.register_node("sponge:sponge", {  -- dry sponge
 				end
 			end
 
-			if count > 2 then  -- turns wet if it removed more than 2 nodes
+			if count > area then  -- turns wet if it removed more than * nodes
 				minetest.set_node(pos, {name="sponge:wet_sponge"})
 			end
 		end
@@ -70,7 +68,6 @@ minetest.register_node("sponge:wet_sponge", {  -- wet sponge
 	description = "Wet Sponge",
 	tiles = {"sponge_sponge_wet.png"},
 	groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 3, flammable = 3, not_in_creative_inventory = 1},
-	sounds = default.node_sound_dirt_defaults(),
 
 	on_destruct = destruct
 })
