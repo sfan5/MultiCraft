@@ -7,57 +7,53 @@ local ofs_img = {}
 local bg = {}
 local rot = {}
 
-rot["all"] = "^[transformR270"
-rot["inv"] = "^[transformR270"
 rot["blocks"] = ""
 rot["stairs"] = ""
-rot["mese"] = ""
+rot["bluestone"] = ""
 rot["rail"] = ""
 rot["misc"] = ""
 rot["food"] = ""
 rot["tools"] = ""
-rot["combat"] = ""
 rot["matr"] = ""
 rot["brew"] = ""
+rot["all"] = "^[transformR270"
+rot["inv"] = "^[transformR270"
 
-ofs_tab["all"] = "10.11,0.84"
-ofs_tab["inv"] = "10.11,6.93"
-ofs_tab["blocks"] = "-0.31,-0.35"
-ofs_tab["stairs"] = "0.72,-0.35"
-ofs_tab["mese"] = "1.78,-0.35"
-ofs_tab["rail"] = "2.81,-0.35"
-ofs_tab["misc"] = "3.85,-0.35"
-ofs_tab["food"] = "4.9,-0.35"
-ofs_tab["tools"] = "5.93,-0.35"
-ofs_tab["combat"] = "6.96,-0.35"
-ofs_tab["matr"] = "8,-0.35"
-ofs_tab["brew"] = "9.01,-0.35"
+ofs_tab["blocks"] = "-0.28,-0.35"
+ofs_tab["stairs"] = "0.88,-0.35"
+ofs_tab["bluestone"] = "2.05,-0.35"
+ofs_tab["rail"] = "3.22,-0.35"
+ofs_tab["misc"] = "4.4,-0.35"
+ofs_tab["food"] = "5.57,-0.35"
+ofs_tab["tools"] = "6.74,-0.35"
+ofs_tab["matr"] = "7.91,-0.35"
+ofs_tab["brew"] = "9.07,-0.35"
+ofs_tab["all"] = "10.15,0.83"
+ofs_tab["inv"] = "10.15,6.94"
 
-ofs_img["all"] = "10.25,1"
-ofs_img["inv"] = "10.25,7.11"
-ofs_img["blocks"] = "-0.16,-0.15"
-ofs_img["stairs"] = "0.87,-0.15"
-ofs_img["mese"] = "1.92,-0.15"
-ofs_img["rail"] = "2.96,-0.15"
-ofs_img["misc"] = "4,-0.15"
-ofs_img["food"] = "5.05,-0.15"
-ofs_img["tools"] = "6.1,-0.15"
-ofs_img["combat"] = "7.15,-0.15"
-ofs_img["matr"] = "8.17,-0.15"
-ofs_img["brew"] = "9.2,-0.15"
+ofs_img["blocks"] = "-0.13,-0.15"
+ofs_img["stairs"] = "1.03,-0.15"
+ofs_img["bluestone"] = "2.2,-0.15"
+ofs_img["rail"] = "3.39,-0.15"
+ofs_img["misc"] = "4.54,-0.15"
+ofs_img["food"] = "5.72,-0.15"
+ofs_img["tools"] = "6.87,-0.15"
+ofs_img["matr"] = "8.05,-0.15"
+ofs_img["brew"] = "9.22,-0.15"
+ofs_img["all"] = "10.26,0.98"
+ofs_img["inv"] = "10.26,7.1"
 
-bg["inv"] = "default_chest_front.png"
-bg["blocks"] = "default_grass_side.png"
-bg["stairs"] = "default_sapling.png"
-bg["mese"] = "jeija_lightstone_gray_on.png"
-bg["rail"] = "boats_inventory.png"
-bg["misc"] = "bucket_water.png"
-bg["food"] = "default_apple.png"
-bg["tools"] = "default_tool_diamondpick.png"
-bg["combat"] = "default_tool_steelsword.png"
-bg["matr"] = "default_emerald.png"
-bg["brew"] = "vessels_glass_bottle.png"
-bg["all"] = "default_paper.png"
+bg["blocks"] = "default:dirt_with_grass"
+bg["stairs"] = "stairs:stair_default_mossycobble"
+bg["bluestone"] = "mesecons_lightstone:lightstone_on"
+bg["rail"] = "boats:boat"
+bg["misc"] = "bucket:bucket_lava"
+bg["food"] = "default:apple"
+bg["tools"] = "default:pick_diamond"
+bg["matr"] = "default:emerald"
+bg["brew"] = "vessels:glass_bottle"
+bg["all"] = "default:paper"
+bg["inv"] = "default:chest"
 
 local function found_in_list(name, list)
 	for _, v in pairs(list) do
@@ -80,7 +76,7 @@ local filters = {
 	["stairs"] = function(name, def, groups)
 		return def.groups.stairs
 	end,
-	["mese"] = function(name)
+	["bluestone"] = function(name)
 		return name:find("mese") or found_in_list(name, {"^tnt:", "^doors:"})
 	end,
 	["rail"] = function(name, _, groups)
@@ -96,9 +92,6 @@ local filters = {
 	["tools"] = function(name)
 		return minetest.registered_tools[name] or
 		found_in_list(name, {"arrow",})
-	end,
-	["combat"] = function(name, def)
-		return -- remove!
 	end,
 	["matr"] = function(name, def, groups)
 		return minetest.registered_craftitems[name] and
@@ -197,10 +190,13 @@ end
 
 local function get_creative_formspec(player_name, start_i, pagenum, page, pagemax)
 	page = page or "all"
-	pagenum = math.floor(pagenum) or 1
+	pagenum = pagenum or 1
 	pagemax = (pagemax and pagemax ~= 0) and pagemax or 1
-	local slider_height = 4.46 / pagemax
+	local slider_height = 4.52 / pagemax
 	local slider_pos = 4 / pagemax * (pagenum - 1) + 2.14
+	if pagenum > 1 then
+		slider_pos = slider_pos - 0.05
+	end
 	local main_list = get_button_formspec(player_name, start_i)
 	if page == "inv" then
 		main_list = "image[-0.2,1.6;11.35,2.33;creative_bg.png]"..
@@ -218,18 +214,40 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		sfinv.gui_bg..
 		sfinv.listcolors..
 		"label[-5,-5;"..page.."]"..
-		"image_button[-0.16,-0.15;1,1;"..bg["blocks"]..";build;;;false]"..	--build blocks
-		"image_button[0.87,-0.15;1,1;"..bg["stairs"]..";stairs;;;false]"..	--stairs blocks
-		"image_button[1.92,-0.15;1,1;"..bg["mese"]..";mese;;;false]"..		--bluestone
-		"image_button[2.96,-0.15;1,1;"..bg["rail"]..";rail;;;false]"..		--transportation
-		"image_button[4,-0.15;1,1;"..bg["misc"]..";misc;;;false]"..			--miscellaneous
-		"image_button[5.05,-0.15;1,1;"..bg["food"]..";food;;;false]"..		--foodstuff
-		"image_button[6.1,-0.15;1,1;"..bg["tools"]..";tools;;;false]"..		--tools
-		"image_button[7.15,-0.15;1,1;"..bg["combat"]..";combat;;;false]"..	--combat
-		"image_button[8.17,-0.15;1,1;"..bg["matr"]..";matr;;;false]"..		--materials
-		"image_button[9.2,-0.15;1,1;"..bg["brew"]..";brew;;;false]"..		--brewing
-		"image_button[10.25,1;1,1;"..bg["all"]..";default;;;false]"..		--all items
-		"image_button[10.25,7.11;1,1;"..bg["inv"]..";inv;;;false]"..		--inventory
+
+		"image_button["..ofs_tab["blocks"]..";1.3,1.3;creative_tab.png;build;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["blocks"]..";1,1;"..bg["blocks"].."]"..
+		
+		"image_button["..ofs_tab["stairs"]..";1.3,1.3;creative_tab.png;stairs;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["stairs"]..";1,1;"..bg["stairs"].."]"..
+		
+		"image_button["..ofs_tab["bluestone"]..";1.3,1.3;creative_tab.png;bluestone;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["bluestone"]..";1,1;"..bg["bluestone"].."]"..
+
+		"image_button["..ofs_tab["rail"]..";1.3,1.3;creative_tab.png;rail;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["rail"]..";1,1;"..bg["rail"].."]"..
+
+		"image_button["..ofs_tab["misc"]..";1.3,1.3;creative_tab.png;misc;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["misc"]..";1,1;"..bg["misc"].."]"..
+		
+		"image_button["..ofs_tab["food"]..";1.3,1.3;creative_tab.png;food;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["food"]..";1,1;"..bg["food"].."]"..
+
+		"image_button["..ofs_tab["tools"]..";1.3,1.3;creative_tab.png;tools;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["tools"]..";1,1;"..bg["tools"].."]"..
+
+		"image_button["..ofs_tab["matr"]..";1.3,1.3;creative_tab.png;matr;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["matr"]..";1,1;"..bg["matr"].."]"..
+
+		"image_button["..ofs_tab["brew"]..";1.3,1.3;creative_tab.png;brew;;;false;creative_tab_pressed.png]"..
+		"item_image["..ofs_img["brew"]..";1,1;"..bg["brew"].."]"..
+
+		"image_button["..ofs_tab["all"]..";1.3,1.3;blank.png;default;;;false]"..
+		"item_image["..ofs_img["all"]..";1,1;"..bg["all"].."]"..
+
+		"image_button["..ofs_tab["inv"]..";1.3,1.3;blank.png;inv;;;false]"..
+		"item_image["..ofs_img["inv"]..";1,1;"..bg["inv"].."]"..
+
 		"image_button_exit[10.3,2.5;1,1;creative_home_set.png;sethome_set;;true;false]"..
 		"tooltip[sethome_set;Set Home;#000;#FFF]"..
 		"image_button_exit[10.3,3.5;1,1;creative_home_go.png;sethome_go;;true;false]"..
@@ -239,8 +257,8 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button[9.145,6.08;0.81,0.6;blank.png;creative_next;;;false]" ..
 		"list[current_player;main;0.02,6.93;9,1;]"..main_list..
 		"list[detached:creative_trash;main;9.03,6.94;1,1;]"..
-		"image["..ofs_tab[page]..";1.45,1.45;creative_active.png"..rot[page].."]"..
-		"image["..ofs_img[page]..";1,1;"..bg[page].."]"..
+		"image["..ofs_tab[page]..";1.4,1.4;creative_tab_active.png"..rot[page].."]"..
+		"item_image["..ofs_img[page]..";1,1;"..bg[page].."]"..
 		"image[9.165," .. tostring(slider_pos) .. ";0.7,"..tostring(slider_height) .. ";creative_slider.png]"
 	if page == "all" then
 		local inv = player_inventory[player_name] or {}
@@ -335,8 +353,8 @@ local function register_tab(name, title, group)
 				sfinv.set_page(player, "creative:blocks")
 			elseif fields.stairs then
 				sfinv.set_page(player, "creative:stairs")
-			elseif fields.mese then
-				sfinv.set_page(player, "creative:mese")
+			elseif fields.bluestone then
+				sfinv.set_page(player, "creative:bluestone")
 			elseif fields.rail then
 				sfinv.set_page(player, "creative:rail")
 			elseif fields.misc then
@@ -390,14 +408,13 @@ minetest.after(0, function()
 	register_tab("all", "All", "all")
 	register_tab("blocks", "1", "blocks")
 	register_tab("stairs", "2", "stairs")
-	register_tab("mese", "3", "mese")
+	register_tab("bluestone", "3", "bluestone")
 	register_tab("rail", "4", "rail")
 	register_tab("misc", "5", "misc")
 	register_tab("food", "6", "food")
 	register_tab("tools", "7", "tools")
-	register_tab("combat", "8", "combat")
-	register_tab("matr", "9", "matr")
-	register_tab("brew", "10", "brew")
+	register_tab("matr", "8", "matr")
+	register_tab("brew", "9", "brew")
 end)
 
 local old_homepage_name = sfinv.get_homepage_name
