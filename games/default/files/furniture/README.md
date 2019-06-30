@@ -1,5 +1,5 @@
-MultiCraft Game mod: ts_furniture
-=================================
+MultiCraft Game mod: furniture
+==============================
 
 https://github.com/minetest-mods/ts_furniture
 
