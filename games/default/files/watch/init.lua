@@ -2,16 +2,14 @@ function round(num)
 	return math.floor(num + 0.5)
 end
 
-local lasttime = "default"
-
-minetest.register_globalstep(function(dtime)
+minetest.register_playerstep(function(dtime, playernames)
 	local now = round((minetest.get_timeofday() * 24) % 12)
-	if now ~= lasttime then
-		lasttime = now
-		if now == 12 then now = 0 end
-		local players  = minetest.get_connected_players()
-		for i,player in ipairs(players) do
-			if string.sub(player:get_wielded_item():get_name(), 0, 6) == "watch:" then
+	if now == 12 then now = 0 end
+	for i, name in ipairs(playernames) do
+		local player = minetest.get_player_by_name(name)
+		if player and player:is_player() then
+			local item = player:get_wielded_item()
+			if item and string.sub(item:get_name(), 0, 6) == "watch:" then
 				player:set_wielded_item("watch:"..now)
 			end
 			for i,stack in ipairs(player:get_inventory():get_list("main")) do
@@ -22,7 +20,7 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 	end
-end)
+end, minetest.is_singleplayer()) -- Force step in singlplayer mode only
 
 local images = {
 	"watch_0.png",

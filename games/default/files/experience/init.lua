@@ -107,14 +107,13 @@ minetest.register_on_dieplayer(function(player)
 	init_data(player, true)
 end)
 
-minetest.register_globalstep(function(dtime)
-	local players = get_players()
-	for i = 1, #players do
-		local player = players[i]
-		local name   = player:get_player_name()
+minetest.register_playerstep(function(dtime, playernames)
+	for i = 1, #playernames do
+		local name   = playernames[i]
+		local player = minetest.get_player_by_name(name)
 		local pos    = player:get_pos()
-		      pos.y  = pos.y + 0.5
 
+		pos.y = pos.y + 0.5
 		xp[name].timer = (xp[name].timer or 0) + dtime
 
 		for _, obj in ipairs(get_objs_rad(pos, ORB_COLLECT_RADIUS)) do
@@ -162,7 +161,7 @@ minetest.register_globalstep(function(dtime)
 --		player:hud_change(_hud[name].lvl, "offset",
 --			{x = (xp[name].level >= 10 and 13 or 6), y = -202})
 	end
-end)
+end, minetest.is_singleplayer()) -- Force step in singlplayer mode only
 
 minetest.register_entity("experience:orb", {
 	timer        = 0,

@@ -4,9 +4,9 @@ local freq = 2
 local kpos = {}
 
 if PLATFORM == "Android" or PLATFORM == "iOS" then
-	local radius = 4
-	local height = 2
-	local freq = 3
+	radius = 4
+	height = 2
+	freq = 3
 end
 
 minetest.register_on_joinplayer(function(player)
