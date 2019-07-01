@@ -263,9 +263,14 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	if page == "all" then
 		local inv = player_inventory[player_name] or {}
 		local filter = inv.filter or ""
-		formspec = formspec .. "field_close_on_enter[search;false]"..
-			"field[5.31,1.27;4.0,0.75;search;;"..filter.."]"..
-			"image_button[9.14,0.93;0.81,0.82;creative_search.png;creative_search;;;false]"
+		if minetest.is_singleplayer() then
+			formspec = formspec .. "field_close_on_enter[search;false]"..
+				"field[5.31,1.27;4.0,0.75;!search;;"..filter.."]"
+		else
+			formspec = formspec .. "field_close_on_enter[search;false]"..
+				"field[5.31,1.27;4.0,0.75;search;;"..filter.."]"..
+				"image_button[9.14,0.93;0.81,0.82;creative_search.png;creative_search;;;false]"
+		end
 	end
 	if pagenum ~= nil then
 		formspec = formspec .. "p"..tostring(pagenum)

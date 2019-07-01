@@ -156,7 +156,11 @@ minetest.register_node("signs:sign", {
 	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", "field[text;;${sign_text}]")
+		if minetest.is_singleplayer() then
+			meta:set_string("formspec", "field[!text;Enter your text:;${sign_text}]")
+		else
+			meta:set_string("formspec", "field[text;Enter your text:;${sign_text}]")
+		end
 	end,
 	on_destruct = function(pos)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
@@ -219,7 +223,11 @@ minetest.register_node("signs:wall_sign", {
 	drop = "signs:sign",
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", "field[text;;${sign_text}]")
+		if minetest.is_singleplayer() then
+			meta:set_string("formspec", "field[!text;Enter your text:;${sign_text}]")
+		else
+			meta:set_string("formspec", "field[text;Enter your text:;${sign_text}]")
+		end
 	end,
 	on_destruct = function(pos)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
