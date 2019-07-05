@@ -77,7 +77,7 @@ local filters = {
 		return def.groups.stairs
 	end,
 	["bluestone"] = function(name)
-		return name:find("mese") or found_in_list(name, {"^tnt:", "^doors:"})
+		return name:find("mese") or found_in_list(name, {"^bluestone_torch:", "^tnt:", "^doors:"})
 	end,
 	["rail"] = function(name, _, groups)
 		return found_in_list(name, {"^boats:", "^carts:"}) or groups.rail
