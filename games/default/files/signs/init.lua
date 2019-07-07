@@ -275,3 +275,12 @@ minetest.register_node("signs:wall_sign", {
 	groups = {oddly_breakable_by_hand = 1, choppy = 3,
 		not_in_creative_inventory = 1, attached_node = 1},
 })
+
+minetest.register_craft({
+	output = "signs:sign 3",
+	recipe = {
+		{"group:wood", "group:wood", "group:wood"},
+		{"group:wood", "group:wood", "group:wood"},
+		{"", "default:stick", ""},
+	}
+})
