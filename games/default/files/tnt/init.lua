@@ -45,13 +45,13 @@ minetest.register_node("tnt:tnt", {
 		action_on = (function(p, node)
 			minetest.remove_node(p)
 			spawn_tnt(p, "tnt:tnt")
-			nodeupdate(p)
+			minetest.check_for_falling(p)
 		end),
 	}},
 	on_ignite = function(pos, igniter)
 		minetest.remove_node(pos)
 		spawn_tnt(pos, "tnt:tnt")
-		nodeupdate(pos)
+		minetest.check_for_falling(pos)
 	end,
 })
 
@@ -59,7 +59,7 @@ minetest.register_on_punchnode(function(p, node)
 	if node.name == "tnt:tnt" then
 		minetest.remove_node(p)
 		spawn_tnt(p, "tnt:tnt")
-		nodeupdate(p)
+		minetest.check_for_falling(p)
 	end
 end)
 
@@ -72,7 +72,7 @@ minetest.register_abm({
 	action = function(pos, node)
 		minetest.remove_node(pos)
 		spawn_tnt(pos, "tnt:tnt")
-		nodeupdate(pos)
+		minetest.check_for_falling(pos)
 	end,
 })
 
@@ -146,7 +146,7 @@ function TNT:on_step(dtime)
 								n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
 							activate_if_tnt(n.name, np, pos, 3)
 							minetest.remove_node(np)
-							nodeupdate(np)
+							minetest.check_for_falling(np)
 							if n.name ~= "tnt:tnt" and math.random() > 0.9 then
 								local drop = minetest.get_node_drops(n.name, "")
 								for _,item in ipairs(drop) do
