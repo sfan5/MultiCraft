@@ -45,7 +45,7 @@ hud.register("xp_bar", {
 	text          = "expbar_full.png",
 	background    = "expbar_empty.png",
 	number        = 0,
-	max           = MAX_HUD_XP, 
+	max           = MAX_HUD_XP,
 })
 
 hud.register("zlvl", {
@@ -171,7 +171,7 @@ minetest.register_entity("experience:orb", {
 	visual_size  = {x = 0.1, y = 0.1},
 	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
 	collide_with_objects = false,
-	
+
 	on_activate = function(self, staticdata)
 		local obj = self.object
 		obj:set_armor_groups({immortal = 1})

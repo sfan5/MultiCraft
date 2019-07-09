@@ -177,7 +177,7 @@ for i = 1, #dyes do
 		},
 		recipe_items = "8"
 	})
-	
+
 	for i = 1, 15 do
 		minetest.register_alias("xpanes:pane_glass_" .. name .. "_" .. i, "xpanes:pane_" .. name .. "_flat")
 	end

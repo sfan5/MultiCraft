@@ -13,7 +13,7 @@ for i = 1, #dyes do
 		paramtype2 = "glasslikeliquidlevel",
 		paramtype = "light",
 		tiles = {"glass_" .. name .. ".png"},
-		paramtype = "light",		
+		paramtype = "light",
 		sunlight_propagates = true,
 		is_ground_content = false,
 		use_texture_alpha = true,
@@ -28,7 +28,7 @@ for i = 1, #dyes do
 			{"default:glass", "group:dye,color_" .. name}
 		}
 	})
-	
+
 	minetest.register_craft({
 		output = "default:glass_" .. name,
 		recipe = {

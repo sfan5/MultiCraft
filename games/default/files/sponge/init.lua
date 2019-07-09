@@ -30,10 +30,10 @@ minetest.register_node("sponge:sponge", {  -- dry sponge
 	description = "Sponge",
 	tiles = {"sponge_sponge.png"},
 	groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 3, flammable = 3},
-	
+
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		local name = placer:get_player_name()
-		
+
 		if not minetest.is_protected(pos, name) then
 			local count = 0
 			for x = pos.x-area, pos.x+area do
@@ -59,7 +59,7 @@ minetest.register_node("sponge:sponge", {  -- dry sponge
 			end
 		end
 	end,
-	
+
 	after_dig_node = destruct
 })
 

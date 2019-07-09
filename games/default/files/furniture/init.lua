@@ -136,7 +136,7 @@ function ts_furniture.register_furniture(recipe, description, texture)
 	end
 
 	local groups = {falling_node = 1}
-	
+
 	for k, v in pairs(recipe_def.groups) do
 		if not ignore_groups[k] then
 			groups[k] = v

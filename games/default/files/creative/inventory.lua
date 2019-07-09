@@ -213,10 +213,10 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 
 		"image_button["..ofs_tab["blocks"]..";1.3,1.3;creative_tab.png;build;;;false;creative_tab_pressed.png]"..
 		"item_image["..ofs_img["blocks"]..";1,1;"..bg["blocks"].."]"..
-		
+
 		"image_button["..ofs_tab["stairs"]..";1.3,1.3;creative_tab.png;stairs;;;false;creative_tab_pressed.png]"..
 		"item_image["..ofs_img["stairs"]..";1,1;"..bg["stairs"].."]"..
-		
+
 		"image_button["..ofs_tab["bluestone"]..";1.3,1.3;creative_tab.png;bluestone;;;false;creative_tab_pressed.png]"..
 		"item_image["..ofs_img["bluestone"]..";1,1;"..bg["bluestone"].."]"..
 
@@ -225,7 +225,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 
 		"image_button["..ofs_tab["misc"]..";1.3,1.3;creative_tab.png;misc;;;false;creative_tab_pressed.png]"..
 		"item_image["..ofs_img["misc"]..";1,1;"..bg["misc"].."]"..
-		
+
 		"image_button["..ofs_tab["food"]..";1.3,1.3;creative_tab.png;food;;;false;creative_tab_pressed.png]"..
 		"item_image["..ofs_img["food"]..";1,1;"..bg["food"].."]"..
 
