@@ -38,7 +38,6 @@ ts_furniture.sit = function(name, pos)
 		player_api.set_animation(player, "sit", 30)
 	end
 end]]
--- end of cozy-code
 
 local furnitures = {
 	["chair"] = {
@@ -176,7 +175,7 @@ function ts_furniture.register_furniture(recipe, description, texture)
 	end
 end
 
---ts_furniture.register_furniture("default:aspen_wood", "Aspen", "default_aspen_wood.png")
+ts_furniture.register_furniture("default:birch_wood", "Birch", "default_birch_wood.png")
 ts_furniture.register_furniture("default:pine_wood", "Pine", "default_pine_wood.png")
 ts_furniture.register_furniture("default:acacia_wood", "Acacia", "default_acacia_wood.png")
 ts_furniture.register_furniture("default:wood", "Wooden", "default_wood.png")
