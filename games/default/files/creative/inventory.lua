@@ -259,12 +259,10 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	if page == "all" then
 		local inv = player_inventory[player_name] or {}
 		local filter = inv.filter or ""
-		if minetest.is_singleplayer() then
-			formspec = formspec .. "field_close_on_enter[search;false]"..
-				"field[5.31,1.27;4.0,0.75;!search;;"..filter.."]"
-		else
-			formspec = formspec .. "field_close_on_enter[search;false]"..
-				"field[5.31,1.27;4.0,0.75;search;;"..filter.."]"..
+			formspec = formspec .. "field_close_on_enter[Dsearch;false]"..
+				"field[5.31,1.27;4.0,0.75;Dsearch;;"..filter.."]"
+		if PLATFORM == "Android" or PLATFORM == "iOS" or not minetest.is_singleplayer() then
+			formspec = formspec ..
 				"image_button[9.14,0.93;0.81,0.82;creative_search.png;creative_search;;;false]"
 		end
 	end
@@ -349,7 +347,7 @@ local function register_tab(name, title, group)
 					end
 				end
 			end
-			inv.filter = fields.search and fields.search:lower() or ""
+			inv.filter = fields.Dsearch and fields.Dsearch:lower() or ""
 			if fields.build then
 				sfinv.set_page(player, "creative:blocks")
 			elseif fields.stairs then
@@ -374,11 +372,11 @@ local function register_tab(name, title, group)
 				sfinv.set_page(player, "creative:inv")
 			elseif fields.brew then
 				sfinv.set_page(player, "creative:brew")
-			elseif fields.search and
+			elseif fields.Dsearch and
 					(fields.creative_search or
-					fields.key_enter_field == "search") then
+					fields.key_enter_field == "Dsearch") then
 				inv.start_i = 0
-				--inv.filter = fields.search:lower()
+				--inv.filter = fields.Dsearch:lower()
 				update_creative_inventory(player_name, name)
 				sfinv.set_player_inventory_formspec(player, context)
 			elseif not fields.quit then

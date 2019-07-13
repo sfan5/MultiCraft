@@ -104,21 +104,21 @@ local function check_text(pos, wall)
 end
 
 minetest.register_lbm({
-		label = "Check for sign text",
-		name = "signs:sign_text",
-		nodenames = {"signs:sign"},
-		run_at_every_load = true,
-		action = function(pos, node)
-				check_text(pos, false)
-		end,
+	label = "Check for sign text",
+	name = "signs:sign_text",
+	nodenames = {"signs:sign"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		check_text(pos, false)
+	end,
 })
 
 minetest.register_lbm({
-		label = "Check for sign text (Wall)",
-		name = "signs:wall_sign_text",
-		nodenames = {"signs:wall_sign"},
-		run_at_every_load = true,
-		action = function(pos, node)
+	label = "Check for sign text (Wall)",
+	name = "signs:wall_sign_text",
+	nodenames = {"signs:wall_sign"},
+	run_at_every_load = true,
+	action = function(pos, node)
 		check_text(pos, true)
 	end,
 })
@@ -156,11 +156,7 @@ minetest.register_node("signs:sign", {
 	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		if minetest.is_singleplayer() then
-			meta:set_string("formspec", "field[!text;Enter your text:;${sign_text}]")
-		else
-			meta:set_string("formspec", "field[text;Enter your text:;${sign_text}]")
-		end
+		meta:set_string("formspec", "field[Dtext;Enter your text:;${sign_text}]")
 	end,
 	on_destruct = function(pos)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
@@ -175,7 +171,7 @@ minetest.register_node("signs:sign", {
 		check_text(pos, false)
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
-		if not fields.text then
+		if not fields.Dtext then
 			return
 		end
 		local p2 = minetest.get_node(pos).param2
@@ -187,7 +183,7 @@ minetest.register_node("signs:sign", {
 			local ent = obj:get_luaentity()
 			if ent and ent.name == "signs:sign_text" then
 				obj:set_properties(
-					{textures = {signs.generate_sign_texture(fields.text), "blank.png"}
+					{textures = {signs.generate_sign_texture(fields.Dtext), "blank.png"}
 				})
 				obj:set_pos(vector.add(pos, signs.sign_positions[p2][1]))
 				obj:set_yaw(signs.sign_positions[p2][2])
@@ -198,12 +194,12 @@ minetest.register_node("signs:sign", {
 			local obj = minetest.add_entity(vector.add(pos,
 				signs.sign_positions[p2][1]), "signs:sign_text")
 			obj:set_properties({
-				textures = {signs.generate_sign_texture(fields.text), "blank.png"}
+				textures = {signs.generate_sign_texture(fields.Dtext), "blank.png"}
 			})
 			obj:set_yaw(signs.sign_positions[p2][2])
 		end
 		local meta = minetest.get_meta(pos)
-		meta:set_string("sign_text", fields.text)
+		meta:set_string("sign_text", fields.Dtext)
 	end,
 	groups = {oddly_breakable_by_hand = 1, choppy = 3, attached_node = 1},
 })
@@ -223,11 +219,7 @@ minetest.register_node("signs:wall_sign", {
 	drop = "signs:sign",
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		if minetest.is_singleplayer() then
-			meta:set_string("formspec", "field[!text;Enter your text:;${sign_text}]")
-		else
-			meta:set_string("formspec", "field[text;Enter your text:;${sign_text}]")
-		end
+		meta:set_string("formspec", "field[Dtext;Enter your text:;${sign_text}]")
 	end,
 	on_destruct = function(pos)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
@@ -242,7 +234,7 @@ minetest.register_node("signs:wall_sign", {
 				check_text(pos, true)
 		end,
 	on_receive_fields = function(pos, formname, fields, sender)
-		if not fields.text then
+		if not fields.Dtext then
 			return
 		end
 		local p2 = minetest.get_node(pos).param2 - 2
@@ -254,7 +246,7 @@ minetest.register_node("signs:wall_sign", {
 			local ent = obj:get_luaentity()
 			if ent and ent.name == "signs:sign_text" then
 				obj:set_properties({
-					textures = {signs.generate_sign_texture(fields.text), "blank.png"}
+					textures = {signs.generate_sign_texture(fields.Dtext), "blank.png"}
 				})
 				obj:set_pos(vector.add(pos, signs.wall_sign_positions[p2][1]))
 				obj:set_yaw(signs.wall_sign_positions[p2][2])
@@ -265,12 +257,12 @@ minetest.register_node("signs:wall_sign", {
 			local obj = minetest.add_entity(vector.add(pos,
 				signs.wall_sign_positions[p2][1]), "signs:sign_text")
 			obj:set_properties({
-				textures = {signs.generate_sign_texture(fields.text), "blank.png"}
+				textures = {signs.generate_sign_texture(fields.Dtext), "blank.png"}
 			})
 			obj:set_yaw(signs.wall_sign_positions[p2][2])
 		end
 		local meta = minetest.get_meta(pos)
-		meta:set_string("sign_text", fields.text)
+		meta:set_string("sign_text", fields.Dtext)
 	end,
 	groups = {oddly_breakable_by_hand = 1, choppy = 3,
 		not_in_creative_inventory = 1, attached_node = 1},
