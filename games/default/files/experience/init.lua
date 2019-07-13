@@ -48,30 +48,30 @@ hud.register("xp_bar", {
 	max           = MAX_HUD_XP,
 })
 
-hud.register("zlvl", {
+-- level number
+hud.register("lvl", {
 	hud_elem_type = "text",
 	position      = {x = 0.5,  y =  0.966},
 	alignment     = {x = 0,    y = -1},
-	offset        = {x = 0,    y = -50},
+	offset        = {x = 0,    y = -15},
 	number        = 0x3cff00,
-	text          = "0",
+	text          = "",
 })
 
-minetest.register_on_joinplayer(function(player)
+--[[minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	init_data(player)
 
 	_hud[name] = {}
-		-- level number
---[[		lvl = player:hud_add({
+		lvl = player:hud_add({
 			hud_elem_type = "text",
 			position  = {x = 0.5, y = 0.91},
 			offset    = {x = 0, y = -25},
 			alignment = {x = 0, y = 0},
 			number    = 0x3cff00,
 			text      = "",
-		}) 	]]
-end)
+			})
+end)]]
 
 function experience.add_orb(amount, pos)
 	if amount == 0 then return end
@@ -97,6 +97,10 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	if xp_min and xp_max and xp_max > 0 then
 		experience.add_orb(math.random(xp_min, xp_max), pos)
 	end
+end)
+
+minetest.register_on_joinplayer(function(player)
+	init_data(player)
 end)
 
 minetest.register_on_newplayer(function(player)
@@ -157,7 +161,7 @@ minetest.register_playerstep(function(dtime, playernames)
 		hud.change_item(player, "xp_bar", {number = xp[name].xp_bar})
 
 --		player:hud_change(_hud[name].lvl, "text", xp[name].level)
-		hud.change_item(player, "zlvl", {text = xp[name].level})
+		hud.change_item(player, "lvl", {text = xp[name].level})
 --		player:hud_change(_hud[name].lvl, "offset",
 --			{x = (xp[name].level >= 10 and 13 or 6), y = -202})
 	end
