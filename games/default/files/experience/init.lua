@@ -3,7 +3,7 @@ experience = {}
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
-dofile(modpath .. "/override.lua")
+dofile(modpath .. "/xp.lua")
 
 local MAX_LEVEL  = 40
 local MAX_HUD_XP = 32
@@ -15,7 +15,6 @@ local ORB_COLLECT_RADIUS = 3
 local xp, _hud = {}, {}
 
 local get_objs_rad = minetest.get_objects_inside_radius
-local get_players  = minetest.get_connected_players
 
 local vec_new, vec_dist, vec_mul, vec_sub =
 	vector.new, vector.distance, vector.multiply, vector.subtract
@@ -26,37 +25,37 @@ local function init_data(player, reset)
 
 	if not _xp or reset then
 		xp[name] = {
-			xp_bar    = 0,
-			xp_total  = 0,
-			xp_number = 0,
-			level     = 0,
+			xp_bar = 0,
+			level  = 0,
 		}
 	else
 		xp[name] = _xp
 	end
 end
 
-hud.register("xp_bar", {
-	hud_elem_type = "statbar",
-	position      = {x =  0.5, y =  1},
-	alignment     = {x = -1,   y = -1},
-	offset        = {x = -246, y = -79},
-	size          = {x =  31,  y =  14},
-	text          = "expbar_full.png",
-	background    = "expbar_empty.png",
-	number        = 0,
-	max           = MAX_HUD_XP,
-})
+if minetest.settings:get_bool("enable_damage") then
+	hud.register("xp_bar", {
+		hud_elem_type = "statbar",
+		position      = {x =  0.5, y =  1},
+		alignment     = {x = -1,   y = -1},
+		offset        = {x = -256, y = -78},
+		size          = {x =  31,  y =  14},
+		text          = "expbar_full.png",
+		background    = "expbar_empty.png",
+		number        = 0,
+		max           = MAX_HUD_XP,
+	})
 
--- level number
-hud.register("lvl", {
-	hud_elem_type = "text",
-	position      = {x = 0.5,  y =  0.966},
-	alignment     = {x = 0,    y = -1},
-	offset        = {x = 0,    y = -15},
-	number        = 0x3cff00,
-	text          = "",
-})
+	-- level number
+	hud.register("lvl", {
+		hud_elem_type = "text",
+		position      = {x = 0.5,  y =  1},
+		alignment     = {x = 0,    y = -10},
+		offset        = {x = 188,  y =  56},
+		number        = 0x3cff00,
+		text          = "0",
+	})
+end
 
 --[[minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
@@ -85,87 +84,87 @@ function experience.add_orb(amount, pos)
 	end
 end
 
-function experience.get_level(name)
-	return xp[name].level
-end
+if minetest.settings:get_bool("enable_damage") then
+	minetest.register_on_dignode(function(pos, oldnode, digger)
+		local name = oldnode.name
+		local xp_min = minetest.get_item_group(name, "xp_min")
+		local xp_max = minetest.get_item_group(name, "xp_max")
 
-minetest.register_on_dignode(function(pos, oldnode, digger)
-	local name = oldnode.name
-	local xp_min = minetest.get_item_group(name, "xp_min")
-	local xp_max = minetest.get_item_group(name, "xp_max")
+		if xp_min and xp_max and xp_max > 0 then
+			experience.add_orb(math.random(xp_min, xp_max), pos)
+		end
+	end)
 
-	if xp_min and xp_max and xp_max > 0 then
-		experience.add_orb(math.random(xp_min, xp_max), pos)
-	end
-end)
+	minetest.register_on_joinplayer(function(player)
+		init_data(player)
+	end)
 
-minetest.register_on_joinplayer(function(player)
-	init_data(player)
-end)
+	minetest.register_on_newplayer(function(player)
+		init_data(player)
+	end)
 
-minetest.register_on_newplayer(function(player)
-	init_data(player)
-end)
+	minetest.register_on_dieplayer(function(player)
+		init_data(player, true)
+	end)
 
-minetest.register_on_dieplayer(function(player)
-	init_data(player, true)
-end)
+	minetest.register_playerstep(function(dtime, playernames)
+		for i = 1, #playernames do
+			local name   = playernames[i]
+			local player = minetest.get_player_by_name(name)
+			local pos    = player:get_pos()
 
-minetest.register_playerstep(function(dtime, playernames)
-	for i = 1, #playernames do
-		local name   = playernames[i]
-		local player = minetest.get_player_by_name(name)
-		local pos    = player:get_pos()
+			pos.y = pos.y + 0.5
+			xp[name].timer = (xp[name].timer or 0) + dtime
 
-		pos.y = pos.y + 0.5
-		xp[name].timer = (xp[name].timer or 0) + dtime
+			for _, obj in ipairs(get_objs_rad(pos, ORB_COLLECT_RADIUS)) do
+				local ent = obj:get_luaentity()
+				if not obj:is_player() and ent and ent.name == "experience:orb" then
+					local orb_pos = obj:get_pos()
 
-		for _, obj in ipairs(get_objs_rad(pos, ORB_COLLECT_RADIUS)) do
-			local ent = obj:get_luaentity()
-			if not obj:is_player() and ent and ent.name == "experience:orb" then
-				local orb_pos = obj:get_pos()
+					if vec_dist(pos, orb_pos) <= 1 then
+						if xp[name].timer >= ((xp[name].last_sound or 0) + ORB_SOUND_INTERVAL) then
+							minetest.sound_play("orb", {to_player = name})
+							xp[name].last_sound = xp[name].timer
+						end
 
-				if vec_dist(pos, orb_pos) <= 1 then
-					if xp[name].timer >= ((xp[name].last_sound or 0) + ORB_SOUND_INTERVAL) then
-						minetest.sound_play("orb", {to_player = name})
-						xp[name].last_sound = xp[name].timer
+						local inc = 2 * xp[name].level + 7
+
+						if xp[name].level >= 16 then
+							inc = 5 * xp[name].level - 38
+						elseif xp[name].level >= 31 then
+							inc = 9 * xp[name].level - 158
+						end
+
+						xp[name].xp_bar = xp[name].xp_bar + (MAX_HUD_XP / inc)
+						obj:remove()
+					else
+						pos.y = pos.y + 0.2
+						local vec = vec_mul(vec_sub(pos, orb_pos), 3)
+						obj:set_velocity(vec)
 					end
-
-					local inc = 2 * xp[name].level + 7
-
-					if xp[name].level >= 16 then
-						inc = 5 * xp[name].level - 38
-					elseif xp[name].level >= 31 then
-						inc = 9 * xp[name].level - 158
-					end
-
-					xp[name].xp_bar = xp[name].xp_bar + (MAX_HUD_XP / inc)
-					obj:remove()
-				else
-					pos.y = pos.y + 0.2
-					local vec = vec_mul(vec_sub(pos, orb_pos), 3)
-					obj:set_velocity(vec)
 				end
 			end
-		end
 
-		if xp[name].xp_bar >= MAX_HUD_XP then
-			if xp[name].level < MAX_LEVEL then
-				xp[name].level  = xp[name].level + 1
-				xp[name].xp_bar = xp[name].xp_bar - MAX_HUD_XP
-			else
-				xp[name].xp_bar = MAX_HUD_XP
+			if xp[name].xp_bar >= MAX_HUD_XP then
+				if xp[name].level < MAX_LEVEL then
+					xp[name].level  = xp[name].level + 1
+					xp[name].xp_bar = xp[name].xp_bar - MAX_HUD_XP
+				else
+					xp[name].xp_bar = MAX_HUD_XP
+				end
 			end
+
+			hud.change_item(player, "xp_bar", {number = xp[name].xp_bar})
+			hud.change_item(player, "lvl", {text = xp[name].level})
+			
+			player:set_attribute("xp", minetest.serialize(xp[name]))
+
+	--[[	player:hud_change(_hud[name].lvl, "text", xp[name].level)
+			player:hud_change(_hud[name].lvl, "offset",
+				{x = (xp[name].level >= 10 and 13 or 6), y = -202}) ]]
 		end
-
-		hud.change_item(player, "xp_bar", {number = xp[name].xp_bar})
-
---		player:hud_change(_hud[name].lvl, "text", xp[name].level)
-		hud.change_item(player, "lvl", {text = xp[name].level})
---		player:hud_change(_hud[name].lvl, "offset",
---			{x = (xp[name].level >= 10 and 13 or 6), y = -202})
-	end
-end, minetest.is_singleplayer()) -- Force step in singlplayer mode only
+	end, minetest.is_singleplayer()) -- Force step in singlplayer mode only
+end
 
 minetest.register_entity("experience:orb", {
 	timer        = 0,
@@ -204,13 +203,3 @@ minetest.register_entity("experience:orb", {
 		end
 	end,
 })
-
-minetest.register_on_shutdown(function()
-	local players = get_players()
-	for i = 1, #players do
-		local player = players[i]
-		local name   = player:get_player_name()
-
-		player:set_attribute("xp", minetest.serialize(xp[name]))
-	end
-end)
