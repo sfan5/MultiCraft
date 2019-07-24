@@ -1,2 +1,3 @@
 default
+sethome
 3d_armor?

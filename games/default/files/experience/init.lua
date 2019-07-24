@@ -2,6 +2,7 @@ experience = {}
 
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
+local enable_damage = core.settings:get_bool("enable_damage")
 
 dofile(modpath .. "/xp.lua")
 
@@ -33,7 +34,7 @@ local function init_data(player, reset)
 	end
 end
 
-if minetest.settings:get_bool("enable_damage") then
+if enable_damage then
 	hud.register("xp_bar", {
 		hud_elem_type = "statbar",
 		position      = {x =  0.5, y =  1},
@@ -73,18 +74,18 @@ end
 end)]]
 
 function experience.add_orb(amount, pos)
-	if amount == 0 then return end
+	if amount == 0 or not enable_damage then return end
 	for _ = 1, amount do
 		local area = vec_new(
-			pos.x + math.random(0,5) / 5 - 0.5,
+			pos.x + math.random(0, 5) / 5 - 0.5,
 			pos.y,
-			pos.z + math.random(0,5) / 5 - 0.5)
+			pos.z + math.random(0, 5) / 5 - 0.5)
 
 		minetest.add_entity(area, "experience:orb")
 	end
 end
 
-if minetest.settings:get_bool("enable_damage") then
+if enable_damage then
 	minetest.register_on_dignode(function(pos, oldnode, digger)
 		local name = oldnode.name
 		local xp_min = minetest.get_item_group(name, "xp_min")
