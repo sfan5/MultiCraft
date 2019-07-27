@@ -1,9 +1,10 @@
 local area = 3
 
-local destruct = function(pos)  -- removing the air-like nodes
-	for x = pos.x-area, pos.x+area do
-		for y = pos.y-area, pos.y+area do
-			for z = pos.z-area, pos.z+area do
+-- removing the air-like nodes
+local destruct = function(pos)
+	for x = pos.x - area, pos.x + area do
+		for y = pos.y - area, pos.y + area do
+			for z = pos.z - area, pos.z + area do
 				local n = minetest.get_node({x=x, y=y, z=z}).name
 				if n == "sponge:liquid_stop" then
 					minetest.remove_node({x=x, y=y, z=z})
@@ -13,8 +14,8 @@ local destruct = function(pos)  -- removing the air-like nodes
 	end
 end
 
-
-minetest.register_node("sponge:liquid_stop", {  -- air-like node
+-- air-like node
+minetest.register_node("sponge:liquid_stop", {  
 	drawtype = "airlike",
 	drop = "",
 	groups = {not_in_creative_inventory = 1},
@@ -25,8 +26,8 @@ minetest.register_node("sponge:liquid_stop", {  -- air-like node
 	buildable_to = true,
 })
 
-
-minetest.register_node("sponge:sponge", {  -- dry sponge
+-- Dry Sponge
+minetest.register_node("sponge:sponge", {
 	description = "Sponge",
 	tiles = {"sponge_sponge.png"},
 	groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 3, flammable = 3},
@@ -63,8 +64,8 @@ minetest.register_node("sponge:sponge", {  -- dry sponge
 	after_dig_node = destruct
 })
 
-
-minetest.register_node("sponge:wet_sponge", {  -- wet sponge
+-- Wet Sponge
+minetest.register_node("sponge:wet_sponge", {
 	description = "Wet Sponge",
 	tiles = {"sponge_sponge_wet.png"},
 	groups = {snappy = 2, choppy = 2, oddly_breakable_by_hand = 3, flammable = 3, not_in_creative_inventory = 1},
@@ -72,14 +73,16 @@ minetest.register_node("sponge:wet_sponge", {  -- wet sponge
 	on_destruct = destruct
 })
 
-minetest.register_craft({  -- cooking wet sponge back into dry sponge
+-- Cooking wet sponge back into dry sponge
+minetest.register_craft({
 	type = "cooking",
 	recipe = "sponge:wet_sponge",
 	output = "sponge:sponge",
 	cooktime = 4,
 })
 
-minetest.register_decoration({  -- sponges are found deep in the sea
+-- Sponges are found deep in the sea
+minetest.register_decoration({
 	name = "sponge:sponges",
 	deco_type = "simple",
 	place_on = {"default:sand"},

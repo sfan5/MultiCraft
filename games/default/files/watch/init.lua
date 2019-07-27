@@ -38,7 +38,7 @@ local images = {
 }
 
 local i
-for i,img in ipairs(images) do
+for i, img in ipairs(images) do
 	local inv = 1
 	if i == 1 then
 		inv = 0
@@ -51,10 +51,10 @@ for i,img in ipairs(images) do
 end
 
 minetest.register_craft({
-	output = 'watch:0',
+	output = "watch:0",
 	recipe = {
-	{'', 'default:gold_ingot', ''},
-	{'default:gold_ingot', 'mesecons:wire_00000000_off', 'default:gold_ingot'},
-	{'', 'default:gold_ingot', ''}
-	},
+		{"", "default:gold_ingot", ""},
+		{"default:gold_ingot", "mesecons:wire_00000000_off", "default:gold_ingot"},
+		{"", "default:gold_ingot", ""}
+	}
 })
