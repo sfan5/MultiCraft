@@ -1,24 +1,20 @@
 ts_furniture = {}
 
--- If true, you can sit on chairs and benches, when right-click them.
-ts_furniture.enable_sitting = false
-
--- The following code is from "Get Comfortable [cozy]" (by everamzah; published under WTFPL).
--- Thomas S. modified it, so that it can be used in this mod
---[[minetest.register_globalstep(function(dtime)
-	local players = minetest.get_connected_players()
-	for i = 1, #players do
-		local name = players[i]:get_player_name()
-		if player_api.player_attached[name] and not players[i]:get_attach() and
-				(players[i]:get_player_control().up == true or
-						players[i]:get_player_control().down == true or
-						players[i]:get_player_control().left == true or
-						players[i]:get_player_control().right == true or
-						players[i]:get_player_control().jump == true) then
-			players[i]:set_eye_offset({ x = 0, y = 0, z = 0 }, { x = 0, y = 0, z = 0 })
-			players[i]:set_physics_override(1, 1, 1)
-			player_api.player_attached[name] = false
-			player_api.set_animation(players[i], "stand", 30)
+minetest.register_playerstep(function(dtime, playernames)
+	for _, name in pairs(playernames) do
+		local player = minetest.get_player_by_name(name)
+		if player and player:is_player() then
+			if player_api.player_attached[name] and not player:get_attach() and
+					(player:get_player_control().up == true    or
+					 player:get_player_control().down == true  or
+					 player:get_player_control().left == true  or
+					 player:get_player_control().right == true or
+					 player:get_player_control().jump == true) then
+				player:set_eye_offset({ x = 0, y = 0, z = 0 }, { x = 0, y = 0, z = 0 })
+				player:set_physics_override(1, 1, 1)
+				player_api.player_attached[player] = false
+				player_api.set_animation(player, "stand", 30)
+			end
 		end
 	end
 end)
@@ -37,19 +33,19 @@ ts_furniture.sit = function(name, pos)
 		player_api.player_attached[name] = true
 		player_api.set_animation(player, "sit", 30)
 	end
-end]]
+end
 
 local furnitures = {
 	["chair"] = {
 		description = "Chair",
 		sitting = true,
 		nodebox = {
-			{ -0.3, -0.5, 0.2, -0.2, 0.5, 0.3 }, -- foot 1
-			{ 0.2, -0.5, 0.2, 0.3, 0.5, 0.3 }, -- foot 2
-			{ 0.2, -0.5, -0.3, 0.3, -0.1, -0.2 }, -- foot 3
+			{ -0.3, -0.5,  0.2, -0.2,  0.5,  0.3 }, -- foot 1
+			{  0.2, -0.5,  0.2,  0.3,  0.5,  0.3 }, -- foot 2
+			{  0.2, -0.5, -0.3,  0.3, -0.1, -0.2 }, -- foot 3
 			{ -0.3, -0.5, -0.3, -0.2, -0.1, -0.2 }, -- foot 4
-			{ -0.3, -0.1, -0.3, 0.3, 0, 0.2 }, -- seating
-			{ -0.2, 0.1, 0.25, 0.2, 0.4, 0.26 } -- conector 1-2
+			{ -0.3, -0.1, -0.3,  0.3,  0,    0.2 }, -- seating
+			{ -0.2,  0.1,  0.25, 0.2,  0.4,  0.26 } -- conector 1-2
 		},
 		craft = function(recipe)
 			return {
@@ -63,10 +59,10 @@ local furnitures = {
 		description = "Table",
 		nodebox = {
 			{ -0.4, -0.5, -0.4, -0.3, 0.4, -0.3 }, -- foot 1
-			{ 0.3, -0.5, -0.4, 0.4, 0.4, -0.3 }, -- foot 2
-			{ -0.4, -0.5, 0.3, -0.3, 0.4, 0.4 }, -- foot 3
-			{ 0.3, -0.5, 0.3, 0.4, 0.4, 0.4 }, -- foot 4
-			{ -0.5, 0.4, -0.5, 0.5, 0.5, 0.5 }, -- table top
+			{  0.3, -0.5, -0.4,  0.4, 0.4, -0.3 }, -- foot 2
+			{ -0.4, -0.5,  0.3, -0.3, 0.4,  0.4 }, -- foot 3
+			{  0.3, -0.5,  0.3,  0.4, 0.4,  0.4 }, -- foot 4
+			{ -0.5,  0.4, -0.5,  0.5, 0.5,  0.5 }, -- table top
 		},
 		craft = function(recipe)
 			return {
@@ -80,10 +76,10 @@ local furnitures = {
 		description = "Small Table",
 		nodebox = {
 			{ -0.4, -0.5, -0.4, -0.3, 0.1, -0.3 }, -- foot 1
-			{ 0.3, -0.5, -0.4, 0.4, 0.1, -0.3 }, -- foot 2
-			{ -0.4, -0.5, 0.3, -0.3, 0.1, 0.4 }, -- foot 3
-			{ 0.3, -0.5, 0.3, 0.4, 0.1, 0.4 }, -- foot 4
-			{ -0.5, 0.1, -0.5, 0.5, 0.2, 0.5 }, -- table top
+			{  0.3, -0.5, -0.4,  0.4, 0.1, -0.3 }, -- foot 2
+			{ -0.4, -0.5,  0.3, -0.3, 0.1,  0.4 }, -- foot 3
+			{  0.3, -0.5,  0.3,  0.4, 0.1,  0.4 }, -- foot 4
+			{ -0.5,  0.1, -0.5,  0.5, 0.2,  0.5 }, -- table top
 		},
 		craft = function(recipe)
 			return {
@@ -95,9 +91,9 @@ local furnitures = {
 	["tiny_table"] = {
 		description = "Tiny Table",
 		nodebox = {
-			{ -0.5, -0.1, -0.5, 0.5, 0, 0.5 }, -- table top
+			{ -0.5, -0.1, -0.5,  0.5,  0,   0.5 }, -- table top
 			{ -0.4, -0.5, -0.5, -0.3, -0.1, 0.5 }, -- foot 1
-			{ 0.3, -0.5, -0.5, 0.4, -0.1, 0.5 }, -- foot 2
+			{  0.3, -0.5, -0.5,  0.4, -0.1, 0.5 }, -- foot 2
 		},
 		craft = function(recipe)
 			local bench_name = "ts_furniture:" .. recipe:gsub(":", "_") .. "_bench"
@@ -110,9 +106,9 @@ local furnitures = {
 		description = "Bench",
 		sitting = true,
 		nodebox = {
-			{ -0.5, -0.1, 0, 0.5, 0, 0.5 }, -- seating
+			{ -0.5, -0.1, 0,  0.5,  0,   0.5 }, -- seating
 			{ -0.4, -0.5, 0, -0.3, -0.1, 0.5 }, -- foot 1
-			{ 0.3, -0.5, 0, 0.4, -0.1, 0.5 }, -- foot 2
+			{  0.3, -0.5, 0,  0.4, -0.1, 0.5 }, -- foot 2
 		},
 		craft = function(recipe)
 			return {
@@ -147,7 +143,7 @@ function ts_furniture.register_furniture(recipe, description, texture)
 
 		def.on_rightclick = nil
 
-		if def.sitting and ts_furniture.enable_sitting then
+		if def.sitting then
 			def.on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 				ts_furniture.sit(player:get_player_name(), pos)
 			end
