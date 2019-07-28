@@ -118,7 +118,7 @@ local function init_creative_cache(tab_name, category)
 		if def.description and def.description ~= "" and
 				groups.not_in_creative_inventory ~= 1 and
 				filter(name, def, groups) then
-			i_cache[name] = def.description
+			i_cache[name] = Sl(def.description)
 		end
 	end
 	table.sort(i_cache)
@@ -376,7 +376,6 @@ local function register_tab(name, title, group)
 					(fields.creative_search or
 					fields.key_enter_field == "Dsearch") then
 				inv.start_i = 0
-				--inv.filter = fields.Dsearch:lower()
 				update_creative_inventory(player_name, name)
 				sfinv.set_player_inventory_formspec(player, context)
 			elseif not fields.quit then

@@ -3,8 +3,8 @@ local area = 3
 -- removing the air-like nodes
 local destruct = function(pos)
 	for x = pos.x - area, pos.x + area do
-		for y = pos.y - area, pos.y + area do
-			for z = pos.z - area, pos.z + area do
+		for y = pos.y-area, pos.y+area do
+			for z = pos.z - area, pos.z+area do
 				local n = minetest.get_node({x=x, y=y, z=z}).name
 				if n == "sponge:liquid_stop" then
 					minetest.remove_node({x=x, y=y, z=z})

@@ -395,7 +395,7 @@ end
 --
 
 minetest.override_item("dye:white", {
-	description = "Bone Meal",
+	description = Sl("Bone Meal"),
 	on_use = function(itemstack, user, pointed_thing)
 		-- did we point at a node?
 		if pointed_thing.type ~= "node" then

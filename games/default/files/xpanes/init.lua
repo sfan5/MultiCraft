@@ -162,10 +162,10 @@ xpanes.register_pane("pane", {
 local dyes = dye.dyes
 
 for i = 1, #dyes do
-	local name, desc = unpack(dyes[i])
+	local name, desc, desc2 = unpack(dyes[i])
 
 	xpanes.register_pane("pane_" .. name, {
-		description = desc .. " Glass Pane",
+		description = desc2 .. " " .. Sl("Glass Pane"),
 		textures = {"glass_" .. name .. ".png","xpanes_top_glass_" .. name .. ".png"},
 		wield_image = {"glass_" .. name .. ".png","xpanes_top_glass_" .. name .. ".png","xpanes_top_glass_" .. name .. ".png"},
 		sounds = default.node_sound_glass_defaults(),

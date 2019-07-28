@@ -37,7 +37,7 @@ end
 
 local furnitures = {
 	["chair"] = {
-		description = "Chair",
+		description = Sl("Chair"),
 		sitting = true,
 		nodebox = {
 			{ -0.3, -0.5,  0.2, -0.2,  0.5,  0.3 }, -- foot 1
@@ -56,7 +56,7 @@ local furnitures = {
 		end
 	},
 	["table"] = {
-		description = "Table",
+		description = Sl("Table"),
 		nodebox = {
 			{ -0.4, -0.5, -0.4, -0.3, 0.4, -0.3 }, -- foot 1
 			{  0.3, -0.5, -0.4,  0.4, 0.4, -0.3 }, -- foot 2
@@ -73,7 +73,7 @@ local furnitures = {
 		end
 	},
 	["small_table"] = {
-		description = "Small Table",
+		description = Sl("Small Table"),
 		nodebox = {
 			{ -0.4, -0.5, -0.4, -0.3, 0.1, -0.3 }, -- foot 1
 			{  0.3, -0.5, -0.4,  0.4, 0.1, -0.3 }, -- foot 2
@@ -89,7 +89,7 @@ local furnitures = {
 		end
 	},
 	["tiny_table"] = {
-		description = "Tiny Table",
+		description = Sl("Tiny Table"),
 		nodebox = {
 			{ -0.5, -0.1, -0.5,  0.5,  0,   0.5 }, -- table top
 			{ -0.4, -0.5, -0.5, -0.3, -0.1, 0.5 }, -- foot 1
@@ -103,7 +103,7 @@ local furnitures = {
 		end
 	},
 	["bench"] = {
-		description = "Bench",
+		description = Sl("Bench"),
 		sitting = true,
 		nodebox = {
 			{ -0.5, -0.1, 0,  0.5,  0,   0.5 }, -- seating

@@ -5,10 +5,10 @@ local dyes = dye.dyes
 --
 
 for i = 1, #dyes do
-	local name, desc = unpack(dyes[i])
+	local name, desc, desc2, desc3 = unpack(dyes[i])
 
 	minetest.register_node(":default:glass_" .. name, {
-		description = desc .. " Glass",
+		description = desc3 .. " " .. Sl("Glass"),
 		drawtype = "glasslike",
 		paramtype2 = "glasslikeliquidlevel",
 		paramtype = "light",
@@ -47,10 +47,10 @@ minetest.register_alias("default:glass_silver", "default:glass_grey")
 --
 
 for i = 1, #dyes do
-	local name, desc = unpack(dyes[i])
+	local name, desc, desc2 = unpack(dyes[i])
 
 	minetest.register_node(":hardened_clay:" .. name, {
-		description = desc .. " Hardened Clay",
+		description = desc2 .. " " .. Sl("Hardened Clay"),
 		tiles = {"hardened_clay_stained_" .. name .. ".png"},
 		is_ground_content = false,
 		groups = {cracky = 3, hardened_clay = 1},
