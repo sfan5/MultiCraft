@@ -1,12 +1,3 @@
-local function drop_fields(player, name)
-	local inv = player:get_inventory()
-	for i,stack in ipairs(inv:get_list(name)) do
-		minetest.item_drop(stack, player, player:get_pos())
-		stack:clear()
-		inv:set_stack(name, i, stack)
-	end
-end
-
 local function set_inventory(player)
 	local form = "size[9,8.75]"..
 	default.gui_bg..
@@ -40,7 +31,12 @@ end
 -- Drop craft items on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
-		drop_fields(player, "craft")
+		local inv = player:get_inventory()
+		for i, stack in ipairs(inv:get_list("craft")) do
+			minetest.item_drop(stack, player, player:get_pos())
+			stack:clear()
+			inv:set_stack("craft", i, stack)
+		end
 	end
 end)
 
