@@ -135,9 +135,9 @@ function xpanes.register_pane(name, def)
 			connect_front = {{-1/32, -1/2, -1/2, 1/32, 1/2, -1/32}},
 			connect_left = {{-1/2, -1/2, -1/32, -1/32, 1/2, 1/32}},
 			connect_back = {{-1/32, -1/2, 1/32, 1/32, 1/2, 1/2}},
-			connect_right = {{1/32, -1/2, -1/32, 1/2, 1/2, 1/32}},
+			connect_right = {{1/32, -1/2, -1/32, 1/2, 1/2, 1/32}}
 		},
-		connects_to = {"group:pane", "group:stone", "group:glass", "group:wood", "group:tree"},
+		connects_to = {"group:pane", "group:stone", "group:glass", "group:wood", "group:tree"}
 	})
 
 	minetest.register_craft({

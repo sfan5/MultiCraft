@@ -195,7 +195,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	end
 	local main_list = get_button_formspec(player_name, start_i)
 	if page == "inv" then
-		main_list = "image[-0.2,1.6;11.35,2.33;creative_bg.png]"..
+		main_list = "image[-0.2,1.6;11.35,2.33;^[colorize:#D6D5E6]]"..
 			"list[current_player;main;0.02,3.68;9,3;9]"
 		if has_armor then
 			main_list = main_list.."image[-0.3,0.15;3,4.3;inventory_armor.png]"..
@@ -245,9 +245,9 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"item_image["..ofs_img["inv"]..";1,1;"..bg["inv"].."]"..
 
 		"image_button_exit[10.3,2.5;1,1;creative_home_set.png;sethome_set;;true;false]"..
-		"tooltip[sethome_set;Set Home;#000;#FFF]"..
+		"tooltip[sethome_set;" .. Sl("Set Home") .. ";#000;#FFF]"..
 		"image_button_exit[10.3,3.5;1,1;creative_home_go.png;sethome_go;;true;false]"..
-		"tooltip[sethome_go;Go Home;#000;#FFF]"..
+		"tooltip[sethome_go;" .. Sl("Go Home") .. ";#000;#FFF]"..
 		"image[0,0.95;5,0.75;fnt_"..page..".png]"..
 		"image_button[9.145,1.65;0.81,0.6;blank.png;creative_prev;;;false]" ..
 		"image_button[9.145,6.08;0.81,0.6;blank.png;creative_next;;;false]" ..
@@ -255,7 +255,7 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"list[detached:creative_trash;main;9.03,6.94;1,1;]"..
 		"image["..ofs_tab[page]..";1.4,1.4;creative_tab_active.png"..rot[page].."]"..
 		"item_image["..ofs_img[page]..";1,1;"..bg[page].."]"..
-		"image[9.165," .. tostring(slider_pos) .. ";0.7,"..tostring(slider_height) .. ";creative_slider.png]"
+		"image[9.165," .. tostring(slider_pos) .. ";0.7,"..tostring(slider_height) .. ";^[colorize:#7B7B7B]"
 	if page == "all" then
 		local inv = player_inventory[player_name] or {}
 		local filter = inv.filter or ""

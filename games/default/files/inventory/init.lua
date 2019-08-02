@@ -17,9 +17,9 @@ local function set_inventory(player)
 	"list[detached:split;main;8,3.14;1,1;]"..
 	"image[1.5,0;2,4;default_player2d.png]"..
 	"image_button_exit[9.21,2.5;1,1;creative_home_set.png;sethome_set;;true;false]"..
-	"tooltip[sethome_set;Set Home;#000;#FFF]"..
+	"tooltip[sethome_set;" .. Sl("Set Home") .. ";#000;#FFF]"..
 	"image_button_exit[9.21,3.5;1,1;creative_home_go.png;sethome_go;;true;false]"..
-	"tooltip[sethome_go;Go Home;#000;#FFF]"
+	"tooltip[sethome_go;" .. Sl("Go Home") .. ";#000;#FFF]"
 	-- Armor
 	if minetest.get_modpath("3d_armor") then
 		local player_name = player:get_player_name()
@@ -36,7 +36,7 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
 		local inv = player:get_inventory()
-		for i, stack in ipairs(inv:get_list("craft")) do
+		for i, stack in pairs(inv:get_list("craft")) do
 			minetest.item_drop(stack, player, player:get_pos())
 			stack:clear()
 			inv:set_stack("craft", i, stack)

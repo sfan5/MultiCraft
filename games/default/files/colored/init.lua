@@ -17,23 +17,21 @@ for i = 1, #dyes do
 		sunlight_propagates = true,
 		is_ground_content = false,
 		use_texture_alpha = true,
-		groups = {cracky = 3, oddly_breakable_by_hand = 3, colorglass = 1},
-		sounds = default.node_sound_glass_defaults(),
 		drop = "",
+		groups = {cracky = 3, oddly_breakable_by_hand = 3, colorglass = 1},
+		sounds = default.node_sound_glass_defaults()
 	})
 
 	minetest.register_craft({
+		type = "shapeless",
 		output = "default:glass_" .. name,
-		recipe = {
-			{"default:glass", "group:dye,color_" .. name}
-		}
+		recipe = {"group:dye,color_" .. name, "default:glass"}
 	})
 
 	minetest.register_craft({
+		type = "shapeless",
 		output = "default:glass_" .. name,
-		recipe = {
-			{"group:colorglass", "group:dye,color_" .. name}
-		}
+		recipe = {"group:dye,color_" .. name, "group:colorglass"}
 	})
 end
 

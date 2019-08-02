@@ -3,11 +3,11 @@ local area = 3
 -- removing the air-like nodes
 local destruct = function(pos)
 	for x = pos.x - area, pos.x + area do
-		for y = pos.y-area, pos.y+area do
-			for z = pos.z - area, pos.z+area do
-				local n = minetest.get_node({x=x, y=y, z=z}).name
+		for y = pos.y - area, pos.y + area do
+			for z = pos.z - area, pos.z + area do
+				local n = minetest.get_node({x = x, y = y, z = z}).name
 				if n == "sponge:liquid_stop" then
-					minetest.remove_node({x=x, y=y, z=z})
+					minetest.remove_node({x = x, y = y, z = z})
 				end
 			end
 		end
@@ -23,7 +23,7 @@ minetest.register_node("sponge:liquid_stop", {
 	walkable = false,
 	sunlight_propagates = true,
 	paramtype = "light",
-	buildable_to = true,
+	buildable_to = true
 })
 
 -- Dry Sponge
@@ -37,18 +37,18 @@ minetest.register_node("sponge:sponge", {
 
 		if not minetest.is_protected(pos, name) then
 			local count = 0
-			for x = pos.x-area, pos.x+area do
-				for y = pos.y-area, pos.y+area do
-					for z = pos.z-area, pos.z+area do
-						local n = minetest.get_node({x=x, y=y, z=z}).name
+			for x = pos.x-area, pos.x + area do
+				for y = pos.y - area, pos.y + area do
+					for z = pos.z - area, pos.z + area do
+						local n = minetest.get_node({x = x, y = y, z = z}).name
 						local d = minetest.registered_nodes[n]
 						if d ~= nil and (n == "air" or d["drawtype"] == "liquid" or d["drawtype"] == "flowingliquid") then
-							local p = {x=x, y=y, z=z}
+							local p = {x = x, y = y, z = z}
 							if not minetest.is_protected(p, name) then
 								if n ~= "air" then
 									count = count + 1  -- counting liquids
 								end
-								minetest.set_node(p, {name="sponge:liquid_stop"})
+								minetest.set_node(p, {name = "sponge:liquid_stop"})
 							end
 						end
 					end
@@ -56,7 +56,7 @@ minetest.register_node("sponge:sponge", {
 			end
 
 			if count > area then  -- turns wet if it removed more than * nodes
-				minetest.set_node(pos, {name="sponge:wet_sponge"})
+				minetest.set_node(pos, {name = "sponge:wet_sponge"})
 			end
 		end
 	end,
@@ -78,7 +78,7 @@ minetest.register_craft({
 	type = "cooking",
 	recipe = "sponge:wet_sponge",
 	output = "sponge:sponge",
-	cooktime = 4,
+	cooktime = 4
 })
 
 -- Sponges are found deep in the sea
@@ -91,7 +91,7 @@ minetest.register_decoration({
 	fill_ratio = 0.0003,
 	y_max = -12,
 	flags = "force_placement",
-	decoration = "sponge:wet_sponge",
+	decoration = "sponge:wet_sponge"
 })
 
 -- Aliases

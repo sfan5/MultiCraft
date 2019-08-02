@@ -24,7 +24,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 	local inv = digger:get_inventory()
 	if inv then
-		for _, item in ipairs(drops) do
+		for _, item in pairs(drops) do
 			if not inv:contains_item("main", item, true) then
 				inv:add_item("main", item)
 			end
