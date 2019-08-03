@@ -2,7 +2,7 @@ experience = {}
 
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
-local enable_damage = core.settings:get_bool("enable_damage")
+local enable_damage = minetest.settings:get_bool("enable_damage")
 
 dofile(modpath .. "/xp.lua")
 
@@ -57,21 +57,6 @@ if enable_damage then
 		text          = "0",
 	})
 end
-
---[[minetest.register_on_joinplayer(function(player)
-	local name = player:get_player_name()
-	init_data(player)
-
-	_hud[name] = {}
-		lvl = player:hud_add({
-			hud_elem_type = "text",
-			position  = {x = 0.5, y = 0.91},
-			offset    = {x = 0, y = -25},
-			alignment = {x = 0, y = 0},
-			number    = 0x3cff00,
-			text      = "",
-			})
-end)]]
 
 function experience.add_orb(amount, pos)
 	if amount == 0 or not enable_damage then return end

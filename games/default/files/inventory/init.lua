@@ -1,3 +1,7 @@
+if minetest.settings:get_bool("creative_mode") then
+	return
+end
+
 local function set_inventory(player)
 	local form = "size[9,8.75]"..
 	default.gui_bg..
@@ -40,12 +44,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-if not minetest.settings:get_bool("creative_mode") then
-	minetest.register_on_joinplayer(function(player)
-		local inv = player:get_inventory()
-		if inv then
-			inv:set_size("main", 9*4)
-		end
-		set_inventory(player)
-	end)
-end
+minetest.register_on_joinplayer(function(player)
+	local inv = player:get_inventory()
+	if inv then
+		inv:set_size("main", 9*4)
+	end
+	set_inventory(player)
+end)
