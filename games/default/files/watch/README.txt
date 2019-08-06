@@ -1,5 +1,5 @@
 MultiCraft Game mod: watch
-============================
+==========================
 
 License of source code:
 -----------------------

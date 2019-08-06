@@ -1,4 +1,5 @@
 MultiCraft Game mod: signs
+==========================
 
 License of source code:
 -----------------------

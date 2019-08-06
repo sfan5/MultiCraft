@@ -1,5 +1,6 @@
-MultiCraft Game mod: Spomge
-=========================
+MultiCraft Game mod: sponge
+===========================
+See license.txt for license information.
 
 Introduction:
 Wet sponges are quite rare, found deep in the sea where it is dark (below -11).
