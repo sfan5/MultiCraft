@@ -153,7 +153,13 @@ local function update_creative_inventory(player_name, tab_name)
 			creative_list[#creative_list + 1] = name
 		end
 	end
-	table.sort(creative_list)
+	if tab_name == "stairs" then
+		table.sort(creative_list, function(a, b)
+			return items[a] < items[b]
+		end)
+	else
+		table.sort(creative_list)
+	end
 	inv.size = #creative_list
 	inv.filter = filter
 end
