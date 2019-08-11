@@ -2,8 +2,9 @@
 villages.debug = false
 
 -- timer between creation of two villages
-villages.last_village = os.time()
 villages.min_timer = 120
+-- try to generate a village near the player’s spawn
+villages.last_village = (os.time() - villages.min_timer) + 5
 
 -- material to replace cobblestone with
 wallmaterial = {
@@ -35,13 +36,13 @@ schematic_table = {
 village_info = {}
 
 -- min_distance between villages
-villages.min_dist_villages = 200
+villages.min_dist_villages = 500
 if villages.debug then
 	min_dist_villages = 100
 end
 
 -- maximum allowed difference in height for building a villages
-max_height_difference = 16
+max_height_difference = 12
 
 half_map_chunk_size = 40
 quarter_map_chunk_size = 20

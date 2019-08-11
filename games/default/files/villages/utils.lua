@@ -321,7 +321,7 @@ function villages.evaluate_heightmap()
 	-- return the difference between highest and lowest pos in chunk
 	local height_diff = max_y - min_y
 	-- filter buggy heightmaps
-	if height_diff <= 1 then
+	if height_diff < 0 then
 		return max_height_difference + 1
 	end
 	-- debug info
