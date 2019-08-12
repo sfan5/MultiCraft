@@ -205,5 +205,12 @@ function villages.place_schematics()
 		-- build foundation for the building an make room above
 		-- place schematic
 		minetest.place_schematic(pos, schematic, rotation, nil, true)
+		-- Trader spawn
+		if math.random(1, 3) == 1 then
+			minetest.after(3, function()
+				pos.y = pos.y + 1
+				mobs:spawn_npc(pos, "mobs_npc:trader", nil)
+			end)
+		end
 	end
 end

@@ -1,4 +1,5 @@
 default
 furniture
+mobs
+mobs_npc
 farming?
-mobs_npc?

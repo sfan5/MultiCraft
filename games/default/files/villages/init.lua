@@ -127,8 +127,8 @@ if villages.debug then
 				-- evaluate village_info and initialize furnaces and chests
 				villages.initialize_nodes()
 				
-					local end_time = os.time()
-					minetest.chat_send_all("Time: " .. end_time - start_time)
+				local end_time = os.time()
+				minetest.chat_send_all("Time: " .. end_time - start_time)
 			end
 		end
 	})

@@ -163,15 +163,13 @@ end
 -------------------------------------------------------------------------------
 function villages.fill_chest(pos)
 	-- find chests within radius
-	--local chestpos = minetest.find_node_near(pos, 6, {"default:chest"})
-	local chestpos = pos
 	-- initialize chest (mts chests don't have meta)
-	local meta = minetest.get_meta(chestpos)
+	local meta = minetest.get_meta(pos)
 	if meta:get_string("infotext") ~= "Chest" then
-		minetest.registered_nodes["default:chest"].on_construct(chestpos)
+		minetest.registered_nodes["default:chest"].on_construct(pos)
 	end
 	-- fill chest
-	local inv = minetest.get_inventory({type="node", pos=chestpos})
+	local inv = minetest.get_inventory({type = "node", pos = pos})
 	if inv then
 		-- always
 		inv:add_item("main", "default:apple " .. math.random(1, 3))
@@ -234,7 +232,26 @@ function villages.initialize_nodes()
 					end
 					-- when chest is found -> fill with stuff
 					if node.name == "default:chest" then
-						minetest.after(3, villages.fill_chest, ptemp)
+						minetest.after(3, function()
+							villages.fill_chest(ptemp)
+
+							if math.random(1, 3) == 1 then
+								-- Spawn NPC
+								local positions = minetest.find_nodes_in_area(
+									{x = ptemp.x - 1, y = ptemp.y, z = ptemp.z - 1},
+									{x = ptemp.x + 1, y = ptemp.y, z = ptemp.z + 1}, "air")
+
+								if #positions == 0 then
+									return
+								end
+
+								local npc_pos_man = positions[math.random(#positions)]
+								local npc_pos_woman = positions[math.random(#positions)]
+
+								mobs:spawn_npc(npc_pos_man, "mobs_npc:npc_man", nil)
+								mobs:spawn_npc(npc_pos_woman, "mobs_npc:npc_woman", nil)
+							end
+						end)
 					end
 				end
 			end
