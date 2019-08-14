@@ -38,6 +38,11 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 		return
 	end
+	
+	if math.random(1, 2) ~= 1 then
+		return
+	end
+	
 	-- don't build village underground
 	if maxp.y < 0 then
 		return

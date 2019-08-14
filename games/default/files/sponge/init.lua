@@ -15,7 +15,7 @@ local destruct = function(pos)
 end
 
 -- air-like node
-minetest.register_node("sponge:liquid_stop", {  
+minetest.register_node("sponge:liquid_stop", {
 	drawtype = "airlike",
 	drop = "",
 	groups = {not_in_creative_inventory = 1},
