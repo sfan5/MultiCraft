@@ -196,7 +196,7 @@ function ts_furniture.register_furniture(recipe, description, tiles, fpairs)
 		def.drawtype = def.drawtype or "nodebox"
 
 		minetest.register_node(":" .. node_name, {
-			description = description .. " " .. Sl(def.description),
+			description = Sl(description) .. " " .. Sl(def.description),
 			drawtype = def.drawtype,
 			mesh = def.mesh,
 			paramtype = "light",

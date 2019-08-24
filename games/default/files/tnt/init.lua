@@ -15,7 +15,7 @@ function do_tnt_physics(tnt_np,tntr)
 	for k, obj in pairs(objs) do
 		local oname = obj:get_luaentity()
 		local v = obj:get_velocity()
-		local p = obj:getpos()
+		local p = obj:get_pos()
 		if oname == "tnt:tnt" then
 			obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
 		else
@@ -100,7 +100,7 @@ function TNT:on_activate(staticdata)
 end
 
 function TNT:on_step(dtime)
-	local pos = self.object:getpos()
+	local pos = self.object:get_pos()
 	minetest.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "item_smoke.png")
 	self.timer = self.timer + dtime
 	self.blinktimer = self.blinktimer + dtime
@@ -121,7 +121,7 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > 8 then
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 		pos.x = math.floor(pos.x+0.5)
 		pos.y = math.floor(pos.y+0.5)
 		pos.z = math.floor(pos.z+0.5)
