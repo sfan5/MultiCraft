@@ -1,25 +1,21 @@
 MultiCraft Game mod: throwing
 =============================
-by PilzAdam
 
-Inroduction:
-This mod adds bows and arrows to Minetest.
+This mod adds Bows and Arrows.
+
+License of source code:
+-----------------------
+Copyright (C) 2019 MultiCraft Development Team
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 3.0 of the License, or
+(at your option) any later version.
+
+http://www.gnu.org/licenses/lgpl-3.0.html
 
 
-How to use the mod:
-Craft a bow with the strings from the farming mod:
-     stick string
-stick      string
-     stick string
-
-Craft arrows with:
-flint
-stick
-paper
-
-Select the bow and shoot with left mouse click. Every shoot will take 1
-arrow from your inventory and wears out the bow (you have around 385
-shoots).
-
-License:
-Source code: PilzAdam and Jeija. WTFPL
+Credits:
+--------
+PilzAdam (WTFPL)
+Jeija (WTFPL)
