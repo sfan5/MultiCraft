@@ -2,7 +2,7 @@ experience = {}
 
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
-local enable_damage = minetest.settings:get_bool("enable_damage")
+local enable_damage = false --minetest.settings:get_bool("enable_damage")
 
 dofile(modpath .. "/xp.lua")
 
