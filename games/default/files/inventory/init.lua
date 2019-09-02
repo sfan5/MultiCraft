@@ -9,10 +9,13 @@ local function set_inventory(player)
 	"list[current_player;craft;4,2;2,1;4]" ..
 	"list[current_player;craftpreview;7.05,1.53;1,1;]" ..
 	"image[1.5,0;2,4;default_player2d.png]" ..
+	"image_button[7,3.14;1,1;blank.png;craftguide;;true;false;workbench_button_back.png]" ..
+	"image[7,3.14;1,1;craftguide_book.png]" ..
+	"tooltip[craftguide;" .. Sl("Crafting Guide") .. ";#000;#FFF]" ..
 	"image_button_exit[9.21,2.5;1,1;creative_home_set.png;sethome_set;;true;false]" ..
 	"tooltip[sethome_set;" .. Sl("Set Home") .. ";#000;#FFF]" ..
 	"image_button_exit[9.21,3.5;1,1;creative_home_go.png;sethome_go;;true;false]" ..
-	"tooltip[sethome_go;" .. Sl("Go Home") .. ";#000;#FFF]"	
+	"tooltip[sethome_go;" .. Sl("Go Home") .. ";#000;#FFF]"
 	-- Armor
 	if minetest.get_modpath("3d_armor") then
 		local player_name = player:get_player_name()
@@ -25,8 +28,11 @@ local function set_inventory(player)
 	player:set_inventory_formspec(form)
 end
 
--- Drop craft items on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if not player or not player:is_player() then
+		return
+	end
+	-- Drop craft items on closing
 	if fields.quit then
 		local inv = player:get_inventory()
 		for i, stack in pairs(inv:get_list("craft")) do
