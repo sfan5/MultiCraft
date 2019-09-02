@@ -87,7 +87,7 @@ local filters = {
 	end,
 	["tools"] = function(name)
 		return minetest.registered_tools[name] or
-		found_in_list(name, {"arrow",})
+		found_in_list(name, {"arrow"})
 	end,
 	["matr"] = function(name, def, groups)
 		return minetest.registered_craftitems[name] and
@@ -213,8 +213,6 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 	end
 	local formspec = "image_button_exit[10.4,-0.1;0.75,0.75;close.png;exit;;true;false;close_pressed.png]"..
 		"background[-0.2,-0.26;11.55,8.49;inventory_creative.png]"..
-		sfinv.gui_bg..
-		sfinv.listcolors..
 		"label[-5,-5;"..page.."]"..
 
 		"image_button["..ofs_tab["blocks"]..";1.3,1.3;creative_tab.png;build;;;false;creative_tab_pressed.png]"..
