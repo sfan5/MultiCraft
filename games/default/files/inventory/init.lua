@@ -12,9 +12,9 @@ local function set_inventory(player)
 	"image_button[7,3.14;1,1;blank.png;craftguide;;true;false;workbench_button_back.png]" ..
 	"image[7,3.14;1,1;craftguide_book.png]" ..
 	"tooltip[craftguide;" .. Sl("Crafting Guide") .. ";#000;#FFF]" ..
-	"image_button_exit[9.21,2.5;1,1;creative_home_set.png;sethome_set;;true;false]" ..
+	"image_button_exit[9.21,2.5;1,1;default_button.png^creative_home_set.png;sethome_set;;true;false;default_item_pressed.png^creative_home_set.png]" ..
 	"tooltip[sethome_set;" .. Sl("Set Home") .. ";#000;#FFF]" ..
-	"image_button_exit[9.21,3.5;1,1;creative_home_go.png;sethome_go;;true;false]" ..
+	"image_button_exit[9.21,3.5;1,1;default_button.png^creative_home_go.png;sethome_go;;true;false;default_item_pressed.png^creative_home_go.png]" ..
 	"tooltip[sethome_go;" .. Sl("Go Home") .. ";#000;#FFF]"
 	-- Armor
 	if minetest.get_modpath("3d_armor") then
@@ -44,9 +44,5 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	local inv = player:get_inventory()
-	if inv then
-		inv:set_size("main", 9*4)
-	end
 	set_inventory(player)
 end)

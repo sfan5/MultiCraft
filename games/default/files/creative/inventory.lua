@@ -181,7 +181,7 @@ local function get_button_formspec(player_name, start_i)
 			buttons = buttons.."item_image["..
 				(x + 0.02)..","..(y + 1.68)..";1,1;"..item.."]image_button["..
 				(x + 0.02)..","..(y + 1.68)..";1,1;blank.png;"..item..
-				";;;false;button_pressed.png]"..
+				";;;false;default_item_pressed.png]"..
 				"tooltip["..item..";"..tooltip..";#000;#FFF]"
 
 			i = i + 1
@@ -248,9 +248,9 @@ local function get_creative_formspec(player_name, start_i, pagenum, page, pagema
 		"image_button["..ofs_tab["inv"]..";1.3,1.3;blank.png;inv;;;false]"..
 		"item_image["..ofs_img["inv"]..";1,1;"..bg["inv"].."]"..
 
-		"image_button_exit[10.3,2.5;1,1;creative_home_set.png;sethome_set;;true;false]"..
+		"image_button_exit[10.3,2.5;1,1;default_button.png^creative_home_set.png;sethome_set;;true;false;default_item_pressed.png^creative_home_set.png]" ..
 		"tooltip[sethome_set;" .. Sl("Set Home") .. ";#000;#FFF]"..
-		"image_button_exit[10.3,3.5;1,1;creative_home_go.png;sethome_go;;true;false]"..
+		"image_button_exit[10.3,3.5;1,1;default_button.png^creative_home_go.png;sethome_go;;true;false;default_item_pressed.png^creative_home_go.png]" ..
 		"tooltip[sethome_go;" .. Sl("Go Home") .. ";#000;#FFF]"..
 		"image[0,0.95;5,0.75;fnt_"..page..".png]"..
 		"image_button[9.145,1.65;0.81,0.6;blank.png;creative_prev;;;false]" ..

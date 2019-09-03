@@ -248,7 +248,7 @@ local function get_formspec(name)
 			local x = i % 9
 			local y = (i % 36 - x) / 9 + 1
 			table.insert(fs, ("item_image[%d,%d;1,1;%s]" ..
-			"image_button[%d,%d;1,1;blank.png;%s_inv;;;false;button_pressed.png]" ..
+			"image_button[%d,%d;1,1;blank.png;%s_inv;;;false;default_item_pressed.png]" ..
 			"tooltip[%s_inv;%s;#000;#FFF]")
 				:format(x, y, item, x, y, item, item, tooltip))
 		end
