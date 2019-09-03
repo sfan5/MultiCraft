@@ -1,18 +1,19 @@
 MultiCraft Game mod: tnt
 ========================
 
-Introduction:
-This mod adds TNT. TNT is a tool to help the player in mining.
+Adds a TNT.
 
-How to use the mod:
-Craft gunpowder by placing coal and gravel in the crafting area. The
-gunpowder can be used to craft TNT or as fuze for TNT. To craft TNT
-surround gunpowder with 4 wood in a + shape.
-There are different ways to blow up TNT:
-1. Hit it with a torch.
-2. Hit a gunpowder fuze that leads to a TNT block with a torch.
-3. Activate it with mesecons (fastest way)
-Be aware of the damage radius of 7 blocks!
+License of source code:
+-----------------------
+Copyright (C) 2019 MultiCraft Development Team
 
-License:
-Source code: PilzAdam. WTFPL
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 3.0 of the License, or
+(at your option) any later version.
+
+http://www.gnu.org/licenses/lgpl-3.0.html
+
+Credits:
+--------
+"tnt" by PilzAdam (WTFPL)

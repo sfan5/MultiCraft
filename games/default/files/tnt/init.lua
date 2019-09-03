@@ -1,29 +1,46 @@
-function spawn_tnt(pos, entname)
-	minetest.sound_play("", {pos = pos,gain = 1.0,max_hear_distance = 15,})
+local enable_tnt = minetest.settings:get_bool("enable_tnt")
+if enable_tnt == nil then
+	enable_tnt = minetest.is_singleplayer()
+end
+local TNT_RANGE = 3
+
+local function spawn_tnt(pos, entname)
+	minetest.sound_play("tnt_ignite", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = 16
+	})
 	return minetest.add_entity(pos, entname)
 end
 
-function activate_if_tnt(nname, np, tnt_np, tntr)
-	if nname == "tnt:tnt" then
-		local e = spawn_tnt(np, nname)
-		e:setvelocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
-	end
+local function activate_tnt(pos)
+	minetest.remove_node(pos)
+	spawn_tnt(pos, "tnt:tnt")
+	minetest.check_for_falling(pos)
 end
 
-function do_tnt_physics(tnt_np,tntr)
-	local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
+local function do_tnt_physics(pos, tntr)
+	local objs = minetest.get_objects_inside_radius(pos, tntr)
 	for k, obj in pairs(objs) do
 		local oname = obj:get_luaentity()
 		local v = obj:get_velocity()
 		local p = obj:get_pos()
 		if oname == "tnt:tnt" then
-			obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
+			obj:set_velocity({
+				x = (p.x - pos.x) + (tntr / 2) + v.x,
+				y = (p.y - pos.y) + tntr + v.y,
+				z = (p.z - pos.z) + (tntr / 2) + v.z
+			})
 		else
 			if v ~= nil then
-				obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
+				obj:set_velocity({
+					x = (p.x - pos.x) + (tntr / 4) + v.x,
+					y = (p.y - pos.y) + (tntr / 2) + v.y,
+					z = (p.z - pos.z) + (tntr / 4) + v.z
+				})
 			else
-				if obj:get_player_name() ~= nil then
-					obj:set_hp(obj:get_hp() - 1)
+				if obj:is_player() then
+					obj:set_hp(obj:get_hp() - 4)
 				end
 			end
 		end
@@ -31,147 +48,154 @@ function do_tnt_physics(tnt_np,tntr)
 end
 
 minetest.register_node("tnt:tnt", {
-	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
-			"default_tnt_side.png", "default_tnt_side.png",
-			"default_tnt_side.png", "default_tnt_side.png"},
-	drop = "", -- Get nothing
-	material = {
-		diggability = "not",
-	},
-	stack_max = 64,
 	description = "TNT",
-	groups = {mese = 1},
-	mesecons = {effector = {
-		action_on = (function(p, node)
-			minetest.remove_node(p)
-			spawn_tnt(p, "tnt:tnt")
-			minetest.check_for_falling(p)
-		end),
-	}},
-	on_ignite = function(pos, igniter)
-		minetest.remove_node(pos)
-		spawn_tnt(pos, "tnt:tnt")
-		minetest.check_for_falling(pos)
-	end,
-})
+	tiles = {"default_tnt_top.png", "default_tnt_bottom.png", "default_tnt_side.png"},
+	groups = {choppy = 1, mese = 1},
 
-minetest.register_on_punchnode(function(p, node)
-	if node.name == "tnt:tnt" then
-		minetest.remove_node(p)
-		spawn_tnt(p, "tnt:tnt")
-		minetest.check_for_falling(p)
+	mesecons = {effector = {
+		action_on = (function(pos, node)
+			activate_tnt(pos)
+		end)
+	}},
+
+	on_ignite = function(pos, igniter)
+		if not minetest.is_protected(pos, igniter) then
+			activate_tnt(pos)
+		end
 	end
-end)
+})
 
 minetest.register_abm({
 	label = "TNT ignition",
 	nodenames = {"tnt:tnt"},
 	neighbors = {"fire:basic_flame", "default:lava_source", "default:lava_flowing"},
-	interval = 4,
+	interval = 3,
 	chance = 1,
 	action = function(pos, node)
 		minetest.remove_node(pos)
 		spawn_tnt(pos, "tnt:tnt")
 		minetest.check_for_falling(pos)
-	end,
+	end
 })
 
-local TNT_RANGE = 3
 local TNT = {
-	-- Static definition
-	physical = true, -- Collides with things
-	 --weight = -100,
-	collisionbox = {-0.5,-0.5,-0.5, 0.5,0.5,0.5},
+	physical = true,
 	visual = "cube",
-	textures = {"default_tnt_top.png", "default_tnt_bottom.png",
-			"default_tnt_side.png", "default_tnt_side.png",
-			"default_tnt_side.png", "default_tnt_side.png"},
+	textures = {
+		"default_tnt_top.png", "default_tnt_bottom.png",
+		"default_tnt_side.png", "default_tnt_side.png",
+		"default_tnt_side.png", "default_tnt_side.png"
+	},
 	-- Initial value for our timer
 	timer = 0,
-	-- Number of punches required to defuse
-	health = 1,
 	blinktimer = 0,
-	blinkstatus = true,}
+	blinkstatus = true
+}
 
 function TNT:on_activate(staticdata)
-	self.object:setvelocity({x=0, y=4, z=0})
-	self.object:setacceleration({x=0, y=-10, z=0})
-	self.object:settexturemod("^[brighten")
+	self.object:set_velocity({x = 0, y = 4, z = 0})
+	self.object:set_acceleration({x = 0, y = -10, z = 0})
+	self.object:set_texture_mod("^[brighten")
 end
 
 function TNT:on_step(dtime)
 	local pos = self.object:get_pos()
-	minetest.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "item_smoke.png")
+	minetest.add_particlespawner({
+		amount = 1,
+		time = 0.1,
+		minpos = {x = pos.x, y = pos.y + 0.5, z = pos.z},
+		maxpos = {x = pos.x, y = pos.y + 0.5, z = pos.z},
+		minvel = {x = -0.1, y = 1, z = 0.1},
+		maxvel = {x = 0.1, y = 2, z = 0.1},
+		minacc = {x = 0, y = -0.1, z = 0},
+		maxacc = {x = 0, y = -0.1, z = 0},
+		minexptime = 1,
+		maxexptime = 3,
+		minsize = 1,
+		maxsize = 3,
+		texture = "item_smoke.png"
+	})
+	
 	self.timer = self.timer + dtime
 	self.blinktimer = self.blinktimer + dtime
-	if self.timer>3 then
+
+	if self.timer > 3 then
 		self.blinktimer = self.blinktimer + dtime
-		if self.timer>5 then
-			self.blinktimer = self.blinktimer + dtime
+		if self.timer > 5 then
 			self.blinktimer = self.blinktimer + dtime
 		end
 	end
+
 	if self.blinktimer > 0.5 then
 		self.blinktimer = self.blinktimer - 0.5
 		if self.blinkstatus then
-			self.object:settexturemod("")
+			self.object:set_texture_mod("")
 		else
-			self.object:settexturemod("^[brighten")
+			self.object:set_texture_mod("^[brighten")
 		end
 		self.blinkstatus = not self.blinkstatus
 	end
-	if self.timer > 8 then
+
+	if self.timer > 5 then
 		local pos = self.object:get_pos()
-		pos.x = math.floor(pos.x+0.5)
-		pos.y = math.floor(pos.y+0.5)
-		pos.z = math.floor(pos.z+0.5)
+		pos.x = math.floor(pos.x + 0.5)
+		pos.y = math.floor(pos.y + 0.5)
+		pos.z = math.floor(pos.z + 0.5)
 		do_tnt_physics(pos, TNT_RANGE)
-				local meta = minetest.get_meta(pos)
-		minetest.sound_play("tnt_explode", {pos = pos,gain = 1.0,max_hear_distance = 16,})
+		local meta = minetest.get_meta(pos)
+		minetest.sound_play("tnt_explode", {
+			pos = pos,
+			gain = 1.5,
+			max_hear_distance = 16
+		})
 		local nn = core.get_node(pos).name
 		if nn == "default:water_source" or nn == "default:water_flowing" or
 				nn == "default:bedrock" or nn == "protector:display" or
-				nn == "ignore" or core.is_protected(pos, "tnt") then
+				nn == "ignore" or not enable_tnt then
 			-- Cancel the Explosion
 			self.object:remove()
 			return
 		end
-		for x=-TNT_RANGE,TNT_RANGE do
-			for y=-TNT_RANGE,TNT_RANGE do
-				for z=-TNT_RANGE,TNT_RANGE do
-					if x*x+y*y+z*z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
-						local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
-						local n = core.get_node_or_nil(np)
-						if n and n.name ~= "air" and n.name ~= "default:obsidian" and
-								n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
-							activate_if_tnt(n.name, np, pos, 3)
-							minetest.remove_node(np)
-							minetest.check_for_falling(np)
-							if n.name ~= "tnt:tnt" and math.random() > 0.9 then
-								local drop = minetest.get_node_drops(n.name, "")
-								for _,item in ipairs(drop) do
-									if type(item) == "string" then
-										if math.random(1,100) > 40 then
-											local obj = minetest.add_item(np, item)
-										end
-									end
-								end
-							end
+
+		for x = -TNT_RANGE, TNT_RANGE do
+		for y = -TNT_RANGE, TNT_RANGE do
+		for z = -TNT_RANGE, TNT_RANGE do
+			if x * x + y * y + z * z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
+				local np = {x = pos.x + x, y = pos.y + y, z = pos.z + z}
+				local n = core.get_node_or_nil(np)
+				if n and n.name ~= "air" and n.name ~= "default:obsidian" and
+						n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
+					if n.name == "tnt:tnt" then
+						spawn_tnt(np, n.name):set_velocity({
+							x = (np.x - pos.x) * 5 + 0.75,
+							y = (np.y - pos.y) * 5 + 1,
+							z = (np.z - pos.z) * 5 + 0.75
+						})
+					end
+					minetest.remove_node(np)
+					minetest.check_for_falling(np)
+					if math.random(1, 5) == 1 then
+						local node_drops = minetest.get_node_drops(n.name, "")
+						for _, item in pairs(node_drops) do
+							local obj = minetest.add_item(np, item)
 						end
 					end
 				end
 			end
-			self.object:remove()
 		end
+		end
+		end
+		self.object:remove()
 	end
 end
 
-function TNT:on_punch(hitter)
-	self.health = self.health - 1
-	if self.health <= 0 then
-		self.object:remove()
-		hitter:get_inventory():add_item("main", "tnt:tnt")
+function TNT:on_punch(puncher, pos)
+	if not puncher or self.removed then
+		return
 	end
+	local pos = self.object:get_pos()
+	minetest.set_node(pos, {name = "tnt:tnt"})
+	self.object:remove()
 end
 
 minetest.register_entity("tnt:tnt", TNT)
@@ -179,8 +203,8 @@ minetest.register_entity("tnt:tnt", TNT)
 minetest.register_craft({
 	output = "tnt:tnt",
 	recipe = {
-		{"default:gunpowder","default:sand","default:gunpowder"},
-		{"default:sand","default:gunpowder","default:sand"},
-		{"default:gunpowder","default:sand","default:gunpowder"}
+		{"default:gunpowder", "group:sand", "default:gunpowder"},
+		{"group:sand", "default:gunpowder", "group:sand"},
+		{"default:gunpowder", "group:sand", "default:gunpowder"}
 	}
 })
