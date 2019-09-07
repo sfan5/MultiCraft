@@ -44,8 +44,7 @@ mobs:register_mob("mobs_animal:chicken", {
 		end
 		self.egg_timer = 0
 
-		if self.child
-		or math.random(1, 100) ~= 1 then
+		if self.child or math.random(1, 100) ~= 1 then
 			return
 		end
 
@@ -54,7 +53,7 @@ mobs:register_mob("mobs_animal:chicken", {
 		minetest.sound_play("default_place_node_hard", {
 			pos = pos,
 			gain = 1.0,
-			max_hear_distance = 5,
+			max_hear_distance = 5
 		})
 	end,
 
@@ -72,22 +71,21 @@ mobs:register_mob("mobs_animal:chicken", {
 
 mobs:spawn({
 	name = "mobs_animal:chicken",
-	nodes = {"default:dirt", "default:sand", "default:redsand", "default:snow", "default:snowblock", "default:dirt_with_snow",  "default:dirt_with_grass"},
+	nodes = mobs_animal.spawn_nodes,
 	min_light = 5,
 	chance = 20000,
 	min_height = 0,
 	day_toggle = true
 })
 
-mobs:register_egg("mobs_animal:chicken", "Chicken Egg", "mobs_chicken_egg_inv.png", 1)
+mobs:register_egg("mobs_animal:chicken", "Chicken Egg", "mobs_chicken_egg_inv.png", true)
 
--- egg throwing
-
+-- Egg Throwing
 function egg_impact(thrower, pos, dir, hit_object)
 	if hit_object then
 		local punch_damage = {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy=1},
+			damage_groups = {fleshy = 1},
 		}
 		hit_object:punch(thrower, 1.0, punch_damage, dir)
 	end
@@ -97,8 +95,8 @@ function egg_impact(thrower, pos, dir, hit_object)
 		local nod = minetest.get_node_or_nil(pos)
 
 		if not nod or
-		not minetest.registered_nodes[nod.name] or
-		minetest.registered_nodes[nod.name].walkable == true then
+				not minetest.registered_nodes[nod.name] or
+				minetest.registered_nodes[nod.name].walkable then
 			return
 		end
 

@@ -9,7 +9,7 @@ mobs:register_mob("mobs_animal:cow", {
 	textures = {
 		{"mobs_cow.png"},
 		{"mobs_cow2.png"},
-		{"mobs_cow3.png"},
+		{"mobs_cow3.png"}
 	},
 	makes_footstep_sound = true,
 	sounds = {
@@ -63,11 +63,11 @@ mobs:register_mob("mobs_animal:cow", {
 
 		-- milk cow with empty bucket
 		if tool:get_name() == "bucket:bucket_empty" then
-			if self.child == true then
+			if self.child then
 				return
 			end
 
-			if self.gotten == true then
+			if self.gotten then
 				minetest.chat_send_player(name,
 						"Cow already milked!")
 				return
@@ -113,11 +113,11 @@ mobs:register_mob("mobs_animal:cow", {
 
 mobs:spawn({
 	name = "mobs_animal:cow",
-	nodes = {"default:dirt", "default:sand", "default:redsand", "default:snow", "default:snowblock", "default:dirt_with_dry_grass", "default:dirt_with_grass"},
+	nodes = mobs_animal.spawn_nodes,
 	min_light = 5,
 	chance = 20000,
 	min_height = 0,
 	day_toggle = true
 })
 
-mobs:register_egg("mobs_animal:cow", "Cow Egg", "mobs_cow_egg.png", 1)
+mobs:register_egg("mobs_animal:cow", "Cow Egg", "mobs_cow_egg.png", true)

@@ -12,12 +12,12 @@ mobs:register_mob("mobs_animal:parrot", {
 		{"mobs_parrot_yellow.png"}
 	},
 	makes_footstep_sound = true,
-	--[[sounds = {
+--[[sounds = {
 		random = "mobs_chicken",
 	},]]
 	run_velocity = 3,
 	runaway = true,
-	--[[drops = {
+--[[drops = {
 		{name = "mobs:chicken_raw"}
 	},]]
 	fall_damage = 0,
@@ -41,11 +41,11 @@ mobs:register_mob("mobs_animal:parrot", {
 
 mobs:spawn({
 	name = "mobs_animal:parrot",
-	nodes = {"default:leaves", "default:jungleleaves", "default:acacia_leaves", "default:birch_leaves", "default:dirt_with_grass", "default:dirt_with_dry_grass", "default:grass", "default:junglegrass"},
+	nodes = {"default:leaves", "default:jungleleaves", "default:acacia_leaves", "default:birch_leaves", "default:grass", "default:dry_grass", "default:junglegrass"},
 	min_light = 10,
-	chance = 20000,
+	chance = 15000,
 	min_height = 0,
 	day_toggle = true
 })
 
-mobs:register_egg("mobs_animal:parrot", "Parror Egg", "mobs_parrot_egg.png", 0)
+mobs:register_egg("mobs_animal:parrot", "Parror Egg", "mobs_parrot_egg.png")
