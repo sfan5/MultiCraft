@@ -60,7 +60,6 @@ end
 
 local function get_item_usages(item)
 	local usages = {}
-
 	for _, recipes in pairs(recipes_cache) do
 		for _, recipe in ipairs(recipes) do
 			if item_in_recipe(item, recipe) then
@@ -73,7 +72,6 @@ local function get_item_usages(item)
 			end
 		end
 	end
-
 	return #usages > 0 and usages
 end
 
@@ -111,7 +109,6 @@ local function groups_to_item(groups)
 			return name
 		end
 	end
-
 	return ":unknown"
 end
 
@@ -136,7 +133,6 @@ local function get_tooltip(item, groups, burntime)
 	if burntime > 0 then
 		tooltip = tooltip .. "\n" .. Sl("Burning time:") .. " " .. minetest.colorize("yellow", burntime)
 	end
-
 	return ("tooltip[%s;%s]"):format(item, tooltip)
 end
 
@@ -201,19 +197,22 @@ local function get_recipe_formspec(data)
 	if burntime > 0 then
 		table.insert(fs, get_tooltip(output_name, nil, burntime))
 	end
-
 	return table.concat(fs)
 end
 
-local function get_formspec(name)
+local function get_formspec(name, inv)
 	local data = player_data[name]
 	data.pagemax = math.max(1, math.ceil(#data.items / 36))
+
+	local formspec_label = ""
+	if PLATFORM ~= "Android" and PLATFORM ~= "iOS" then
+		formspec_label = "label[0.9,0.1;" .. Sl("Crafting Guide") .. "]"
+	end
 
 	local fs = {
 		"background[-0.2,-0.26;9.41,9.49;formspec_inventory.png]",
 		"background[-0.1,3;9.1,6;craftguide_background.png]",
 		"background[-0.2,-0.26;9.41,9.49;craftguide_formspec.png]",
-		"image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;false;close_pressed.png]",
 		"background[-1.2,4.84;9.41,9.49;formspec_workbench_crafting.png]"
 	}
 	table.insert(fs, ("field[4.3,0.35;2.5,0.75;filter;;%s]")
@@ -222,20 +221,26 @@ local function get_formspec(name)
 		:format(minetest.colorize("yellow", data.pagenum), data.pagemax))
 	table.insert(fs, [[
 		image[0,-0.1;1,1;craftguide_book.png]
-		label[0.9,0.1;]] .. Sl("Crafting Guide") .. [[]
+		]] .. formspec_label .. [[
 		image_button[6.49,0;0.81,0.82;creative_search.png;search;;;false]
 		image_button[7.19,0;0.81,0.82;craftguide_clear_icon.png;clear;;;true]
 		image_button[6.15,5.1;0.8,0.8;craftguide_prev_icon.png;prev;]
 		image_button[7.15,5.1;0.8,0.8;craftguide_next_icon.png;next;]
-		tooltip[search;Search]
-		tooltip[clear;Reset]
-		tooltip[prev;Previous page]
-		tooltip[next;Next page]
+		tooltip[search;]] .. Sl("Search") .. [[ ]
+		tooltip[clear;]] .. Sl("Clear") .. [[ ]
+		tooltip[prev;]] .. Sl("Previous page") .. [[ ]
+		tooltip[next;]] .. Sl("Next page") .. [[ ]
 		field_close_on_enter[filter;false]
 	]])
 
+	if inv then
+		table.insert(fs, "image_button[8.4,-0.1;0.75,0.75;close.png;back;;true;false;close_pressed.png]")
+	else
+		table.insert(fs, "image_button_exit[8.4,-0.1;0.75,0.75;close.png;exit;;true;false;close_pressed.png]")
+	end
+
 	if #data.items == 0 then
-		table.insert(fs, "label[3,2;No items to show.]")
+		table.insert(fs, "label[4,5;" .. Sl("No items to show.") .. "]")
 	else
 		local first_item = (data.pagenum - 1) * 36
 		for i = first_item, first_item + 35 do
@@ -263,7 +268,6 @@ local function get_formspec(name)
 			table.insert(fs, "label[4,5.6;" .. Sl("No recipes.\nClick again to show usages.") .. "]")
 		end
 	end
-
 	return table.concat(fs)
 end
 
@@ -297,7 +301,12 @@ local function on_receive_fields(player, fields)
 	local name = player:get_player_name()
 	local data = player_data[name]
 
-	if fields.clear then
+	if fields.back then
+		local formspec = player:get_inventory_formspec()
+		minetest.show_formspec(name, "inventory", formspec)
+		return false
+
+	elseif fields.clear then
 		reset_data(data)
 		return true
 
@@ -378,20 +387,25 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 sfinv.register_page("craftguide:craftguide", {
-	title = "Craft Guide",
-	get = function(self, player, context)
-		local name = player:get_player_name()
-		return sfinv.make_formspec(player, context, get_formspec(name))
-	end,
 	on_player_receive_fields = function(self, player, context, fields)
 		if on_receive_fields(player, fields) then
 			sfinv.open_formspec(player)
 		end
+	end,
+	get = function(self, player, context)
+		local name = player:get_player_name()
+		return sfinv.make_formspec(player, context, get_formspec(name))
 	end
 })
 
-minetest.register_on_player_receive_fields(function(player, _, fields)
-	if fields.craftguide then
-		sfinv.open_page(player, "craftguide:craftguide")
+sfinv.register_page("craftguide:craftguide_inv", {
+	on_player_receive_fields = function(self, player, context, fields)
+		if on_receive_fields(player, fields) then
+			sfinv.open_formspec(player)
+		end
+	end,
+	get = function(self, player, context)
+		local name = player:get_player_name()
+		return sfinv.make_formspec(player, context, get_formspec(name, true))
 	end
-end)
+})

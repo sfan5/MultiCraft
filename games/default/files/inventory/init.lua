@@ -32,6 +32,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if not player or not player:is_player() then
 		return
 	end
+	if fields.craftguide then
+		sfinv.open_page(player, "craftguide:craftguide_inv", "inventory")
+	end
 	-- Drop craft items on closing
 	if fields.quit then
 		local inv = player:get_inventory()
