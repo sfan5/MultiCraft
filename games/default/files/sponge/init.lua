@@ -35,7 +35,7 @@ minetest.register_node("sponge:sponge", {
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		local name = placer:get_player_name()
 
-		if not minetest.is_protected(pos, name) then
+		if not minetest.is_protected_action(pos, name) then
 			local count = 0
 			for x = pos.x-area, pos.x + area do
 				for y = pos.y - area, pos.y + area do
@@ -44,12 +44,10 @@ minetest.register_node("sponge:sponge", {
 						local d = minetest.registered_nodes[n]
 						if d ~= nil and (n == "air" or d["drawtype"] == "liquid" or d["drawtype"] == "flowingliquid") then
 							local p = {x = x, y = y, z = z}
-							if not minetest.is_protected(p, name) then
-								if n ~= "air" then
-									count = count + 1  -- counting liquids
-								end
-								minetest.set_node(p, {name = "sponge:liquid_stop"})
+							if n ~= "air" then
+								count = count + 1  -- counting liquids
 							end
+							minetest.set_node(p, {name = "sponge:liquid_stop"})
 						end
 					end
 				end
