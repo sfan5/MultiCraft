@@ -6,7 +6,11 @@ mobs:register_mob("mobs_animal:chicken", {
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.75, 0.35},
 	visual = "mesh",
 	mesh = "mobs_chicken.b3d",
-	textures = {"mobs_chicken.png"},
+	textures = {
+		{"mobs_chicken.png"},
+		{"mobs_chicken_black.png"},
+		{"mobs_chicken_brown.png"}
+	},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_chicken",
@@ -78,7 +82,7 @@ mobs:spawn({
 	day_toggle = true
 })
 
-mobs:register_egg("mobs_animal:chicken", "Chicken Egg", "mobs_chicken_egg_inv.png", true)
+mobs:register_egg("mobs_animal:chicken", "Chicken Egg", "mobs_chicken_egg_inv.png")
 
 -- Egg Throwing
 function egg_impact(thrower, pos, dir, hit_object)
