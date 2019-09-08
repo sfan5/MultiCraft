@@ -8,16 +8,19 @@ end
 
 -- default crops
 local crops = {
-	--{"farming:cotton_", 8, "farming:seed_cotton"},
-	{"farming:wheat_", 8, "farming:seed_wheat"}
+	{"farming:wheat_", 8, "farming:seed_wheat"},
+	{"farming_addons:carrot_", 4, "farming_addons:seed_carrot"},
+	{"farming_addons:cocoa_", 3, "farming_addons:seed_cocoa"},
+	{"farming_addons:corn_", 8, "farming_addons:seed_corn"},
+	{"farming_addons:melon_", 8, "farming_addons:seed_melon"},
+	{"farming_addons:potato_", 4, "farming_addons:seed_potato"},
+	{"farming_addons:pumpkin_", 8, "farming_addons:seed_pumpkin"}
 }
 
 -- special pine check for nearby snow
 local function pine_grow(pos)
-
 	if minetest.find_node_near(pos, 1,
 		{"default:snow", "default:snowblock", "default:dirt_with_snow"}) then
-
 		default.grow_new_snowy_pine_tree(pos)
 	else
 		default.grow_new_pine_tree(pos)
@@ -28,15 +31,15 @@ end
 local saplings = {
 	{"default:sapling", default.grow_new_apple_tree, "soil"},
 	{"default:junglesapling", default.grow_new_jungle_tree, "soil"},
-	--{"default:emergent_jungle_sapling", default.grow_new_emergent_jungle_tree, "soil"},
+--	{"default:emergent_jungle_sapling", default.grow_new_emergent_jungle_tree, "soil"},
 	{"default:acacia_sapling", default.grow_new_acacia_tree, "soil"},
 	{"default:birch_sapling", default.grow_new_birch_tree, "soil"},
 	{"default:pine_sapling", pine_grow, "soil"},
-	--{"default:bush_sapling", default.grow_bush, "soil"},
-	--{"default:acacia_bush_sapling", default.grow_acacia_bush, "soil"},
+--	{"default:bush_sapling", default.grow_bush, "soil"},
+--	{"default:acacia_bush_sapling", default.grow_acacia_bush, "soil"},
 	{"default:large_cactus_seedling", default.grow_large_cactus, "sand"},
-	--{"default:blueberry_bush_sapling", default.grow_blueberry_bush, "soil"},
-	--{"default:pine_bush_sapling", default.grow_pine_bush, "soil"}
+--	{"default:blueberry_bush_sapling", default.grow_blueberry_bush, "soil"},
+--	{"default:pine_bush_sapling", default.grow_pine_bush, "soil"}
 }
 
 -- helper tables ( "" denotes a blank item )
@@ -48,17 +51,19 @@ local dry_grass = {
 	"default:dry_grass", "", ""
 }
 
-local flowers = {
-	"flowers:dandelion_white", "flowers:dandelion_yellow", --"flowers:geranium",
-	"flowers:rose", "flowers:tulip", --[["flowers:viola",]] ""
-}
+local flowers = {""}
+for node, def in pairs(minetest.registered_nodes) do
+	if def.groups.flower then
+		flowers[#flowers+1] = node
+	end
+end
 
 -- default biomes deco
 local deco = {
 	{"default:dirt_with_dry_grass", dry_grass, flowers},
-	{"default:sand", {}, {"default:dry_shrub", "", "", ""} },
-	{"default:desert_sand", {}, {"default:dry_shrub", "", "", ""} },
-	--{"default:silver_sand", {}, {"default:dry_shrub", "", "", ""} }
+	{"default:sand", {}, {"default:dry_shrub", "", "", ""}},
+	{"default:desert_sand", {}, {"default:dry_shrub", "", "", ""}},
+--	{"default:silver_sand", {}, {"default:dry_shrub", "", "", ""}}
 }
 
 --
@@ -80,7 +85,7 @@ local function particle_effect(pos)
 		maxexptime = 1,
 		minsize = 1,
 		maxsize = 3,
-		texture = "bonemeal_particle.png",
+		texture = "bonemeal_particle.png"
 	})
 end
 
@@ -104,7 +109,7 @@ end
 -- sapling check
 local function check_sapling(pos, nodename)
 	-- what is sapling placed on?
-	local under =  minetest.get_node({
+	local under = minetest.get_node({
 		x = pos.x,
 		y = pos.y - 1,
 		z = pos.z
@@ -156,16 +161,14 @@ local function check_crops(pos, nodename, strength)
 
 	-- grow registered crops
 	for n = 1, #crops do
-
 		if string.find(nodename, crops[n][1])
 		or nodename == crops[n][3] then
-
 			-- separate mod and node name
 			mod = nodename:split(":")[1] .. ":"
 			crop = nodename:split(":")[2]
 
 			-- get stage number or set to 0 for seed
-			stage = tonumber( crop:split("_")[2] ) or 0
+			stage = tonumber(crop:split("_")[2]) or 0
 			stage = math.min(stage + strength, crops[n][2])
 
 			-- check for place_param setting
@@ -174,9 +177,7 @@ local function check_crops(pos, nodename, strength)
 			def = def and def.place_param2 or 0
 
 			minetest.set_node(pos, {name = nod, param2 = def})
-
 			particle_effect(pos)
-
 			return
 		end
 	end
@@ -222,7 +223,7 @@ local function check_soil(pos, nodename, strength)
 	local pos2, nod, def
 
 	-- loop through soil
-	for _,n in pairs(dirt) do
+	for _, n in pairs(dirt) do
 		pos2 = n
 		pos2.y = pos2.y + 1
 
@@ -266,7 +267,7 @@ function bonemeal:add_crop(list)
 end
 
 -- add grass and flower/plant decoration for specific dirt types
---  {dirt_node, {grass_nodes}, {flower_nodes}
+-- {dirt_node, {grass_nodes}, {flower_nodes}
 -- e.g. {"default:dirt_with_dry_grass", dry_grass, flowers}
 -- if an entry already exists for a given dirt type, it will add new entries and all empty
 -- entries, allowing to both add decorations and decrease their frequency.
@@ -276,9 +277,9 @@ function bonemeal:add_deco(list)
 			-- update existing entry
 			if list[l][1] == deco[n][1] then
 				-- adding grass types
-				for _,extra in ipairs(list[l][2]) do
+				for _, extra in ipairs(list[l][2]) do
 					if extra ~= "" then
-						for __,entry in ipairs(deco[n][2]) do
+						for __, entry in ipairs(deco[n][2]) do
 							if extra == entry then
 								extra = false
 								break
@@ -294,7 +295,7 @@ function bonemeal:add_deco(list)
 				-- adding decoration types
 				for _, extra in ipairs(list[l][3]) do
 					if extra ~= "" then
-						for __,entry in ipairs(deco[n][3]) do
+						for __, entry in ipairs(deco[n][3]) do
 							if extra == entry then
 								extra = false
 								break
@@ -380,10 +381,11 @@ function bonemeal:on_use(pos, strength, node)
 	end
 
 	-- check for tree growth if pointing at sapling
---	if minetest.get_item_group(node.name, "sapling") > 0
-	if math.random(1, (5 - strength)) == 1 then
-		check_sapling(pos, node.name)
-		return
+	if minetest.get_item_group(node.name, "sapling") > 0 then
+		if math.random(1, (5 - strength)) == 1 then
+			check_sapling(pos, node.name)
+			return
+		end
 	end
 
 	-- check for crop growth
@@ -414,7 +416,3 @@ minetest.override_item("dye:white", {
 		return itemstack
 	end
 })
-
--- add support for other mods
-local path = minetest.get_modpath("bonemeal")
-dofile(path .. "/mods.lua")
