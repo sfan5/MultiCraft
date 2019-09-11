@@ -246,7 +246,7 @@ void set_default_settings(Settings *settings)
 
 	settings->setDefault("fallback_font_shadow", "1");
 	settings->setDefault("fallback_font_shadow_alpha", "128");
-	
+
 	std::string font_size_str = std::to_string(TTF_DEFAULT_FONT_SIZE);
 
 	settings->setDefault("fallback_font_size", font_size_str);
@@ -477,19 +477,25 @@ void set_default_settings(Settings *settings)
 		settings->setDefault("hud_scaling", "0.85");
 		settings->setDefault("mouse_sensitivity", "0.35");
 		settings->setDefault("hud_small", "true");
+	} else if (([SDVersion deviceVersion] == iPadMini) || ([SDVersion deviceVersion] == iPadMini2) | ([SDVersion deviceVersion] == iPadMini3) | ([SDVersion deviceVersion] == iPadMini4) | ([SDVersion deviceVersion] == iPadMini5)) {
+		// iPad mini
+		settings->setDefault("hud_scaling", "0.9");
+		settings->setDefault("mouse_sensitivity", "0.25");
 	} else {
 		// iPad
-		settings->setDefault("hud_scaling", "0.9");
+		settings->setDefault("mouse_sensitivity", "0.3");
 	}
 
-	// Move the HUD up for the iPhone X-series and new iPad Pro
-	if (([SDVersion deviceVersion] == iPhoneX) || ([SDVersion deviceVersion] == iPhoneXS) || ([SDVersion deviceVersion] == iPhoneXSMax) || ([SDVersion deviceVersion] == iPhoneXR) || ([SDVersion deviceVersion] ==  iPadPro11Inch) || ([SDVersion deviceVersion] == iPadPro12Dot9Inch3Gen)) {
+	// Settings for the Rounded Screen and virtual Home button
+	if (([SDVersion deviceVersion] == iPhoneX) || ([SDVersion deviceVersion] == iPhoneXS) || ([SDVersion deviceVersion] == iPhoneXSMax) || ([SDVersion deviceVersion] == iPhoneXR) ||
+		([SDVersion deviceVersion] ==  iPadPro11Inch) || ([SDVersion deviceVersion] == iPadPro12Dot9Inch3Gen)) {
 		settings->setDefault("hud_move_upwards", "10");
 		settings->setDefault("round_screen", "15");
 	}
 
 	// set the optimal settings depending on the model
-	if (([SDVersion deviceVersion] == iPhone4S) || ([SDVersion deviceVersion] == iPhone5) || ([SDVersion deviceVersion] == iPhone5S) || ([SDVersion deviceVersion] == iPhone6) || ([SDVersion deviceVersion] == iPhone6Plus) || ([SDVersion deviceVersion] == iPodTouch5Gen) || ([SDVersion deviceVersion] == iPodTouch6Gen) || ([SDVersion deviceVersion] == iPad2) || ([SDVersion deviceVersion] == iPad3) || ([SDVersion deviceVersion] == iPadMini) || ([SDVersion deviceVersion] == iPadMini2)) {
+	if (([SDVersion deviceVersion] == iPhone4S) || ([SDVersion deviceVersion] == iPhone5) || ([SDVersion deviceVersion] == iPhone5S) || ([SDVersion deviceVersion] == iPhone6) || ([SDVersion deviceVersion] == iPhone6Plus) || ([SDVersion deviceVersion] == iPodTouch5Gen) || ([SDVersion deviceVersion] == iPodTouch6Gen) ||
+		([SDVersion deviceVersion] == iPad2) || ([SDVersion deviceVersion] == iPad3) || ([SDVersion deviceVersion] == iPadMini) || ([SDVersion deviceVersion] == iPadMini2)) {
 		// minimal settings
 		settings->setDefault("smooth_lighting", "false");
 		settings->setDefault("viewing_range", "25");
@@ -500,7 +506,8 @@ void set_default_settings(Settings *settings)
 		settings->setDefault("client_mapblock_limit", "200");
 		settings->setDefault("active_block_range", "1");
 		settings->setDefault("max_block_generate_distance", "2");
-	} else if (([SDVersion deviceVersion] == iPhone6S) || ([SDVersion deviceVersion] == iPhone6SPlus) || ([SDVersion deviceVersion] == iPhoneSE) || ([SDVersion deviceVersion] == iPhone7) || ([SDVersion deviceVersion] == iPhone7Plus) || ([SDVersion deviceVersion] == iPad4) || ([SDVersion deviceVersion] == iPadMini3) || ([SDVersion deviceVersion] == iPadMini4) || ([SDVersion deviceVersion] == iPadAir))  {
+	} else if (([SDVersion deviceVersion] == iPhone6S) || ([SDVersion deviceVersion] == iPhone6SPlus) || ([SDVersion deviceVersion] == iPhoneSE) || ([SDVersion deviceVersion] == iPhone7) || ([SDVersion deviceVersion] == iPhone7Plus) ||
+			   ([SDVersion deviceVersion] == iPad4) || ([SDVersion deviceVersion] == iPadMini3) || ([SDVersion deviceVersion] == iPadMini4) || ([SDVersion deviceVersion] == iPadAir))  {
 		// medium settings
 		settings->setDefault("viewing_range", "50");
 		settings->setDefault("chunksize", "3");
