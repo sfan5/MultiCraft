@@ -1,20 +1,17 @@
 signs = {}
 
--- Intllib
-local S = intllib.make_gettext_pair()
-
 signs.sign_positions = {
 	[0] = {{x =  0.0075, y = 0.18, z = -0.065},  math.pi},
 	[1] = {{x = -0.065,  y = 0.18, z =  0.0075}, math.pi / 2},
 	[2] = {{x =  0.0075, y = 0.18, z =  0.065},  0},
-	[3] = {{x =  0.065,  y = 0.18, z =  0.0075}, math.pi * 1.5},
+	[3] = {{x =  0.065,  y = 0.18, z =  0.0075}, math.pi * 1.5}
 }
 
 signs.wall_sign_positions = {
 	[0] = {{x =  0.437, y = -0.005, z =  0.06},  math.pi / 2},
 	[1] = {{x = -0.437, y = -0.005, z = -0.06},  math.pi * 1.5},
 	[2] = {{x = -0.06,  y = -0.005, z =  0.437}, math.pi},
-	[3] = {{x =  0.06,  y = -0.005, z = -0.437}, 0},
+	[3] = {{x =  0.06,  y = -0.005, z = -0.437}, 0}
 }
 
 local function generate_sign_line_texture(string, texture, row)
@@ -54,7 +51,7 @@ minetest.register_entity("signs:sign_text", {
 		textures = {"blank.png", "blank.png"},
 		visual_size = {x = 0.7, y = 0.6},
 		collisionbox = {0, 0, 0, 0, 0, 0},
-		selectionbox = {0, 0, 0, 0, 0, 0},
+		selectionbox = {0, 0, 0, 0, 0, 0}
 	},
 	pointable = false,
 	on_activate = function(self, staticdata)
@@ -78,12 +75,12 @@ local function check_text(pos, wall)
 	if text and text ~= "" then
 		local found = false
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
-						local ent = obj:get_luaentity()
-						if ent and ent.name == "signs:sign_text" then
-								found = true
-								break
-						end
-				end
+			local ent = obj:get_luaentity()
+			if ent and ent.name == "signs:sign_text" then
+				found = true
+				break
+			end
+		end
 		if not found then
 			local p2 = minetest.get_node(pos).param2
 			if not p2 or p2 > 3 or p2 < 0 then return end
@@ -113,7 +110,7 @@ minetest.register_lbm({
 	run_at_every_load = true,
 	action = function(pos, node)
 		check_text(pos, false)
-	end,
+	end
 })
 
 minetest.register_lbm({
@@ -123,7 +120,7 @@ minetest.register_lbm({
 	run_at_every_load = true,
 	action = function(pos, node)
 		check_text(pos, true)
-	end,
+	end
 })
 
 minetest.register_node("signs:sign", {
@@ -136,10 +133,12 @@ minetest.register_node("signs:sign", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.375, -0.125, -0.0625, 0.375, 0.5, 0.0625}, -- NodeBox1
-			{-0.0625, -0.5, -0.0625, 0.0625, -0.125, 0.0625}, -- NodeBox2
+			{-0.375,  -0.125, -0.0625, 0.375,   0.5,   0.0625}, -- NodeBox1
+			{-0.0625, -0.5,   -0.0625, 0.0625, -0.125, 0.0625} -- NodeBox2
 		}
 	},
+	groups = {oddly_breakable_by_hand = 1, choppy = 3, attached_node = 1},
+
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type == "node" then
 			local undery = pointed_thing.under.y
@@ -157,10 +156,13 @@ minetest.register_node("signs:sign", {
 			end
 		end
 	end,
+
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", "field[Dtext;" .. S("Enter your text:") .. ";${sign_text}]")
+		meta:set_string("formspec", "size[5,3]field[Dtext;" .. Sl("Enter your text:") .. ";${sign_text}]" ..
+				"button_exit[1.06,1.65;2.9,1;;" .. Sl("Save") .. "]")
 	end,
+
 	on_destruct = function(pos)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
 			local ent = obj:get_luaentity()
@@ -170,17 +172,15 @@ minetest.register_node("signs:sign", {
 			end
 		end
 	end,
+
 	on_punch = function(pos)
 		check_text(pos, false)
 	end,
+
 	on_receive_fields = function(pos, formname, fields, sender)
-		if not fields.Dtext then
-			return
-		end
+		if not fields.Dtext then return end
 		local p2 = minetest.get_node(pos).param2
-		if p2 > 3 then
-			return
-		end
+		if p2 > 3 then return end
 		local found = false
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
 			local ent = obj:get_luaentity()
@@ -203,27 +203,30 @@ minetest.register_node("signs:sign", {
 		end
 		local meta = minetest.get_meta(pos)
 		meta:set_string("sign_text", fields.Dtext)
-	end,
-	groups = {oddly_breakable_by_hand = 1, choppy = 3, attached_node = 1},
+	end
 })
 
 minetest.register_node("signs:wall_sign", {
-	description = "Sign",
 	tiles = {"default_wood.png"},
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
 	node_box = {
 		type = "wallmounted",
-		wall_top	= {-0.4375, 0.4375, -0.3125, 0.4375, 0.5, 0.3125},
-		wall_bottom = {-0.4375, -0.5, -0.3125, 0.4375, -0.4375, 0.3125},
-		wall_side   = {-0.5, -0.3125, -0.4375, -0.4375, 0.3125, 0.4375},
+		wall_top	= {-0.4375,  0.4375, -0.3125,  0.4375,  0.5,    0.3125},
+		wall_bottom	= {-0.4375, -0.5,    -0.3125,  0.4375, -0.4375, 0.3125},
+		wall_side	= {-0.5,    -0.3125, -0.4375, -0.4375,  0.3125, 0.4375}
 	},
 	drop = "signs:sign",
+	groups = {oddly_breakable_by_hand = 1, choppy = 3,
+		not_in_creative_inventory = 1, attached_node = 1},
+
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", "field[Dtext;" .. S("Enter your text:") .. ";${sign_text}]")
+		meta:set_string("formspec", "size[5,3]field[Dtext;" .. Sl("Enter your text:") .. ";${sign_text}]" ..
+				"button_exit[1.06,1.65;2.9,1;;" .. Sl("Save") .. "]")
 	end,
+
 	on_destruct = function(pos)
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
 			local ent = obj:get_luaentity()
@@ -233,17 +236,15 @@ minetest.register_node("signs:wall_sign", {
 			end
 		end
 	end,
+
 	on_punch = function(pos)
-				check_text(pos, true)
-		end,
+		check_text(pos, true)
+	end,
+	
 	on_receive_fields = function(pos, formname, fields, sender)
-		if not fields.Dtext then
-			return
-		end
+		if not fields.Dtext then return end
 		local p2 = minetest.get_node(pos).param2 - 2
-		if p2 > 3 and p2 < 0 then
-			return
-		end
+		if p2 > 3 and p2 < 0 then return end
 		local found = false
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 0.5)) do
 			local ent = obj:get_luaentity()
@@ -266,9 +267,7 @@ minetest.register_node("signs:wall_sign", {
 		end
 		local meta = minetest.get_meta(pos)
 		meta:set_string("sign_text", fields.Dtext)
-	end,
-	groups = {oddly_breakable_by_hand = 1, choppy = 3,
-		not_in_creative_inventory = 1, attached_node = 1},
+	end
 })
 
 minetest.register_craft({
@@ -276,6 +275,6 @@ minetest.register_craft({
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
 		{"group:wood", "group:wood", "group:wood"},
-		{"", "default:stick", ""},
+		{"", "default:stick", ""}
 	}
 })
