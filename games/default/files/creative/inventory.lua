@@ -83,7 +83,7 @@ local filters = {
 		return found_in_list(name, {"^boats:", "^carts:"}) or groups.rail
 	end,
 	["food"] = function(name, def, groups)
-		return def.groups.food
+		return def.groups.food and not def.groups.stairs
 	end,
 	["tools"] = function(name)
 		return minetest.registered_tools[name] or
