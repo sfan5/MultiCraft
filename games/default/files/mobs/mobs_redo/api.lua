@@ -533,7 +533,7 @@ function mob_class:do_stay_near()
 		z = target.z - pos.z
 	}
 
-	yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+	local yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
 
 	if target.x > pos.x then
 		yaw = yaw + pi
@@ -3794,7 +3794,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 		mob_sta[name] = item
 		local tag = self.nametag or ""
 
-		minetest.show_formspec(name, "mobs_nametag", "size[8,4]"
+		minetest.show_formspec(name, "mobs_nametag", "size[6,3]"
 				.. "field[0.5,1;7.5,0;name;"
 				.. minetest.formspec_escape(S("Enter name:")) .. ";" .. tag .. "]"
 				.. "button_exit[2.5,3.5;3,1;mob_rename;"
