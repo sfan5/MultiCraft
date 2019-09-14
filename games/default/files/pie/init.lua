@@ -40,7 +40,7 @@ function pie.register_pie(pie, desc)
 			"pie_" .. pie .. "_top.png", "pie_" .. pie .. "_bottom.png", "pie_" .. pie .. "_side.png",
 			"pie_" .. pie .. "_side.png", "pie_" .. pie .. "_side.png", "pie_" .. pie .. "_inside.png"
 		},
-		groups = {},
+		groups = {food = 1},
 		on_punch = function(pos, node, puncher, pointed_thing)
 			replace_pie(node, puncher, pos)
 		end
@@ -49,8 +49,8 @@ function pie.register_pie(pie, desc)
 	-- full pie
 	local pie_full = table.copy(pie_node)
 	pie_full.node_box = {
-			type = "fixed",
-			fixed = {{-0.43, -0.5, -0.43, 0.43, 0, 0.43}}
+		type = "fixed",
+		fixed = {{-0.43, -0.5, -0.43, 0.43, 0, 0.43}}
 	}
 	pie_full.tiles = {
 			"pie_" .. pie .. "_top.png", "pie_" .. pie .. "_bottom.png", "pie_" .. pie .. "_side.png",
@@ -59,14 +59,14 @@ function pie.register_pie(pie, desc)
 	pie_full.description = desc
 	pie_full.stack_max = 1
 	pie_full.inventory_image = "pie_" .. pie .. "_inv.png"
-	pie_full.wield_image = "pie_" .. pie .. "_inv.png"
+--	pie_full.wield_image = "pie_" .. pie .. "_wield.png"
 	minetest.register_node("pie:" .. pie .. "_0", pie_full)
 
 	-- 3/4 pie
 	local pie_75 = table.copy(pie_node)
 	pie_75.node_box = {
-			type = "fixed",
-			fixed = {{-0.43, -0.5, -0.25, 0.43, 0, 0.43}}
+		type = "fixed",
+		fixed = {{-0.43, -0.5, -0.25, 0.43, 0, 0.43}}
 	}
 	pie_75.groups.not_in_creative_inventory = 1
 	minetest.register_node("pie:" .. pie .. "_1", pie_75)
@@ -74,8 +74,8 @@ function pie.register_pie(pie, desc)
 	-- 2/4 pie
 	local pie_50 = table.copy(pie_node)
 	pie_50.node_box = {
-			type = "fixed",
-			fixed = {{-0.43, -0.5, 0.0, 0.43, 0, 0.43}}
+		type = "fixed",
+		fixed = {{-0.43, -0.5, 0.0, 0.43, 0, 0.43}}
 	}
 	pie_50.groups.not_in_creative_inventory = 1
 	minetest.register_node("pie:" .. pie .. "_2", pie_50)
@@ -83,8 +83,8 @@ function pie.register_pie(pie, desc)
 	-- 1/4 pie
 	local pie_25 = table.copy(pie_node)
 	pie_25.node_box = {
-			type = "fixed",
-			fixed = {{-0.43, -0.5, 0.25, 0.43, 0, 0.43}}
+		type = "fixed",
+		fixed = {{-0.43, -0.5, 0.25, 0.43, 0, 0.43}}
 	}
 	pie_25.groups.not_in_creative_inventory = 1
 	minetest.register_node("pie:" .. pie .. "_3", pie_25)
@@ -92,7 +92,7 @@ end
 
 --== Pie Registration ==--
 
--- normal cake
+-- Cake
 pie.register_pie("cake", "Cake")
 minetest.register_craft({
 	output = "pie:cake_0",
@@ -104,26 +104,13 @@ minetest.register_craft({
 	replacements = {{"mobs:bucket_milk", "bucket:bucket_empty"}}
 })
 
--- chocolate cake
---[[pie.register_pie("choc", "Chocolate Cake")
+-- Pumpkin
+pie.register_pie("pumpkin", "Pumpkin Pie")
 minetest.register_craft({
-	output = "pie:choc_0",
+	output = "pie:pumpkin_0",
 	recipe = {
-		{"group:food_cocoa", "group:food_milk", "group:food_cocoa"},
-		{"default:sugar", "mobs:chicken_egg", "default:sugar"},
-		{"group:food_wheat", "group:food_flour", "group:food_wheat"}
-	},
-	replacements = {{"mobs:bucket_milk", "bucket:bucket_empty"}}
+		{"", "", ""},
+		{"farming_addons:pumpkin_fruit", "mobs:chicken_egg", ""},
+		{"", "farming:flour", ""}
+	}
 })
-
--- red velvet cake
-pie.register_pie("rvel", "Red Velvet Cake")
-minetest.register_craft({
-	output = "pie:rvel_0",
-	recipe = {
-		{"group:food_cocoa", "group:food_milk", "dye:red"},
-		{"default:sugar", "mobs:chicken_egg", "default:sugar"},
-		{"group:food_flour", "group:food_cheese", "group:food_flour"}
-	},
-	replacements = {{"mobs:bucket_milk", "bucket:bucket_empty"}}
-})]]
